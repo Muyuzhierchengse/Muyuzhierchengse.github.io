@@ -8,16 +8,16 @@ main:
   - title: "Publications"
     url: /publications/
 
-  - title: "Talks"
-    url: /talks/    
+  #- title: "Talks"
+    #url: /talks/    
 
-  - title: "Teaching"
-    url: /teaching/    
+  #- title:  "Code"
+    #url: /teaching/    
     
-  - title: "Portfolio"
+  - title: "Notes"
     url: /portfolio/
         
-  - title: "Blog Posts"
+  - title: "Blog"
     url: /year-archive/
     
   - title: "CV"
