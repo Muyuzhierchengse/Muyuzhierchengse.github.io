@@ -11,35 +11,39 @@ redirect_from:
 
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* B.S. in Artificial Intelligence, Communication University of China, 2021-now
 
-Work experience
+Study Experience
 ======
-* Spring 2024: Academic Pages Collaborator
-  * Github University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
+* Spring 2024: 
+  * Communication University of China
+  * Content:
+  * Supervisor: Professor Shaode Yu
 
-* Fall 2015: Research Assistant
-  * Github University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* Winter 2023: 
+  * Hainan University, Center for Theoretical Physics
+  * Content:
 
-* Summer 2015: Research Assistant
-  * Github University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
+* Winter 2023: 
+  * Beijing Computational Science Research Center(CSRC)
+  * Content:
+
+* Fall 2023: 
+  * Peking University(Online)
+  * Content:
+
+* Spring 2022: 
+  * Communication University of China, MIPG(Multimedia Intelligent Processing Group)
+  * Content: 
+  * Supervisor: Professor Qi Mao
   
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
+* TOEFL iBT 77
+* Python
+  * Pytorch
   * Sub-skill 2.2
   * Sub-skill 2.3
-* Skill 3
 
 Publications
 ======
@@ -47,7 +51,7 @@ Publications
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
   
-Talks
+Awards
 ======
   <ul>{% for post in site.talks reversed %}
     {% include archive-single-talk-cv.html  %}
