@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Intro"
+title: "About Me"
 author_profile: true
 redirect_from: 
   - /about/
@@ -11,5 +11,3 @@ I'm a fourth year undergraduate student from [School of ICES](https://ices.cuc.e
 
 You can find my CV here: [XX's Curriculum Vitae](../assets/Curriculum_Vitae.pdf).
 
-[Email](Muyuzhierchengse@cuc.edu.cn) / [Github](https://github.com/Muyuzhierchengse) /
-————————————————
