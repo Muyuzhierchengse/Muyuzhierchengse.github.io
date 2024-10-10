@@ -17,11 +17,11 @@ main:
   - title: "Notes"
     url: /portfolio/
         
-  - title: "Blog"
-    url: /year-archive/
+  #- title: "Blog"
+    #url: /year-archive/
     
   - title: "CV"
     url: /cv/
     
-  - title: "Guide"
-    url: /markdown/
+  #- title: "Guide"
+    #url: /markdown/
