@@ -1,5 +1,5 @@
 ---
 title: "Computation Theory"
-collection: portfolio
+collection: 
 ---
 
