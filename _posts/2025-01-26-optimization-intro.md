@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "优化方法导引"
+title: "Introduction to Optimization"
 date: 2025-01-26
 tags: [Optimization]
 mathjax: true
+excerpt: "优化方法导引."
 ---
 「意得则舒怀以命笔	理伏则投笔以卷怀」
 
