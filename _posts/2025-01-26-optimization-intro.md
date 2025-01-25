@@ -7,12 +7,7 @@ mathjax: true
 excerpt: "优化方法导引."
 ---
 「意得则舒怀以命笔	理伏则投笔以卷怀」
-这是行内公式：$f'(x) = 2x$。
 
-这是块级公式：
-$$
-\int_a^b f(x)dx = F(b) - F(a)
-$$
 Zhimu  Yang
 
 # 优化方法导引（Optimization）
