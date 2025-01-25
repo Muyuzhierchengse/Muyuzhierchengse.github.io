@@ -1,3 +1,10 @@
+---
+layout: post
+title: "计算理论导引（3）"
+date: 2025-01-26 1:09:03
+tags: [Computation]
+mathjax: true
+---
 「送春而血泪满腮，悲秋而红颜惨目」
 
 **Wi.** Zhimu Yang
