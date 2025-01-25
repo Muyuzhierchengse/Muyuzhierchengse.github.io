@@ -1,3 +1,9 @@
+---
+layout: post
+title: "优化方法导引"
+date: 2025-01-26
+tags: [Optimization]
+---
 「意得则舒怀以命笔	理伏则投笔以卷怀」
 
 Zhimu  Yang
