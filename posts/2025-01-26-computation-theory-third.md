@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "计算理论导引（3）"
-date: 2025-01-26 1:09:03
+date: 2025-01-25
 tags: [Computation]
 mathjax: true
 ---
