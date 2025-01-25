@@ -6,6 +6,13 @@ tags: [Computation]
 excerpt: "计算理论导引（3）."
 mathjax: true
 ---
+
+<iframe src="/assets/计算理论导引（3）.pdf" width="100%" height="600px"></iframe>
+
+如果无法加载，请点击链接下载：
+[下载 PDF](/assets/pdfs/计算理论导引（3）.pdf)
+
+
 「送春而血泪满腮，悲秋而红颜惨目」
 
 **Wi.** Zhimu Yang
