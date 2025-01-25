@@ -4,7 +4,6 @@ title: "Introduction to Computation Theory（3）"
 date: 2025-01-26
 tags: [Computation]
 excerpt: "计算理论导引（3）."
-mathjax: true
 ---
 
 <iframe src="/assets/计算理论导引（3）.pdf" width="100%" height="600px"></iframe>
