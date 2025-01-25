@@ -1,8 +1,9 @@
 ---
 layout: post
-title: "计算理论导引（2）"
+title: "Introduction to Computation Theory（2）"
 date: 2025-01-26
 tags: [Computation]
+excerpt: "计算理论导引（2）."
 mathjax: true
 ---
 「河边共指星为客，花里空瞻月是卿」
