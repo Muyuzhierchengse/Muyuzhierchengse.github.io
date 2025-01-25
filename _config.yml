@@ -1,7 +1,7 @@
 # Site
-title: Moonrise
-bio: "Minimal, one column jekyll theme."
-description: "Moonrise is a fresh take on the classic Moon"
+title: Muyuzhierchengse
+bio: "Searching for the universe and truth."
+description: "Pilgrim of Universe"
 reading_time: true
 words_per_minute: 200
 logo: "assets/img/logo.png"
@@ -36,20 +36,21 @@ sass:
 #ad-client:
 #ad-slot:
 #bing-verify:
-#email:
-twitter: username
-facebook: username
-github-url: username
+University: Communication University of China
+email: 2811447002@qq.com/Muyuzhierchengse@gmail.com
+#twitter: username
+#facebook: username
+github-url: https://github.com/Muyuzhierchengse
 #stackoverflow: 123456/username   from a "http://stackoverflow.com/users/123456/username" link
 #linkedin: username
 #xing: username
-instagram: username
+#instagram: username
 #lastfm: username
 #tumblr: username
 #medium: '@username'
 #pinterest: username
 #foursquare: username
-steam: username
+#steam: username
 #dribbble: username
 #youtube: username
 #youtube-channel: channel
