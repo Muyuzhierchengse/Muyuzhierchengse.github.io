@@ -3,7 +3,6 @@ layout: post
 title: "Introduction to Optimization"
 date: 2025-01-26
 tags: [Optimization]
-mathjax: true
 excerpt: "优化方法导引."
 ---
 
