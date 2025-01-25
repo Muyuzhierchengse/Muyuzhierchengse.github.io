@@ -1,3 +1,10 @@
+---
+layout: post
+title: "计算理论导引（2）"
+date: 2025-01-26 1:09:01
+tags: [Computation]
+mathjax: true
+---
 「河边共指星为客，花里空瞻月是卿」
 
 **Wi.** Zhimu Yang
