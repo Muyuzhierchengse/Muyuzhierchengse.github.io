@@ -6,6 +6,13 @@ tags: [Optimization]
 mathjax: true
 excerpt: "优化方法导引."
 ---
+
+<iframe src="/assets/优化方法导引.pdf" width="100%" height="600px"></iframe>
+
+如果无法加载，请点击链接下载：
+[下载 PDF](/assets/pdfs/优化方法导引.pdf)
+
+
 「意得则舒怀以命笔	理伏则投笔以卷怀」
 
 Zhimu  Yang
