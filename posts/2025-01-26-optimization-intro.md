@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "优化方法导引"
-date: 2025-01-26 1:09:00
+date: 2025-01-20 1:09:00
 tags: [Optimization]
 mathjax: true
 ---
