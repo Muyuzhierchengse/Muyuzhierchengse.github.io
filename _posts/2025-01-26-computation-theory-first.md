@@ -4,8 +4,13 @@ title: "Introduction to Computation Theory（1）"
 date: 2025-01-26
 tags: [Computation]
 excerpt: "计算理论导引（1）."
-mathjax: true
 ---
+
+<iframe src="/assets/pdfs/计算理论导引.pdf" width="100%" height="600px"></iframe>
+
+如果无法加载，请点击链接下载：
+[下载 PDF](/assets/pdfs/计算理论导引.pdf)
+
 「樽前作剧莫相笑，我死诸君思此狂」
 
 **Wi.** Zhimu Yang
