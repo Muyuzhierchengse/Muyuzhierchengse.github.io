@@ -15,11 +15,6 @@ permalink: /:title/
 markdown: kramdown
 highlighter: rouge
 kramdown:
-  parse_block_html: true # 允许 HTML，包括 KaTeX 自动渲染所需的内容
-  input: GFM # GitHub-Flavored Markdown，兼容性更好
-  math_engine: katex # 启用 KaTeX
-  math_engine_opts:
-  delimiters: 'dollars'
   auto_ids: true
   footnote_nr: 1
   entity_output: as_char
