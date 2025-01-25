@@ -4,6 +4,7 @@ title: "Introduction to Computation Theory（1）"
 date: 2025-01-26
 tags: [Computation]
 excerpt: "计算理论导引（1）."
+mathjax: true
 ---
 
 
