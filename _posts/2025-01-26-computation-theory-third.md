@@ -2,7 +2,7 @@
 layout: post
 title: "Introduction to Computation Theory（3）"
 date: 2025-01-26
-tags: [Computation]
+tags: [Computation Theory]
 excerpt: "计算理论导引（3）."
 ---
 
