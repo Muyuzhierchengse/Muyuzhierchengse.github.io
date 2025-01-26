@@ -17,7 +17,6 @@ Hydrangea Academy of Magic, HAM
 
 Magnolia Institute of Science, MIS.HAM
 
-[TOC]
 
 > Type:
 >
