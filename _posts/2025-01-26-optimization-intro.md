@@ -6,7 +6,7 @@ tags: [Optimization]
 excerpt: "优化方法导引."
 ---
 
-<iframe src="/assets/pdfs/优化方法导引.pdf" width="100%" height="600px"></iframe>
+<iframe src="/assets/pdfs/优化方法导引.pdf" width="100%" height="1000px"></iframe>
 
 [Download PDF](/assets/pdfs/优化方法导引.pdf)
 
