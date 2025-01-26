@@ -6,8 +6,6 @@ tags: [Complex Networks]
 excerpt: "复杂网络导引（1）"
 ---
 
-<iframe src="/assets/pdfs/复杂网络(1).pdf" width="100%" height="1000px"></iframe>
-
 [Download PDF](/assets/pdfs/复杂网络(1).pdf)
 
 「天怜我，教养疏慵野性」
@@ -36,3 +34,4 @@ Magnolia Institute of Science, MIS.HAM
 >
 > [2]何大韧，刘宗华，汪秉宏.《复杂系统与复杂网络》. 高等教育出版社，2009
 
+<iframe src="/assets/pdfs/复杂网络(1).pdf" width="100%" height="1000px"></iframe>
