@@ -16,7 +16,6 @@ excerpt: "优化方法导引."
 Zhimu  Yang
 
 
-[TOC]
 
 > Type:
 >
