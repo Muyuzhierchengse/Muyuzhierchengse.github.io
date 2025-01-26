@@ -6,7 +6,7 @@ tags: [Computation Theory]
 excerpt: "计算理论导引（3）."
 ---
 
-<iframe src="/assets/计算理论导引（3）.pdf" width="100%" height="600px"></iframe>
+<iframe src="/assets/pdfs/计算理论导引（3）.pdf" width="100%" height="600px"></iframe>
 
 [Download PDF](/assets/pdfs/计算理论导引（3）.pdf)
 
