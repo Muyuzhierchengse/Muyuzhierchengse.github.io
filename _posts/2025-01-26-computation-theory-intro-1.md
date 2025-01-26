@@ -7,8 +7,6 @@ excerpt: "计算理论导引（1）."
 mathjax: true
 ---
 
-<iframe src="/assets/pdfs/计算理论导引.pdf" width="100%" height="1000px"></iframe>
-
 [Download PDF](/assets/pdfs/计算理论导引.pdf)
 
 「樽前作剧莫相笑，我死诸君思此狂」
@@ -32,3 +30,4 @@ Magnolia Institute of Science, MIS.HAM
 >
 > [1] Michael Sipser . 《Introduction to the Theory of Computation》. 机械工业出版社 , 2015
 
+<iframe src="/assets/pdfs/计算理论导引.pdf" width="100%" height="1000px"></iframe>
