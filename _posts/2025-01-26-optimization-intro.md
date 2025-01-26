@@ -6,8 +6,6 @@ tags: [Optimization]
 excerpt: "优化方法导引."
 ---
 
-<iframe src="/assets/pdfs/优化方法导引.pdf" width="100%" height="1000px"></iframe>
-
 [Download PDF](/assets/pdfs/优化方法导引.pdf)
 
 
@@ -31,4 +29,5 @@ Zhimu  Yang
 >
 > 图例及例题部分源自雷明老师，因其例证优秀，故不做删改以引用，图为本人重新绘制。
 
+<iframe src="/assets/pdfs/优化方法导引.pdf" width="100%" height="1000px"></iframe>
 
