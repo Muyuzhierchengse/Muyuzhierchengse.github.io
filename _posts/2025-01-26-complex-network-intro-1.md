@@ -3,7 +3,7 @@ layout: post
 title: "Introduction to Complex Network（1）"
 date: 2025-01-26
 tags: [Complex Networks]
-excerpt: "复杂网络导引"
+excerpt: "复杂网络导引（1）"
 ---
 
 <iframe src="/assets/pdfs/复杂网络(1).pdf" width="100%" height="1000px"></iframe>
