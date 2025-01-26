@@ -7,8 +7,6 @@ excerpt: "计算理论导引（2）."
 mathjax: true
 ---
 
-<iframe src="/assets/pdfs/计算理论导引（2）.pdf" width="100%" height="1000px"></iframe>
-
 [Download PDF](/assets/pdfs/计算理论导引（2）.pdf)
 
 「河边共指星为客，花里空瞻月是卿」
@@ -40,6 +38,7 @@ Magnolia Institute of Science, MIS.HAM
 > ​	作为导引性的系列笔记，我们还是只做基础的严谨理论整理和入门级别的介绍，事实上该领域还有十分广袤的内容，从证明到应用我们现在不能一一复述，如果感兴趣，可以查阅相关资料，关键词：形式语言与自动机
 
 
+<iframe src="/assets/pdfs/计算理论导引（2）.pdf" width="100%" height="1000px"></iframe>
 
 
 
