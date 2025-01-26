@@ -6,8 +6,6 @@ tags: [Computation Theory]
 excerpt: "计算理论导引（3）."
 ---
 
-<iframe src="/assets/pdfs/计算理论导引（3）.pdf" width="100%" height="1000px"></iframe>
-
 [Download PDF](/assets/pdfs/计算理论导引（3）.pdf)
 
 
@@ -36,3 +34,4 @@ Magnolia Institute of Science, MIS.HAM
 >
 > [1] Michael Sipser . 《Introduction to the Theory of Computation》. 机械工业出版社 , 2015
 
+<iframe src="/assets/pdfs/计算理论导引（3）.pdf" width="100%" height="1000px"></iframe>
