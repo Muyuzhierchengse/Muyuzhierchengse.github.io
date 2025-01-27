@@ -3,11 +3,9 @@ layout: post
 title: "Introduction to Computation Theory（2）"
 date: 2025-01-26
 tags: [Computation Theory]
-excerpt: "计算理论导引（2）."
+excerpt: "计算理论导引（2）"
 mathjax: true
 ---
-
-[Download PDF](/assets/pdfs/计算理论导引（2）.pdf)
 
 「河边共指星为客，花里空瞻月是卿」
 
@@ -40,7 +38,7 @@ Magnolia Institute of Science, MIS.HAM
 
 <iframe src="/assets/pdfs/计算理论导引（2）.pdf" width="100%" height="1000px"></iframe>
 
-
+[Download PDF](/assets/pdfs/计算理论导引（2）.pdf)
 
 
 
