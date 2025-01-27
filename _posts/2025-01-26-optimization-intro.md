@@ -3,11 +3,8 @@ layout: post
 title: "Introduction to Optimization"
 date: 2025-01-26
 tags: [Optimization]
-excerpt: "优化方法导引."
+excerpt: "优化方法导引"
 ---
-
-[Download PDF](/assets/pdfs/优化方法导引.pdf)
-
 
 「意得则舒怀以命笔	理伏则投笔以卷怀」
 
@@ -31,3 +28,4 @@ Zhimu  Yang
 
 <iframe src="/assets/pdfs/优化方法导引.pdf" width="100%" height="1000px"></iframe>
 
+[Download PDF](/assets/pdfs/优化方法导引.pdf)
