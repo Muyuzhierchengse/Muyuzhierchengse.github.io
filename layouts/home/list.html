@@ -1,0 +1,83 @@
+{{ define "styles" }}
+<link rel="stylesheet" href="/css/home.css">
+<style>
+    /* 内联关键CSS防止闪屏 */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+</style>
+{{ end }}
+
+{{ define "content" }}
+<div class="home-container">
+    <!-- 头像区域 -->
+    <header class="home-header">
+        <img src="/images/photo.jpg" alt="Zhimu Yang" class="avatar">
+        <h1 class="name">Zhimu Yang</h1>
+        <p class="description">Scientist</p>
+    </header>
+
+    <!-- 社交链接 -->
+    <div class="social-links">
+        <a href="https://github.com/muyuzhierchengse" class="social-link" target="_blank">
+            <span class="icon">🐱</span> GitHub
+        </a>
+        <a href="mailto:2811447002@qq.com" class="social-link">
+            <span class="icon">📧</span> Email
+        </a>
+    </div>
+
+    <!-- 主要导航 -->
+    <nav class="main-nav">
+        <a href="/about" class="nav-card">
+            <div class="nav-icon">👤</div>
+            <div class="nav-content">
+                <h3>About Me</h3>
+                <p>了解我的背景和经历</p>
+            </div>
+        </a>
+
+        <a href="/blog" class="nav-card">
+            <div class="nav-icon">📝</div>
+            <div class="nav-content">
+                <h3>Blog & Notes</h3>
+                <p>阅读我的文章和笔记</p>
+            </div>
+        </a>
+
+        <a href="mailto:Muyuzhierchengse@gmail.com" class="nav-card">
+            <div class="nav-icon">💌</div>
+            <div class="nav-content">
+                <h3>Contact Me</h3>
+                <p>欢迎联系交流</p>
+            </div>
+        </a>
+    </nav>
+
+    <!-- 页脚 -->
+    <footer class="home-footer">
+        <p>© 2025 Zhimu Yang.</p>
+    </footer>
+</div>
+{{ end }}
+
+{{ define "scripts" }}
+<script>
+    // 简单的交互效果
+    document.addEventListener('DOMContentLoaded', function () {
+        const navCards = document.querySelectorAll('.nav-card');
+
+        navCards.forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-5px)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    });
+</script>
+{{ end }}

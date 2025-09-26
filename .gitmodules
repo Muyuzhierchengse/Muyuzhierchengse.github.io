@@ -1,3 +1,21 @@
 [submodule "themes/ananke"]
 	path = themes/ananke
 	url = https://github.com/theNewDynamic/gohugo-theme-ananke.git
+[submodule "themes/LucentLink-Hugo"]
+	path = themes/LucentLink-Hugo
+	url = https://github.com/cx48/LucentLink-Hugo.git
+[submodule "themes/stack"]
+	path = themes/stack
+	url = https://github.com/CaiJimmy/hugo-theme-stack.git
+[submodule "themes/brewm"]
+	path = themes/brewm
+	url = https://github.com/foxihd/hugo-brewm.git
+[submodule "themes/heyo"]
+	path = themes/heyo
+	url = https://github.com/LucasVadilho/heyo-hugo-theme.git
+[submodule "themes/dream"]
+	path = themes/dream
+	url = https://github.com/g1eny0ung/hugo-theme-dream.git
+[submodule "themes/profile"]
+	path = themes/profile
+	url = https://github.com/gurusabarish/hugo-profile.git

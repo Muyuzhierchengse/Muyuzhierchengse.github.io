@@ -1,4 +1,11 @@
 baseURL = 'https://Muyuzhierchengse.github.io/'
 languageCode = 'en-us'
 title = 'Zhimu Yang'
-theme = 'ananke'
+
+[params]
+name = "Zhimu Yang"
+description = "Scientist"
+
+[markup]
+  [markup.highlight]
+  style = "monokai"
