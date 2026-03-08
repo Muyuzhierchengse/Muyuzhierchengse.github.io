@@ -1,144 +1,268 @@
 {{ define "styles" }}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="/css/about.css">
 <style>
-    /* 内联关键CSS */
     body {
         margin: 0;
-        font-family: 'Times New Roman', serif;
-        background-color: #fefefe;
+        padding: 0;
+        background-color: #fcfbf9;
+        color: #2a2a2a;
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .about-container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        /* 苹果风缓动入场 */
+        animation: fadeIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    @keyframes fadeIn {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 顶部导航返回 */
+    .breadcrumb {
+        margin-bottom: 50px;
+        text-align: center;
+    }
+    
+    .breadcrumb a {
+        color: #888;
+        text-decoration: none;
+        font-size: 12px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        transition: color 0.4s ease;
+    }
+
+    .breadcrumb a:hover {
+        color: #111;
+    }
+
+    /* 古典分割线与标题 */
+    .section-title {
+        font-size: 16px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        text-align: center;
+        margin: 70px 0 30px 0;
+        color: #1a1a1a;
+        font-weight: normal;
+    }
+
+    .divider {
+        text-align: center;
+        font-size: 16px;
+        color: #ccc;
+        letter-spacing: 8px;
+        margin: 20px 0 40px 0;
+        user-select: none;
+    }
+
+    /* 学术简介文本 */
+    .academic-profile {
+        text-align: center;
+        font-size: 15px;
+        color: #444;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* 条目排版（经历、教育、论文） */
+    .content-block {
+        margin-bottom: 35px;
+    }
+    
+    .item-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 4px;
+    }
+
+    .item-title {
+        font-weight: bold;
+        font-size: 15px;
+        color: #111;
+    }
+
+    .item-date {
+        font-size: 13px;
+        color: #777;
+        font-style: italic;
+    }
+
+    .item-meta {
+        font-style: italic;
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    /* 左侧引线设计，用于描述和突出贡献 */
+    .item-desc {
+        font-size: 14.5px;
         color: #333;
-        line-height: 1.6;
+        padding-left: 18px;
+        border-left: 1px solid #ccc;
+        text-align: justify;
+    }
+
+    /* 链接样式 */
+    a.academic-link {
+        color: #555;
+        text-decoration: none;
+        border-bottom: 1px dotted #aaa;
+        transition: all 0.3s ease;
+    }
+
+    a.academic-link:hover {
+        border-bottom: 1px solid #111;
+        color: #000;
+    }
+
+    /* 技能标签矩阵 */
+    .skills-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .skill-tag {
+        font-size: 13px;
+        padding: 6px 16px;
+        border: 1px solid rgba(0,0,0,0.08);
+        color: #444;
+        background: #fff;
+        border-radius: 2px;
+        transition: all 0.4s ease;
+    }
+
+    .skill-tag:hover {
+        border-color: rgba(0,0,0,0.2);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        transform: translateY(-2px);
+    }
+
+    .about-footer {
+        margin-top: 90px;
+        text-align: center;
+        font-size: 12px;
+        color: #bbb;
+        letter-spacing: 1px;
     }
 </style>
 {{ end }}
 
 {{ define "content" }}
 <div class="about-container">
-    <!-- 学术风格页眉 -->
-    <header class="about-header">
-        <div class="header-content">
-            <h1 class="academic-title">Zhimu Yang</h1>
-            <p class="academic-subtitle">Scientist</p>
-            <div class="contact-info">
-                <span><i class="fas fa-envelope"></i>Muyuzhierchengse@gmail.com / 2811447002@qq.com</span>
-                <span><i class="fas fa-map-marker-alt"></i>Guangzhou, China</span>
-            </div>
+    
+    <nav class="breadcrumb">
+        <a href="/">↤ &nbsp; R e t u r n &nbsp; T o &nbsp; H o m e</a>
+    </nav>
+
+    <div class="divider">☙ ❖ ❧</div>
+
+    <section class="academic-profile">
+        <p>I am an aspiring PhD student with a strong interest in <b>Computation Theory & Theoretical Computer Science</b>. My research explores the nature of mathematics and computation, and their convergence with logic, consciousness, and intelligence.</p>
+    </section>
+
+    <h2 class="section-title">E d u c a t i o n &nbsp; & &nbsp; T r a i n i n g</h2>
+    
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">Hainan University</span>
+            <span class="item-date">Graduation Year</span>
         </div>
-    </header>
+        <div class="item-meta">B.S. in Artificial Intelligence &nbsp; ∾ &nbsp; [Specific Center Name]</div>
+    </div>
 
-    <!-- 主要内容区域 -->
-    <main class="about-main">
-        <!-- 导航返回 -->
-        <nav class="breadcrumb">
-            <a href="/" class="back-link">
-                <i class="fas fa-arrow-left"></i> Back to Home
-            </a>
-        </nav>
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">Beijing Computational Science Research Center (CSRC)</span>
+            <span class="item-date">Date Range</span>
+        </div>
+        <div class="item-meta">Academic Training / Research Exchange</div>
+    </div>
 
-        <!-- 学术简介 -->
-        <section class="academic-profile">
-            <h2><i class="fas fa-user-graduate"></i> Academic Profile</h2>
-            <div class="profile-content">
-                <p>I'm a dedicated undergraduate student with expertise in theory of computation.
-                    His research focuses on [Research Areas] with publications in prestigious journals.</p>
-            </div>
-        </section>
+    <h2 class="section-title">R e s e a r c h &nbsp; E x p e r i e n c e</h2>
 
-        <!-- 教育背景 -->
-        <section class="education">
-            <h2><i class="fas fa-university"></i> Education</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-year">2021-2025</div>
-                    <div class="timeline-content">
-                        <h3>B.S. in Artificial Intelligence</h3>
-                        <p class="institution"> Communication University of China</p>
-                        <p>Thesis: "Your Thesis Title"</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">Quantum Circuit Compilation & Routing (PaSCQ)</span>
+            <span class="item-date">2026</span>
+        </div>
+        <div class="item-meta">Independent / Collaborative Research</div>
+        <div class="item-desc">
+            Investigated advanced methodologies for quantum circuit routing. <b>Defined performance metrics</b> and conducted comparative analysis between the PaSCQ method and existing frameworks like SpinQ to evaluate routing efficiency.
+        </div>
+    </div>
 
-        <!-- 研究兴趣 -->
-        <section class="research-interests">
-            <h2><i class="fas fa-flask"></i> Research Interests</h2>
-            <div class="interests-grid">
-                <div class="interest-item">
-                    <i class="fas fa-dna"></i>
-                    <span>Artificial Intelligence</span>
-                </div>
-                <div class="interest-item">
-                    <i class="fas fa-brain"></i>
-                    <span>Quantum Computing</span>
-                </div>
-                <div class="interest-item">
-                    <i class="fas fa-code"></i>
-                    <span>Theory of Computing</span>
-                </div>
-            </div>
-        </section>
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">Generative Adversarial Networks (GAN) Project</span>
+            <span class="item-date">Year</span>
+        </div>
+        <div class="item-meta">Research Initiative</div>
+        <div class="item-desc">
+            Explored the foundational architecture of Generative Adversarial Networks. <b>Designed and implemented</b> [briefly describe your specific contribution here] to enhance model stability and generative performance.
+        </div>
+    </div>
 
-        <!-- 发表论文 -->
-        <section class="publications">
-            <h2><i class="fas fa-book"></i> Selected Publications</h2>
-            <div class="publication-list">
-                <div class="publication-item">
-                    <div class="pub-title">"Interesting Paper Title"</div>
-                    <div class="pub-authors">Yang, Z., et al.</div>
-                    <div class="pub-journal">Nature, 2023, vol. 615, pp. 123-135</div>
-                    <a href="#" class="pub-link"><i class="fas fa-external-link-alt"></i> Full Text</a>
-                </div>
-                <div class="publication-item">
-                    <div class="pub-title">"Another Significant Paper"</div>
-                    <div class="pub-authors">Yang, Z., et al.</div>
-                    <div class="pub-journal">Science, 2022, vol. 375, pp. 456-468</div>
-                    <a href="#" class="pub-link"><i class="fas fa-external-link-alt"></i> Full Text</a>
-                </div>
-            </div>
-        </section>
+    <h2 class="section-title">P u b l i c a t i o n s &nbsp; & &nbsp; M a n u s c r i p t s</h2>
 
-        <!-- 技能专长 -->
-        <section class="skills">
-            <h2><i class="fas fa-tools"></i> Technical Skills</h2>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <h3>Laboratory Techniques</h3>
-                    <ul>
-                        <li>PCR & Molecular Cloning</li>
-                        <li>Cell Culture</li>
-                        <li>Microscopy</li>
-                        <li>Protein Purification</li>
-                    </ul>
-                </div>
-                <div class="skill-category">
-                    <h3>Computational Skills</h3>
-                    <ul>
-                        <li>Python/R Programming</li>
-                        <li>Statistical Analysis</li>
-                        <li>Machine Learning</li>
-                        <li>Data Visualization</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
+    <div class="content-block">
+        <div style="font-size: 15px; margin-bottom: 6px;">
+            ◈ <b>[FSX Project Title Goes Here]</b>
+        </div>
+        <div class="item-meta" style="margin-bottom: 4px;">
+            <b>Zhimu Yang</b>, [Other Authors]
+        </div>
+        <div style="font-size: 14px; color: #555;">
+            Submitted to <i>IJCAI 2026</i>. (Under Review)
+        </div>
+    </div>
 
-    <!-- 学术页脚 -->
+    <div class="content-block">
+        <div style="font-size: 15px; margin-bottom: 6px;">
+            ◈ <b>[Upcoming Paper Title on Computation Theory]</b>
+        </div>
+        <div class="item-meta" style="margin-bottom: 4px;">
+            <b>Zhimu Yang</b>
+        </div>
+        <div style="font-size: 14px; color: #555;">
+            In preparation for submission to <i>FOCS</i>.
+        </div>
+    </div>
+
+    <h2 class="section-title">T e c h n i c a l &nbsp; S k i l l s</h2>
+    
+    <div class="skills-container">
+        <div class="skill-tag">GitHub Collaboration</div>
+        <div class="skill-tag">Algorithm Design</div>
+        <div class="skill-tag">Quantum Frameworks (e.g., Qiskit)</div>
+        <div class="skill-tag">Python & PyTorch</div>
+        <div class="skill-tag">Graph Theory Analysis</div>
+    </div>
+
     <footer class="about-footer">
-        <p>© 2024 Zhimu Yang.</p>
-        <div class="footer-links">
-            <a href="#"><i class="fab fa-google-scholar"></i> Google Scholar</a>
-        </div>
+        <p>Simplicity is the ultimate sophistication.</p>
     </footer>
+
 </div>
 {{ end }}
 
 {{ define "scripts" }}
 <script>
-    // 简约的交互效果
+    // 保留了平滑滚动，移除了不必要的样式劫持
     document.addEventListener('DOMContentLoaded', function () {
-        // 平滑滚动
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -146,17 +270,6 @@
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth' });
                 }
-            });
-        });
-
-        // 出版物链接效果
-        const pubLinks = document.querySelectorAll('.pub-link');
-        pubLinks.forEach(link => {
-            link.addEventListener('mouseenter', function () {
-                this.style.textDecoration = 'underline';
-            });
-            link.addEventListener('mouseleave', function () {
-                this.style.textDecoration = 'none';
             });
         });
     });

@@ -5,328 +5,354 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog &amp; Notes | Zhimu Yang</title>
     
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
-<link rel="stylesheet" href="/css/blog.css">
 <style>
- 
-body { 
-    margin: 0; 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: #0d1117;
-    color: #c9d1d9;
-    line-height: 1.6;
-}
+     
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #fcfbf9;
+        color: #2a2a2a;
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .archive-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 60px 20px;
+        animation: fadeIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    @keyframes fadeIn {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+     
+    .breadcrumb {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .breadcrumb a {
+        color: #888;
+        text-decoration: none;
+        font-size: 12px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin: 0 15px;
+        transition: color 0.4s ease;
+    }
+
+    .breadcrumb a:hover, .breadcrumb a.active {
+        color: #111;
+        border-bottom: 1px solid #111;
+    }
+
+     
+    .archive-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+
+    .archive-title {
+        font-size: 20px;
+        letter-spacing: 6px;
+        text-transform: uppercase;
+        font-weight: normal;
+        margin: 0 0 10px 0;
+    }
+
+    .archive-subtitle {
+        font-size: 14px;
+        font-style: italic;
+        color: #666;
+        margin: 0;
+    }
+
+    .divider {
+        font-size: 16px;
+        color: #ccc;
+        letter-spacing: 8px;
+        margin: 25px 0;
+        user-select: none;
+    }
+
+     
+    .archive-layout {
+        display: flex;
+        gap: 50px;
+        align-items: flex-start;
+    }
+
+     
+    .archive-index {
+        flex: 0 0 220px;
+        position: sticky;
+        top: 40px;
+    }
+
+    .index-section {
+        margin-bottom: 40px;
+    }
+
+    .index-title {
+        font-size: 13px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #111;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #eaeaea;
+        padding-bottom: 5px;
+    }
+
+     
+    .search-input {
+        width: 100%;
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        font-family: inherit;
+        font-style: italic;
+        font-size: 14px;
+        padding: 5px 0;
+        color: #333;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+
+    .search-input:focus {
+        border-bottom-color: #111;
+    }
+
+    .search-input::placeholder {
+        color: #aaa;
+    }
+
+     
+    .category-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .category-list li {
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .category-list a {
+        color: #555;
+        text-decoration: none;
+        display: flex;
+        justify-content: space-between;
+        transition: color 0.3s;
+    }
+
+    .category-list a:hover {
+        color: #000;
+    }
+
+    .cat-count {
+        font-size: 12px;
+        color: #999;
+    }
+
+     
+    .archive-ledger {
+        flex: 1;
+    }
+
+    .year-marker {
+        font-size: 18px;
+        letter-spacing: 2px;
+        color: #111;
+        margin-bottom: 25px;
+        font-style: italic;
+    }
+
+    .post-item {
+        margin-bottom: 35px;
+        padding-left: 20px;
+        border-left: 1px solid #ddd;  
+        transition: border-color 0.4s;
+    }
+
+    .post-item:hover {
+        border-left-color: #333;
+    }
+
+    .post-meta {
+        font-size: 13px;
+        color: #777;
+        margin-bottom: 4px;
+        display: flex;
+        gap: 15px;
+    }
+
+    .post-title {
+        font-size: 17px;
+        font-weight: bold;
+        margin: 0 0 8px 0;
+    }
+
+    .post-title a {
+        color: #1a1a1a;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .post-title a:hover {
+        color: #555;
+    }
+
+    .post-excerpt {
+        font-size: 14px;
+        color: #444;
+        margin: 0 0 10px 0;
+        line-height: 1.6;
+        text-align: justify;
+    }
+
+    .post-tags {
+        font-size: 12px;
+        color: #888;
+        font-style: italic;
+    }
+
+     
+    @media (max-width: 768px) {
+        .archive-layout {
+            flex-direction: column;
+        }
+        .archive-index {
+            flex: none;
+            width: 100%;
+            position: relative;
+            top: 0;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+    }
+
+    .archive-footer {
+        margin-top: 80px;
+        text-align: center;
+        font-size: 12px;
+        color: #bbb;
+        letter-spacing: 1px;
+    }
 </style>
 
 </head>
 <body>
     
-<div class="blog-container">
+<div class="archive-container">
     
-    <header class="blog-header">
-        <div class="header-content">
-            <nav class="blog-nav">
-                <a href="/" class="nav-home">
-                    <i class="fas fa-home"></i> Home
-                </a>
-                <div class="nav-links">
-                    <a href="/about">About</a>
-                    <a href="/blog" class="active">Blog</a>
-                    <a href="#search" class="search-trigger">
-                        <i class="fas fa-search"></i>
-                    </a>
-                </div>
-            </nav>
-            
-            <div class="blog-hero">
-                <h1 class="blog-title">Blog & Notes</h1>
-                <p class="blog-subtitle">技术笔记 • 研究心得 • 学习记录</p>
-                <div class="blog-stats">
-                    <span class="stat">
-                        <i class="fas fa-file-alt"></i>
-                        <strong>12</strong> 篇文章
-                    </span>
-                    <span class="stat">
-                        <i class="fas fa-tags"></i>
-                        <strong>8</strong> 个分类
-                    </span>
-                    <span class="stat">
-                        <i class="fas fa-calendar"></i>
-                        更新于 2024年1月
-                    </span>
-                </div>
-            </div>
-        </div>
+    <nav class="breadcrumb">
+        <a href="/">H o m e</a>
+        <a href="/about">S c h o l a r</a>
+        <a href="/blog" class="active">M a n u s c r i p t s</a>
+    </nav>
+
+    <header class="archive-header">
+        <h1 class="archive-title">M a n u s c r i p t s &nbsp; & &nbsp; N o t e s</h1>
+        <p class="archive-subtitle">Theoretical Explorations, Research Drafts & Technical Memos</p>
+        <div class="divider">☙ ═════════════════════ ❧</div>
     </header>
 
-    
-    <main class="blog-main">
-        <div class="blog-layout">
+    <div class="archive-layout">
+        
+        <aside class="archive-index">
             
-            <section class="posts-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-stream"></i> 最新文章</h2>
-                    <div class="view-controls">
-                        <button class="view-btn active" data-view="grid">
-                            <i class="fas fa-th"></i>
-                        </button>
-                        <button class="view-btn" data-view="list">
-                            <i class="fas fa-list"></i>
-                        </button>
-                    </div>
+            <div class="index-section">
+                <input type="text" class="search-input" placeholder="Search the archives...">
+            </div>
+
+            <div class="index-section">
+                <div class="index-title">C l a s s i f i c a t i o n s</div>
+                <ul class="category-list">
+                    <li><a href="#"><span>Theoretical Computer Science</span> <span class="cat-count">IV</span></a></li>
+                    <li><a href="#"><span>Quantum Systems</span> <span class="cat-count">II</span></a></li>
+                    <li><a href="#"><span>Artificial Intelligence</span> <span class="cat-count">V</span></a></li>
+                    <li><a href="#"><span>Mathematics & Logic</span> <span class="cat-count">III</span></a></li>
+                </ul>
+            </div>
+
+            <div class="index-section">
+                <div class="index-title">K e y w o r d s</div>
+                <div style="font-size: 13px; color: #666; line-height: 1.8;">
+                    <a href="#" style="color: inherit; text-decoration: none;">[ Graph Theory ]</a> &nbsp;
+                    <a href="#" style="color: inherit; text-decoration: none;">[ GANs ]</a> &nbsp;
+                    <a href="#" style="color: inherit; text-decoration: none;">[ Qiskit ]</a> &nbsp;
+                    <a href="#" style="color: inherit; text-decoration: none;">[ Complexity ]</a>
                 </div>
-
-                <div class="posts-grid" id="postsView">
-                    
-                    <article class="post-card">
-                        <div class="post-meta">
-                            <span class="post-date">2024-01-15</span>
-                            <span class="post-category">技术笔记</span>
-                        </div>
-                        <h3 class="post-title">
-                            <a href="#">Hugo多主题架构设计与实现</a>
-                        </h3>
-                        <p class="post-excerpt">
-                            探讨如何在Hugo中实现不同页面使用完全独立的主题风格，避免CSS冲突和模板污染。
-                        </p>
-                        <div class="post-footer">
-                            <div class="post-tags">
-                                <span class="tag">Hugo</span>
-                                <span class="tag">Web开发</span>
-                                <span class="tag">CSS</span>
-                            </div>
-                            <div class="post-actions">
-                                <button class="action-btn" title="阅读时间">
-                                    <i class="fas fa-clock"></i> 8min
-                                </button>
-                                <button class="action-btn" title="点赞">
-                                    <i class="fas fa-heart"></i> 24
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-
-                    
-                    <article class="post-card">
-                        <div class="post-meta">
-                            <span class="post-date">2024-01-10</span>
-                            <span class="post-category">研究心得</span>
-                        </div>
-                        <h3 class="post-title">
-                            <a href="#">生物信息学中的机器学习应用</a>
-                        </h3>
-                        <p class="post-excerpt">
-                            分享在生物信息学研究中使用机器学习方法的实践经验和技术要点。
-                        </p>
-                        <div class="post-footer">
-                            <div class="post-tags">
-                                <span class="tag">生物信息学</span>
-                                <span class="tag">机器学习</span>
-                                <span class="tag">Python</span>
-                            </div>
-                            <div class="post-actions">
-                                <button class="action-btn" title="阅读时间">
-                                    <i class="fas fa-clock"></i> 12min
-                                </button>
-                                <button class="action-btn" title="点赞">
-                                    <i class="fas fa-heart"></i> 36
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-
-                    
-                    <article class="post-card">
-                        <div class="post-meta">
-                            <span class="post-date">2024-01-05</span>
-                            <span class="post-category">教程指南</span>
-                        </div>
-                        <h3 class="post-title">
-                            <a href="#">现代前端开发工具链配置</a>
-                        </h3>
-                        <p class="post-excerpt">
-                            从零开始配置完整的前端开发环境，包括构建工具、代码检查和性能优化。
-                        </p>
-                        <div class="post-footer">
-                            <div class="post-tags">
-                                <span class="tag">前端</span>
-                                <span class="tag">工具链</span>
-                                <span class="tag">Vite</span>
-                            </div>
-                            <div class="post-actions">
-                                <button class="action-btn" title="阅读时间">
-                                    <i class="fas fa-clock"></i> 15min
-                                </button>
-                                <button class="action-btn" title="点赞">
-                                    <i class="fas fa-heart"></i> 42
-                                </button>
-                            </div>
-                        </div>
-                    </article>
-
-                    
-                    <article class="post-card placeholder">
-                        <div class="placeholder-content">
-                            <i class="fas fa-plus"></i>
-                            <p>更多精彩内容筹备中...</p>
-                        </div>
-                    </article>
-                </div>
-            </section>
-
+            </div>
             
-            <aside class="blog-sidebar">
-                
-                <div class="sidebar-widget">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" placeholder="搜索文章..." class="search-input">
-                    </div>
-                </div>
+        </aside>
 
-                
-                <div class="sidebar-widget">
-                    <h3><i class="fas fa-folder"></i> 分类目录</h3>
-                    <ul class="category-list">
-                        <li>
-                            <a href="#" class="category-link">
-                                <span class="category-name">技术笔记</span>
-                                <span class="category-count">5</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="category-link">
-                                <span class="category-name">研究心得</span>
-                                <span class="category-count">3</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="category-link">
-                                <span class="category-name">教程指南</span>
-                                <span class="category-count">2</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="category-link">
-                                <span class="category-name">生活随笔</span>
-                                <span class="category-count">2</span>
-                            </a>
-                        </li>
-                    </ul>
+        <main class="archive-ledger">
+            
+            <div class="year-marker">~ 2026 ~</div>
+            
+            <article class="post-item">
+                <div class="post-meta">
+                    <span>March 05</span>
+                    <span>Quantum Systems</span>
                 </div>
+                <h3 class="post-title"><a href="#">Investigating Defects in Quantum Circuit Compilation</a></h3>
+                <p class="post-excerpt">A preliminary exploration into the structural flaws of compiled quantum circuits, introducing the PaSCQ routing methodology against established frameworks.</p>
+                <div class="post-tags">Tags: Quantum Computing ∾ Routing</div>
+            </article>
 
-                
-                <div class="sidebar-widget">
-                    <h3><i class="fas fa-tags"></i> 热门标签</h3>
-                    <div class="tag-cloud">
-                        <a href="#" class="tag-item">Hugo</a>
-                        <a href="#" class="tag-item">Python</a>
-                        <a href="#" class="tag-item">机器学习</a>
-                        <a href="#" class="tag-item">前端</a>
-                        <a href="#" class="tag-item">生物信息学</a>
-                        <a href="#" class="tag-item">Linux</a>
-                        <a href="#" class="tag-item">Docker</a>
-                        <a href="#" class="tag-item">数据分析</a>
-                    </div>
+            <article class="post-item">
+                <div class="post-meta">
+                    <span>February 19</span>
+                    <span>Artificial Intelligence</span>
                 </div>
+                <h3 class="post-title"><a href="#">On the Stability of Generative Adversarial Networks</a></h3>
+                <p class="post-excerpt">Analyzing the Nash Equilibrium dynamics within GANs and proposing an interpretability framework for autonomous system planning.</p>
+                <div class="post-tags">Tags: GANs ∾ Game Theory</div>
+            </article>
 
-                
-                <div class="sidebar-widget">
-                    <h3><i class="fas fa-comments"></i> 最新评论</h3>
-                    <div class="recent-comments">
-                        <div class="comment-item">
-                            <div class="comment-author">TechEnthusiast</div>
-                            <div class="comment-preview">很棒的Hugo教程！</div>
-                            <div class="comment-post">关于: Hugo多主题架构...</div>
-                        </div>
-                        <div class="comment-item">
-                            <div class="comment-author">BioResearcher</div>
-                            <div class="comment-preview">机器学习应用很有启发</div>
-                            <div class="comment-post">关于: 生物信息学中的...</div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-        </div>
-    </main>
+            <div class="year-marker" style="margin-top: 50px;">~ 2025 ~</div>
 
-    
-    <footer class="blog-footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Blog & Notes</h4>
-                <p>记录技术成长，分享研究心得</p>
-            </div>
-            <div class="footer-section">
-                <h4>快速链接</h4>
-                <a href="/">首页</a>
-                <a href="/about">关于我</a>
-                <a href="/blog">博客</a>
-            </div>
-            <div class="footer-section">
-                <h4>联系我</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fas fa-envelope"></i></a>
+            <article class="post-item">
+                <div class="post-meta">
+                    <span>November 12</span>
+                    <span>Mathematics & Logic</span>
                 </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 Zhimu Yang's Blog. 保持学习，持续输出。</p>
-        </div>
+                <h3 class="post-title"><a href="#">Fundamentals of Graph Neural Networks</a></h3>
+                <p class="post-excerpt">Notes on the convergence of discrete mathematics (paths, cycles, directed graphs) and modern neural architectures.</p>
+                <div class="post-tags">Tags: GNNs ∾ Graph Theory</div>
+            </article>
+            
+        </main>
+
+    </div>
+
+    <footer class="archive-footer">
+        <p>Simplicity is the ultimate sophistication.</p>
     </footer>
+
 </div>
 
     
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
     
-    const viewBtns = document.querySelectorAll('.view-btn');
-    const postsView = document.getElementById('postsView');
-    
-    viewBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            viewBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            postsView.className = 'posts-' + this.dataset.view;
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('.search-input');
+        if (searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                
+                console.log('Querying archives:', e.target.value);
+            });
+        }
     });
-
-    
-    const searchInput = document.querySelector('.search-input');
-    searchInput.addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        
-        console.log('Searching for:', searchTerm);
-    });
-
-    
-    hljs.highlightAll();
-
-    
-    const postCards = document.querySelectorAll('.post-card:not(.placeholder)');
-    postCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-4px)';
-        });
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-
-    
-    const likeBtns = document.querySelectorAll('.action-btn .fa-heart').forEach(heart => {
-        heart.addEventListener('click', function(e) {
-            e.stopPropagation();
-            this.classList.toggle('fas');
-            this.classList.toggle('far');
-        });
-    });
-});
 </script>
 
 </body>

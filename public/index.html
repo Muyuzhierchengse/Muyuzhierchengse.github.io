@@ -6,87 +6,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | Zhimu Yang</title>
     
-<link rel="stylesheet" href="/css/home.css">
 <style>
-     
     body {
         margin: 0;
         padding: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #fcfbf9;
+        color: #2a2a2a;
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
     }
+
+     
+    .global-nav {
+        width: 100%;
+        max-width: 900px;
+        padding: 40px 20px 20px 20px;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        box-sizing: border-box;
+         
+        opacity: 0;
+        transform: translateY(15px);
+        animation: navReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.5s forwards;
+    }
+
+    .global-nav a {
+        text-decoration: none;
+        color: #888;
+        font-size: 13px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        padding-bottom: 4px;
+        border-bottom: 1px solid transparent;
+        transition: all 0.4s ease;
+    }
+
+    .global-nav a:hover, .global-nav a.active {
+        color: #111;
+        border-bottom-color: #111;
+    }
+
+    @keyframes navReveal {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+     
+    .intro-flower-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;  
+         
+        animation: flowerFadeOut 1.5s cubic-bezier(0.5, 0, 0.2, 1) 2s forwards;
+    }
+
+    .intro-flower {
+        width: 120px;
+        height: 120px;
+        overflow: visible;
+    }
+
+    .intro-flower path {
+        fill: none;
+        stroke: #555;
+        stroke-width: 0.8;
+        stroke-linecap: round;
+         
+        stroke-dasharray: 300;
+        stroke-dashoffset: 300;
+        animation: drawFlower 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+     
+    .intro-flower path:nth-child(1) { animation-delay: 0.1s; }
+    .intro-flower path:nth-child(2) { animation-delay: 0.2s; }
+    .intro-flower path:nth-child(3) { animation-delay: 0.3s; }
+    .intro-flower path:nth-child(4) { animation-delay: 0.4s; }
+
+    @keyframes drawFlower {
+        to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes flowerFadeOut {
+        0% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
+        100% { opacity: 0; transform: translate(-50%, -80%) scale(1.2); filter: blur(2px); }
+    }
+
+     
+    .home-container {
+        max-width: 640px;
+        width: 100%;
+        text-align: center;
+        padding: 40px 20px;
+         
+        opacity: 0;
+        transform: translateY(10px);
+        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 2.8s forwards;
+    }
+
+    @keyframes contentReveal {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+     
+    .avatar { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; filter: grayscale(30%) contrast(1.1); margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); }
+    .name { font-size: 22px; letter-spacing: 6px; text-transform: uppercase; margin: 0 0 12px 0; font-weight: normal; color: #1a1a1a; }
+    .description { font-size: 15px; font-style: italic; color: #666; margin-bottom: 30px; }
+    .divider { font-size: 16px; color: #ccc; letter-spacing: 8px; margin: 30px 0 40px 0; user-select: none; }
+    .social-links { margin-bottom: 50px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+    .social-links a { color: #777; text-decoration: none; margin: 0 12px; transition: color 0.4s ease; }
+    .social-links a:hover { color: #111; }
+    
+    .nav-card { display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: #2a2a2a; padding: 28px 20px; background: #ffffff; border: 1px solid rgba(0,0,0,0.04); border-radius: 2px; transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); margin-bottom: 16px; }
+    .nav-card:hover { border-color: rgba(0,0,0,0.1); transform: translateY(-3px) scale(1.01); box-shadow: 0 12px 30px rgba(0,0,0,0.04); }
+    .nav-card h3 { margin: 0 0 8px 0; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; font-weight: normal; }
+    .nav-card p { margin: 0; font-size: 13px; font-style: italic; color: #777; }
+    .home-footer { margin-top: 70px; font-size: 12px; color: #bbb; letter-spacing: 1px; }
 </style>
 
 </head>
 <body>
     
+
+<div class="intro-flower-container">
+    <svg class="intro-flower" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 80 C 20 80, 20 20, 50 20 C 80 20, 80 80, 50 80" />
+        <path d="M20 50 C 20 20, 80 20, 80 50 C 80 80, 20 80, 20 50" />
+        <path d="M30 30 C 70 70, 70 30, 30 70" />
+        <path d="M70 30 C 30 70, 30 30, 70 70" />
+    </svg>
+</div>
+
+<nav class="global-nav">
+    <a href="/" class="active">H o m e</a>
+    <a href="/about">S c h o l a r</a>
+    <a href="/blog">M a n u s c r i p t s</a>
+</nav>
+
 <div class="home-container">
-    
     <header class="home-header">
         <img src="/images/photo.jpg" alt="Zhimu Yang" class="avatar">
         <h1 class="name">Zhimu Yang</h1>
-        <p class="description">Scientist</p>
+        <p class="description">Aspiring Scholar in Theoretical Computer Science.</p>
     </header>
 
-    
     <div class="social-links">
-        <a href="https://github.com/muyuzhierchengse" class="social-link" target="_blank">
-            <span class="icon">🐱</span> GitHub
-        </a>
-        <a href="mailto:2811447002@qq.com" class="social-link">
-            <span class="icon">📧</span> Email
-        </a>
+        <a href="https://github.com/muyuzhierchengse" target="_blank">Github</a>
+        <span>·</span>
+        <a href="https://muyuzhierchengse.github.io/" target="_blank">Scholar</a>
+        <span>·</span>
+        <a href="mailto:Muyuzhierchengse@gmail.com">Email</a>
     </div>
 
-    
-    <nav class="main-nav">
-        <a href="/about" class="nav-card">
-            <div class="nav-icon">👤</div>
-            <div class="nav-content">
-                <h3>About Me</h3>
-                <p>了解我的背景和经历</p>
-            </div>
-        </a>
+    <div class="divider">☙ ❖ ❧</div>
 
-        <a href="/blog" class="nav-card">
-            <div class="nav-icon">📝</div>
-            <div class="nav-content">
-                <h3>Blog & Notes</h3>
-                <p>阅读我的文章和笔记</p>
-            </div>
-        </a>
+    <div style="font-size: 15px; color: #444; line-height: 1.8; margin-bottom: 40px;">
+        <p><i>“Buried in the most secret recesses of my soul lies a fervent,<br>almost delirious longing: to build a time machine.”</i></p>
+    </div>
 
-        <a href="mailto:Muyuzhierchengse@gmail.com" class="nav-card">
-            <div class="nav-icon">💌</div>
-            <div class="nav-content">
-                <h3>Contact Me</h3>
-                <p>欢迎联系交流</p>
-            </div>
-        </a>
-    </nav>
-
-    
     <footer class="home-footer">
-        <p>© 2025 Zhimu Yang.</p>
+        <p>Simplicity is the ultimate sophistication.</p>
     </footer>
 </div>
 
     
-<script>
-    
-    document.addEventListener('DOMContentLoaded', function () {
-        const navCards = document.querySelectorAll('.nav-card');
-
-        navCards.forEach(card => {
-            card.addEventListener('mouseenter', function () {
-                this.style.transform = 'translateY(-5px)';
-            });
-
-            card.addEventListener('mouseleave', function () {
-                this.style.transform = 'translateY(0)';
-            });
-        });
-    });
-</script>
-
 </body>
 </html>
