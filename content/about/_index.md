@@ -71,10 +71,10 @@ publications:
 
 skills: 
   - "Theoretical Computer Science"
-  - “Machine Learning”
+  - "Machine Learning"
   - "Quantum Compilation"
   - "Graph Theory"
   - "Algorithm Design"
   - "Python, C++, PyTorch"
-  - “ROS”
+  - "ROS"
 ---
