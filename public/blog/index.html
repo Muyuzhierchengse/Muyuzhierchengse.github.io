@@ -32,6 +32,7 @@
     }
 
      
+     
     .breadcrumb {
         text-align: center;
         margin-bottom: 40px;
@@ -43,13 +44,13 @@
         font-size: 12px;
         letter-spacing: 3px;
         text-transform: uppercase;
-        margin: 0 15px;
+        margin: 0 15px;  
         transition: color 0.4s ease;
     }
 
     .breadcrumb a:hover, .breadcrumb a.active {
         color: #111;
-        border-bottom: 1px solid #111;
+        border-bottom: 1px solid #111;  
     }
 
      
@@ -174,6 +175,11 @@
         font-style: italic;
     }
 
+     
+    .archive-ledger .year-marker:first-child {
+        margin-top: 0 !important;
+    }
+
     .post-item {
         margin-bottom: 35px;
         padding-left: 20px;
@@ -238,14 +244,6 @@
             margin-bottom: 30px;
         }
     }
-
-    .archive-footer {
-        margin-top: 80px;
-        text-align: center;
-        font-size: 12px;
-        color: #bbb;
-        letter-spacing: 1px;
-    }
 </style>
 
 </head>
@@ -255,7 +253,7 @@
     
     <nav class="breadcrumb">
         <a href="/">H o m e</a>
-        <a href="/about">S c h o l a r</a>
+        <a href="/about">A b o u t</a>
         <a href="/blog" class="active">M a n u s c r i p t s</a>
     </nav>
 
@@ -276,20 +274,14 @@
             <div class="index-section">
                 <div class="index-title">C l a s s i f i c a t i o n s</div>
                 <ul class="category-list">
-                    <li><a href="#"><span>Theoretical Computer Science</span> <span class="cat-count">IV</span></a></li>
-                    <li><a href="#"><span>Quantum Systems</span> <span class="cat-count">II</span></a></li>
-                    <li><a href="#"><span>Artificial Intelligence</span> <span class="cat-count">V</span></a></li>
-                    <li><a href="#"><span>Mathematics & Logic</span> <span class="cat-count">III</span></a></li>
+                    
                 </ul>
             </div>
 
             <div class="index-section">
                 <div class="index-title">K e y w o r d s</div>
                 <div style="font-size: 13px; color: #666; line-height: 1.8;">
-                    <a href="#" style="color: inherit; text-decoration: none;">[ Graph Theory ]</a> &nbsp;
-                    <a href="#" style="color: inherit; text-decoration: none;">[ GANs ]</a> &nbsp;
-                    <a href="#" style="color: inherit; text-decoration: none;">[ Qiskit ]</a> &nbsp;
-                    <a href="#" style="color: inherit; text-decoration: none;">[ Complexity ]</a>
+                    
                 </div>
             </div>
             
@@ -297,63 +289,12 @@
 
         <main class="archive-ledger">
             
-            <div class="year-marker">~ 2026 ~</div>
-            
-            <article class="post-item">
-                <div class="post-meta">
-                    <span>March 05</span>
-                    <span>Quantum Systems</span>
-                </div>
-                <h3 class="post-title"><a href="#">Investigating Defects in Quantum Circuit Compilation</a></h3>
-                <p class="post-excerpt">A preliminary exploration into the structural flaws of compiled quantum circuits, introducing the PaSCQ routing methodology against established frameworks.</p>
-                <div class="post-tags">Tags: Quantum Computing ∾ Routing</div>
-            </article>
-
-            <article class="post-item">
-                <div class="post-meta">
-                    <span>February 19</span>
-                    <span>Artificial Intelligence</span>
-                </div>
-                <h3 class="post-title"><a href="#">On the Stability of Generative Adversarial Networks</a></h3>
-                <p class="post-excerpt">Analyzing the Nash Equilibrium dynamics within GANs and proposing an interpretability framework for autonomous system planning.</p>
-                <div class="post-tags">Tags: GANs ∾ Game Theory</div>
-            </article>
-
-            <div class="year-marker" style="margin-top: 50px;">~ 2025 ~</div>
-
-            <article class="post-item">
-                <div class="post-meta">
-                    <span>November 12</span>
-                    <span>Mathematics & Logic</span>
-                </div>
-                <h3 class="post-title"><a href="#">Fundamentals of Graph Neural Networks</a></h3>
-                <p class="post-excerpt">Notes on the convergence of discrete mathematics (paths, cycles, directed graphs) and modern neural architectures.</p>
-                <div class="post-tags">Tags: GNNs ∾ Graph Theory</div>
-            </article>
-            
-        </main>
+             </main>
 
     </div>
-
-    <footer class="archive-footer">
-        <p>Simplicity is the ultimate sophistication.</p>
-    </footer>
 
 </div>
 
     
-<script>
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.querySelector('.search-input');
-        if (searchInput) {
-            searchInput.addEventListener('input', function(e) {
-                
-                console.log('Querying archives:', e.target.value);
-            });
-        }
-    });
-</script>
-
 </body>
 </html>

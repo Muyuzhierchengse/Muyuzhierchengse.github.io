@@ -1,5 +1,80 @@
 ---
-title: "About Me"
-type: about
-layout: about
+title: "About"
+date: 2026-05-29
+layout: "list"
+
+philosophy: "I am an student fundamentally driven by a rational pursuit of the essence of mathematics and computation. My work lies at the intersection of Theoretical Computer Science (TCS), Quantum Computing, and Artificial Intelligence. I view scientific research as a pure endeavor to advance human knowledge—an evolution of axioms dedicated to the progress of civilization, strictly for all humankind."
+
+education:
+  - title: "Hong Kong University of Science and Technology (Guangzhou)"
+    date: "Jul 2025 - Mar 2026"
+    meta: "Research Intern | Supervisor: Xin Wang"
+  - title: "Quantum Science Center of Guangdong-HongKong-Macao Greater Bay Area"
+    date: "Dec 2024 - Jun 2025"
+    meta: "Research Intern | Supervisor: Shenggen Zheng"
+  - title: "Communication University of China"
+    date: "Sep 2021 - Jul 2025"
+    meta: "Bachelor of Science in Artificial Intelligence | GPA: 83/100"
+
+experience:
+  - title: "Quantum Circuit Compilation for Silicon Architectures"
+    tag: "Quantum Compilation"
+    date: "Jul 2025 - Mar 2026"
+    meta: "Hong Kong University of Science and Technology (Guangzhou)"
+    desc: "Independently designed pattern-based compilation algorithms for silicon quantum computers with crossbar architectures. Investigated and mathematically resolved underlying structural defects in quantum circuits."
+  - title: "Compilation of Dynamic Quantum Systems"
+    tag: "Dynamic Quantum Systems"
+    date: "Dec 2024 - Jun 2025"
+    meta: "Quantum Science Center of Guangdong-HongKong-Macao Greater Bay Area"
+    desc: "Developed core compilation frameworks for dynamic quantum systems, focusing on optimizing instruction sets for QCCD ion trap architectures and dynamic neutral atom arrays."
+  - title: "Theoretical Analysis of QNN Universal Approximation Property"
+    tag: "Quantum Neural Networks"
+    date: "Sep 2024 - Present"
+    meta: "Communication University of China | Graduation Project"
+    desc: "Proved the overarching linearity of QNNs concerning data encoding components, demonstrating that modifying U-gates and measurements is insufficient to guarantee universal approximation."
+  - title: "Expressivity of Polynomial Networks and Graph Neural Networks"
+    tag: "GNN Expressivity"
+    date: "Dec 2023 - Present"
+    meta: "Communication University of China"
+    desc: "Proposed TaylorKAN and mathematically demonstrated its equivalence to Polynomial Networks. Developed FSX, formulating Shapley value computations via graph cooperative game theory."
+  - title: "Workshop on Fundamentals and Frontiers"
+    tag: "Quantum Information"
+    date: "Dec 2023"
+    meta: "Hainan University | Center for Theoretical Physics"
+    desc: "Focused on quantum networks, quantum error correction, and quantum optics."
+  - title: "Training Course on Quantum Open Systems Theory"
+    tag: "Quantum Open Systems"
+    date: "Nov 2023"
+    meta: "Beijing Computational Science Research Center (CSRC)"
+    desc: "Explored quantum dissipative systems, dissipative theory, and the central spin model."
+  - title: "Training Course on Neural Computational Modeling"
+    tag: "Neural Modeling"
+    date: "Sep 2023"
+    meta: "Peking University"
+    desc: "Studied neuron and synaptic models, building dynamic neural networks."
+  - title: "Generative Model of Chinese Paintings"
+    tag: "Generative AI"
+    date: "Feb 2022 - Aug 2022"
+    meta: "Communication University of China, MIPG"
+    desc: "Evaluated the architectural limitations and multimodal generative capabilities of GAN models, alongside other generative frameworks (CycleGAN, DRIT, Diffusion)."
+
+publications:
+  - title: "PaSCQ: Pattern-Based Compilation for Silicon Quantum Computers with Crossbar Architecture"
+    authors: "Zhimu Yang, et al."
+    status: "Under review at ISCA 2026."
+  - title: "FSX: Message Flow Sensitivity Enhanced Structural Explainer for Graph Neural Networks"
+    authors: "Zhimu Yang, et al."
+    status: "Under review at IJCAI 2026. [arXiv:2601.14730](https://arxiv.org/abs/2601.14730)"
+  - title: "Exploring Kolmogorov-Arnold networks for realistic image sharpness assessment"
+    authors: "Yu S, Chen Z, Yang Z, et al."
+    status: "Published in IEEE ICASSP 2025. [arXiv:2409.07762](https://arxiv.org/abs/2409.07762)"
+
+skills: 
+  - "Theoretical Computer Science"
+  - “Machine Learning”
+  - "Quantum Compilation"
+  - "Graph Theory"
+  - "Algorithm Design"
+  - "Python, C++, PyTorch"
+  - “ROS”
 ---

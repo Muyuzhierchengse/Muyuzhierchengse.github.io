@@ -3,7 +3,7 @@
 <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me | Zhimu Yang</title>
+    <title>About | Zhimu Yang</title>
     
 <style>
     body {
@@ -33,8 +33,8 @@
 
      
     .breadcrumb {
-        margin-bottom: 50px;
         text-align: center;
+        margin-bottom: 40px;
     }
     
     .breadcrumb a {
@@ -43,11 +43,14 @@
         font-size: 12px;
         letter-spacing: 3px;
         text-transform: uppercase;
+        margin: 0 15px;  
         transition: color 0.4s ease;
     }
 
-    .breadcrumb a:hover {
+     
+    .breadcrumb a:hover, .breadcrumb a.active {
         color: #111;
+        border-bottom: 1px solid #111; 
     }
 
      
@@ -120,6 +123,22 @@
     }
 
      
+    .exp-tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: normal;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #555;
+        border: 1px solid #dcdcdc;
+        padding: 1px 7px;
+        margin-right: 10px;
+        border-radius: 2px;
+        vertical-align: middle;
+        background-color: #fafafa;
+    }
+
+     
     a.academic-link {
         color: #555;
         text-decoration: none;
@@ -156,14 +175,6 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         transform: translateY(-2px);
     }
-
-    .about-footer {
-        margin-top: 90px;
-        text-align: center;
-        font-size: 12px;
-        color: #bbb;
-        letter-spacing: 1px;
-    }
 </style>
 
 </head>
@@ -172,96 +183,233 @@
 <div class="about-container">
     
     <nav class="breadcrumb">
-        <a href="/">↤ &nbsp; R e t u r n &nbsp; T o &nbsp; H o m e</a>
+        <a href="/">H o m e</a>
+        <a href="/about" class="active">A b o u t</a>
+        </a>
+        <a href="/blog">M a n u s c r i p t s</a>
     </nav>
 
     <div class="divider">☙ ❖ ❧</div>
 
     <section class="academic-profile">
-        <p>I am an aspiring PhD student with a strong interest in <b>Computation Theory & Theoretical Computer Science</b>. My research explores the nature of mathematics and computation, and their convergence with logic, consciousness, and intelligence.</p>
+        <p>I am an student fundamentally driven by a rational pursuit of the essence of mathematics and computation. My work lies at the intersection of Theoretical Computer Science (TCS), Quantum Computing, and Artificial Intelligence. I view scientific research as a pure endeavor to advance human knowledge—an evolution of axioms dedicated to the progress of civilization, strictly for all humankind.</p>
     </section>
 
     <h2 class="section-title">E d u c a t i o n &nbsp; & &nbsp; T r a i n i n g</h2>
     
+    
     <div class="content-block">
         <div class="item-header">
-            <span class="item-title">Hainan University</span>
-            <span class="item-date">Graduation Year</span>
+            <span class="item-title">Hong Kong University of Science and Technology (Guangzhou)</span>
+            <span class="item-date">Jul 2025 - Mar 2026</span>
         </div>
-        <div class="item-meta">B.S. in Artificial Intelligence &nbsp; ∾ &nbsp; [Specific Center Name]</div>
+        <div class="item-meta">Research Intern | Supervisor: Xin Wang</div>
+        
     </div>
-
+    
     <div class="content-block">
         <div class="item-header">
-            <span class="item-title">Beijing Computational Science Research Center (CSRC)</span>
-            <span class="item-date">Date Range</span>
+            <span class="item-title">Quantum Science Center of Guangdong-HongKong-Macao Greater Bay Area</span>
+            <span class="item-date">Dec 2024 - Jun 2025</span>
         </div>
-        <div class="item-meta">Academic Training / Research Exchange</div>
+        <div class="item-meta">Research Intern | Supervisor: Shenggen Zheng</div>
+        
     </div>
+    
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">Communication University of China</span>
+            <span class="item-date">Sep 2021 - Jul 2025</span>
+        </div>
+        <div class="item-meta">Bachelor of Science in Artificial Intelligence | GPA: 83/100</div>
+        
+    </div>
+    
 
     <h2 class="section-title">R e s e a r c h &nbsp; E x p e r i e n c e</h2>
 
+    
     <div class="content-block">
         <div class="item-header">
-            <span class="item-title">Quantum Circuit Compilation & Routing (PaSCQ)</span>
-            <span class="item-date">2026</span>
+            <span class="item-title">
+                
+                <span class="exp-tag">Quantum Compilation</span>
+                Quantum Circuit Compilation for Silicon Architectures
+            </span>
+            <span class="item-date">Jul 2025 - Mar 2026</span>
         </div>
-        <div class="item-meta">Independent / Collaborative Research</div>
-        <div class="item-desc">
-            Investigated advanced methodologies for quantum circuit routing. <b>Defined performance metrics</b> and conducted comparative analysis between the PaSCQ method and existing frameworks like SpinQ to evaluate routing efficiency.
-        </div>
+        <div class="item-meta">Hong Kong University of Science and Technology (Guangzhou)</div>
+        
+        <div class="item-desc">Independently designed pattern-based compilation algorithms for silicon quantum computers with crossbar architectures. Investigated and mathematically resolved underlying structural defects in quantum circuits.</div>
+        
     </div>
-
+    
     <div class="content-block">
         <div class="item-header">
-            <span class="item-title">Generative Adversarial Networks (GAN) Project</span>
-            <span class="item-date">Year</span>
+            <span class="item-title">
+                
+                <span class="exp-tag">Dynamic Quantum Systems</span>
+                Compilation of Dynamic Quantum Systems
+            </span>
+            <span class="item-date">Dec 2024 - Jun 2025</span>
         </div>
-        <div class="item-meta">Research Initiative</div>
-        <div class="item-desc">
-            Explored the foundational architecture of Generative Adversarial Networks. <b>Designed and implemented</b> [briefly describe your specific contribution here] to enhance model stability and generative performance.
-        </div>
+        <div class="item-meta">Quantum Science Center of Guangdong-HongKong-Macao Greater Bay Area</div>
+        
+        <div class="item-desc">Developed core compilation frameworks for dynamic quantum systems, focusing on optimizing instruction sets for QCCD ion trap architectures and dynamic neutral atom arrays.</div>
+        
     </div>
+    
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">
+                
+                <span class="exp-tag">Quantum Neural Networks</span>
+                Theoretical Analysis of QNN Universal Approximation Property
+            </span>
+            <span class="item-date">Sep 2024 - Present</span>
+        </div>
+        <div class="item-meta">Communication University of China | Graduation Project</div>
+        
+        <div class="item-desc">Proved the overarching linearity of QNNs concerning data encoding components, demonstrating that modifying U-gates and measurements is insufficient to guarantee universal approximation.</div>
+        
+    </div>
+    
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">
+                
+                <span class="exp-tag">GNN Expressivity</span>
+                Expressivity of Polynomial Networks and Graph Neural Networks
+            </span>
+            <span class="item-date">Dec 2023 - Present</span>
+        </div>
+        <div class="item-meta">Communication University of China</div>
+        
+        <div class="item-desc">Proposed TaylorKAN and mathematically demonstrated its equivalence to Polynomial Networks. Developed FSX, formulating Shapley value computations via graph cooperative game theory.</div>
+        
+    </div>
+    
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">
+                
+                <span class="exp-tag">Quantum Information</span>
+                Workshop on Fundamentals and Frontiers
+            </span>
+            <span class="item-date">Dec 2023</span>
+        </div>
+        <div class="item-meta">Hainan University | Center for Theoretical Physics</div>
+        
+        <div class="item-desc">Focused on quantum networks, quantum error correction, and quantum optics.</div>
+        
+    </div>
+    
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">
+                
+                <span class="exp-tag">Quantum Open Systems</span>
+                Training Course on Quantum Open Systems Theory
+            </span>
+            <span class="item-date">Nov 2023</span>
+        </div>
+        <div class="item-meta">Beijing Computational Science Research Center (CSRC)</div>
+        
+        <div class="item-desc">Explored quantum dissipative systems, dissipative theory, and the central spin model.</div>
+        
+    </div>
+    
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">
+                
+                <span class="exp-tag">Neural Modeling</span>
+                Training Course on Neural Computational Modeling
+            </span>
+            <span class="item-date">Sep 2023</span>
+        </div>
+        <div class="item-meta">Peking University</div>
+        
+        <div class="item-desc">Studied neuron and synaptic models, building dynamic neural networks.</div>
+        
+    </div>
+    
+    <div class="content-block">
+        <div class="item-header">
+            <span class="item-title">
+                
+                <span class="exp-tag">Generative AI</span>
+                Generative Model of Chinese Paintings
+            </span>
+            <span class="item-date">Feb 2022 - Aug 2022</span>
+        </div>
+        <div class="item-meta">Communication University of China, MIPG</div>
+        
+        <div class="item-desc">Evaluated the architectural limitations and multimodal generative capabilities of GAN models, alongside other generative frameworks (CycleGAN, DRIT, Diffusion).</div>
+        
+    </div>
+    
 
     <h2 class="section-title">P u b l i c a t i o n s &nbsp; & &nbsp; M a n u s c r i p t s</h2>
 
+    
     <div class="content-block">
         <div style="font-size: 15px; margin-bottom: 6px;">
-            ◈ <b>[FSX Project Title Goes Here]</b>
+            ◈ <b>PaSCQ: Pattern-Based Compilation for Silicon Quantum Computers with Crossbar Architecture</b>
         </div>
         <div class="item-meta" style="margin-bottom: 4px;">
-            <b>Zhimu Yang</b>, [Other Authors]
+            Zhimu Yang, et al.
         </div>
         <div style="font-size: 14px; color: #555;">
-            Submitted to <i>IJCAI 2026</i>. (Under Review)
+            Under review at ISCA 2026.
         </div>
     </div>
-
+    
     <div class="content-block">
         <div style="font-size: 15px; margin-bottom: 6px;">
-            ◈ <b>[Upcoming Paper Title on Computation Theory]</b>
+            ◈ <b>FSX: Message Flow Sensitivity Enhanced Structural Explainer for Graph Neural Networks</b>
         </div>
         <div class="item-meta" style="margin-bottom: 4px;">
-            <b>Zhimu Yang</b>
+            Zhimu Yang, et al.
         </div>
         <div style="font-size: 14px; color: #555;">
-            In preparation for submission to <i>FOCS</i>.
+            Under review at IJCAI 2026. <a href="https://arxiv.org/abs/2601.14730">arXiv:2601.14730</a>
         </div>
     </div>
+    
+    <div class="content-block">
+        <div style="font-size: 15px; margin-bottom: 6px;">
+            ◈ <b>Exploring Kolmogorov-Arnold networks for realistic image sharpness assessment</b>
+        </div>
+        <div class="item-meta" style="margin-bottom: 4px;">
+            Yu S, Chen Z, Yang Z, et al.
+        </div>
+        <div style="font-size: 14px; color: #555;">
+            Published in IEEE ICASSP 2025. <a href="https://arxiv.org/abs/2409.07762">arXiv:2409.07762</a>
+        </div>
+    </div>
+    
 
     <h2 class="section-title">T e c h n i c a l &nbsp; S k i l l s</h2>
     
     <div class="skills-container">
-        <div class="skill-tag">GitHub Collaboration</div>
+        
+        <div class="skill-tag">Theoretical Computer Science</div>
+        
+        <div class="skill-tag">“Machine Learning”</div>
+        
+        <div class="skill-tag">Quantum Compilation</div>
+        
+        <div class="skill-tag">Graph Theory</div>
+        
         <div class="skill-tag">Algorithm Design</div>
-        <div class="skill-tag">Quantum Frameworks (e.g., Qiskit)</div>
-        <div class="skill-tag">Python & PyTorch</div>
-        <div class="skill-tag">Graph Theory Analysis</div>
+        
+        <div class="skill-tag">Python, C&#43;&#43;, PyTorch</div>
+        
+        <div class="skill-tag">“ROS”</div>
+        
     </div>
 
-    <footer class="about-footer">
-        <p>Simplicity is the ultimate sophistication.</p>
-    </footer>
 
 </div>
 
