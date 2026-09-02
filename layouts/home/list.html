@@ -11,10 +11,10 @@
         try {
             // Version the key whenever the opening artwork changes materially,
             // so returning visitors are introduced to the new sequence once.
-            if (sessionStorage.getItem("zhimu-home-intro-seen-v4") === "true") {
+            if (sessionStorage.getItem("zhimu-home-intro-seen-v5") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v4", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v5", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -23,17 +23,44 @@
         // The visual sequence is decorative, so visitors can dismiss it at any
         // point without affecting navigation or the page content underneath.
         document.addEventListener("DOMContentLoaded", function () {
-            // Duplicate each approved path as a short travelling "pen nib".
-            // The original path reveals the permanent ink immediately behind it.
+            // Use each path's measured length rather than a normalized CSS
+            // estimate. This guarantees a genuinely blank first frame in every
+            // browser, with the permanent ink revealed only behind the runner.
             document.querySelectorAll(".intro-stage .hydrangea-line").forEach(function (line, index) {
-                const delay = `${index * 0.18}s`;
-                line.style.setProperty("--path-delay", delay);
+                const length = line.getTotalLength();
+                const delay = index * 180;
+                const duration = 3900;
+
+                line.style.strokeDasharray = `${length} ${length}`;
+                line.style.strokeDashoffset = `${length}`;
+                line.style.opacity = "1";
+
                 const runner = line.cloneNode(false);
                 runner.removeAttribute("id");
                 runner.classList.remove("hydrangea-line");
                 runner.classList.add("hydrangea-runner");
-                runner.style.setProperty("--path-delay", delay);
+                runner.style.strokeDasharray = `${length * 0.045} ${length * 0.955}`;
+                runner.style.strokeDashoffset = "0";
+                runner.style.opacity = "0";
                 line.after(runner);
+
+                line.animate(
+                    [
+                        { strokeDashoffset: length },
+                        { strokeDashoffset: 0 }
+                    ],
+                    { duration, delay, easing: "cubic-bezier(.45,.02,.2,1)", fill: "forwards" }
+                );
+
+                runner.animate(
+                    [
+                        { strokeDashoffset: 0, opacity: 0 },
+                        { strokeDashoffset: -length * 0.04, opacity: 1, offset: 0.04 },
+                        { strokeDashoffset: -length * 0.90, opacity: 1, offset: 0.94 },
+                        { strokeDashoffset: -length * 0.955, opacity: 0 }
+                    ],
+                    { duration, delay, easing: "cubic-bezier(.45,.02,.2,1)", fill: "forwards" }
+                );
             });
 
             const skipButton = document.querySelector(".intro-skip");
@@ -117,35 +144,19 @@
     .intro-stage .hydrangea-runner {
         fill: none;
         stroke: #5f5954;
-        stroke-width: 4.2;
+        stroke-width: 2.35;
         stroke-linecap: round;
         stroke-linejoin: round;
         vector-effect: non-scaling-stroke;
     }
 
     .intro-stage .hydrangea-line {
-        stroke-dasharray: 1;
-        stroke-dashoffset: 1;
-        animation: leaveHydrangeaInk 3.9s cubic-bezier(.45, .02, .2, 1) var(--path-delay) forwards;
+        /* Prevent a flash of the completed drawing before JS measures it. */
+        opacity: 0;
     }
 
     .intro-stage .hydrangea-runner {
-        stroke-width: 6;
-        stroke-dasharray: .045 .955;
-        stroke-dashoffset: 0;
-        animation: travelHydrangeaLine 3.9s cubic-bezier(.45, .02, .2, 1) var(--path-delay) forwards;
-    }
-
-    @keyframes leaveHydrangeaInk {
-        from { stroke-dashoffset: 1; }
-        to { stroke-dashoffset: 0; }
-    }
-
-    @keyframes travelHydrangeaLine {
-        0% { stroke-dashoffset: 0; opacity: 0; }
-        4% { opacity: 1; }
-        92% { opacity: 1; }
-        100% { stroke-dashoffset: -.955; opacity: 0; }
+        stroke-width: 3.15;
     }
 
     @keyframes releaseIntro {
@@ -190,7 +201,7 @@
     .home-watermark .hydrangea-line {
         fill: none;
         stroke: currentColor;
-        stroke-width: 4.2;
+        stroke-width: 2.4;
         vector-effect: non-scaling-stroke;
     }
 
