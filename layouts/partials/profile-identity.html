@@ -1,0 +1,16 @@
+{{ $mode := .mode | default "rail" }}
+<section class="profile-identity profile-identity--{{ $mode }}" aria-label="Zhimu Yang profile">
+    <img class="profile-identity__avatar" src="/images/photo.jpg" alt="Zhimu Yang">
+    <div class="profile-identity__body">
+        {{ if eq $mode "hero" }}<h1 class="profile-identity__sr-only">Zhimu Yang</h1>{{ end }}
+        <img class="profile-identity__signature" src="/images/zhimu-yang-signature.png" alt="" aria-hidden="true">
+        <p class="profile-identity__description">Aspiring Student in Theoretical Computer Science.</p>
+        <nav class="profile-identity__links" aria-label="Profile links">
+            <a href="https://github.com/muyuzhierchengse" target="_blank" rel="noopener">GitHub</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://scholar.google.cz/citations?hl=zh-CN&amp;pli=1&amp;user=kn206EMAAAAJ" target="_blank" rel="noopener">Scholar</a>
+            <span aria-hidden="true">·</span>
+            <a href="mailto:Muyuzhierchengse@gmail.com">Email</a>
+        </nav>
+    </div>
+</section>

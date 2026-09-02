@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="view-transition" content="same-origin">
     <title>{{ if .Title }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
     <link rel="stylesheet" href="/css/site-nav.css?v=20260902-4col">
     <link rel="stylesheet" href="/css/hydrangea-watermark.css">
+    <link rel="stylesheet" href="/css/profile-identity.css?v=20260903-profile-rail">
     {{ block "styles" . }}{{ end }}
 </head>
 <body>

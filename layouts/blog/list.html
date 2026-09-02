@@ -9,7 +9,7 @@
     }
     .research-container {
         position: relative; z-index: 1;
-        width: min(1040px, calc(100% - 40px)); margin: 0 auto; padding: 40px 0 80px;
+        width: 100%; max-width: 1040px; margin: 0; padding: 0;
         animation: fadeIn 1s cubic-bezier(.25,1,.5,1) forwards;
         opacity: 0; transform: translateY(8px);
     }
@@ -46,7 +46,7 @@
         .programme-intro { grid-template-columns: 1fr; gap: 12px; }
     }
     @media (max-width: 520px) {
-        .research-container { width: min(100% - 28px, 1040px); padding-top: 28px; }
+        .research-container { width: 100%; }
         .research-title { font-size: 20px; letter-spacing: 4px; }
     }
 </style>
@@ -54,8 +54,11 @@
 
 {{ define "content" }}
 {{ partial "hydrangea-watermark.html" (dict "placement" "research") }}
-<div class="research-container">
+<div class="inner-page-frame">
     {{ partial "site-nav.html" (dict "active" "research") }}
+    <div class="inner-page-layout">
+        {{ partial "profile-identity.html" (dict "mode" "rail") }}
+        <div class="research-container inner-page-content">
 
     <header class="research-header">
         <div class="research-kicker">A Living Research Atlas</div>
@@ -94,5 +97,7 @@
             <div class="programme-link">Enter programme <span>→</span></div>
         </a>
     </main>
+        </div>
+    </div>
 </div>
 {{ end }}

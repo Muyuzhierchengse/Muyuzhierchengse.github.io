@@ -12,9 +12,10 @@
     .publications-container {
         position: relative;
         z-index: 1;
-        width: min(860px, calc(100% - 40px));
-        margin: 0 auto;
-        padding: 40px 0 76px;
+        width: 100%;
+        max-width: 860px;
+        margin: 0;
+        padding: 0;
         opacity: 0;
         transform: translateY(10px);
         animation: publicationReveal 1.2s cubic-bezier(.25, 1, .5, 1) forwards;
@@ -135,8 +136,7 @@
 
     @media (max-width: 620px) {
         .publications-container {
-            width: min(100% - 36px, 860px);
-            padding-top: 28px;
+            width: 100%;
         }
 
         .publications-header { margin-bottom: 52px; }
@@ -165,8 +165,11 @@
 
 {{ define "content" }}
 {{ partial "hydrangea-watermark.html" (dict "placement" "publications") }}
-<div class="publications-container">
+<div class="inner-page-frame">
     {{ partial "site-nav.html" (dict "active" "publications") }}
+    <div class="inner-page-layout">
+        {{ partial "profile-identity.html" (dict "mode" "rail") }}
+        <div class="publications-container inner-page-content">
 
     <header class="publications-header">
         <div class="publications-kicker">Scholarly Record</div>
@@ -201,5 +204,7 @@
         </section>
         {{ end }}
     </main>
+        </div>
+    </div>
 </div>
 {{ end }}

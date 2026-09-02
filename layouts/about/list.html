@@ -15,8 +15,8 @@
         position: relative;
         z-index: 1;
         max-width: 720px;
-        margin: 0 auto;
-        padding: 40px 20px 60px;
+        margin: 0;
+        padding: 0;
         /* 苹果风缓动入场 */
         animation: fadeIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         opacity: 0;
@@ -174,7 +174,7 @@
     }
 
     @media (max-width: 560px) {
-        .about-container { padding: 28px 18px 52px; }
+        .about-container { padding: 0; }
         .section-title {
             margin: 54px 0 26px;
             font-size: 14px;
@@ -193,9 +193,11 @@
 
 {{ define "content" }}
 {{ partial "hydrangea-watermark.html" (dict "placement" "about") }}
-<div class="about-container">
-    
+<div class="inner-page-frame">
     {{ partial "site-nav.html" (dict "active" "about") }}
+    <div class="inner-page-layout">
+        {{ partial "profile-identity.html" (dict "mode" "rail") }}
+        <div class="about-container inner-page-content">
 
     <div class="divider">☙ ❖ ❧</div>
 
@@ -237,6 +239,8 @@
     </div>
     {{ end }}
 
+        </div>
+    </div>
 </div>
 {{ end }}
 
