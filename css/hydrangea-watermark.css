@@ -9,7 +9,7 @@
     aspect-ratio: 1;
     z-index: 0;
     color: #716a64;
-    opacity: 0.072;
+    opacity: 0.11;
     pointer-events: none;
     user-select: none;
 }
@@ -20,10 +20,10 @@
     overflow: visible;
 }
 
-.page-watermark use {
+.page-watermark .hydrangea-line {
     fill: none;
     stroke: currentColor;
-    stroke-width: 0.52;
+    stroke-width: 4.2;
     vector-effect: non-scaling-stroke;
 }
 
@@ -51,7 +51,7 @@
 @media (max-width: 620px) {
     .page-watermark {
         width: 300px;
-        opacity: 0.056;
+        opacity: 0.082;
     }
     .page-watermark--about { left: -190px; top: 42vh; }
     .page-watermark--research { right: -195px; top: 31vh; }
