@@ -352,7 +352,7 @@ def main() -> None:
     )
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" role="img" aria-label="Minimal continuous-line hydrangea">
   <!-- Four smoothed cubic centreline paths derived from the approved botanical concept. -->
-  <g fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
+  <g fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" shape-rendering="geometricPrecision">
 {path_markup}
   </g>
 </svg>

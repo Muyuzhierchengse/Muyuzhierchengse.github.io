@@ -24,10 +24,10 @@
                 // can only see a white flash with no way to inspect the intro.
                 document.documentElement.classList.add("force-home-intro");
             }
-            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v11") === "true") {
+            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v12") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v11", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v12", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -57,10 +57,10 @@
             const ingressLines = Array.from(document.querySelectorAll(".ingress-stroke"));
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
-            const sequenceStartedAt = performance.now();
+            let sequenceStartedAt = 0;
 
-            function smoothstep(value) {
-                return value * value * (3 - 2 * value);
+            function easeInOutSine(value) {
+                return -(Math.cos(Math.PI * value) - 1) / 2;
             }
 
             function clampProgress(value) {
@@ -69,40 +69,56 @@
 
             function linearMotionProfile(line) {
                 const measuredLength = line.getTotalLength();
+                const length = Number.isFinite(measuredLength) && measuredLength > 0 ? measuredLength : 1;
                 return {
-                    length: Number.isFinite(measuredLength) && measuredLength > 0 ? measuredLength : 1,
+                    length,
+                    effectiveLength: length,
                     distanceAt(timeProgress) {
                         return clampProgress(timeProgress);
                     }
                 };
             }
 
-            function buildMotionProfile(line, samples = 180) {
+            function buildMotionProfile(line, samples = 420) {
                 // Array iteration helpers pass extra arguments to callbacks.
                 // Normalise the sample count so an accidental index can never
                 // produce a zero divisor and blank the complete intro.
-                samples = Number.isFinite(samples) && samples >= 24 ? Math.round(samples) : 180;
+                samples = Number.isFinite(samples) && samples >= 24 ? Math.round(samples) : 420;
                 const length = linearMotionProfile(line).length;
                 const points = [];
                 for (let index = 0; index <= samples; index += 1) {
                     points.push(line.getPointAtLength(length * index / samples));
                 }
                 const cumulative = [0];
+                const coveredCells = new Set();
+                const cellSize = 9;
                 for (let index = 1; index <= samples; index += 1) {
-                    const previous = points[Math.max(0, index - 2)];
-                    const current = points[index - 1];
-                    const next = points[index];
-                    const incoming = Math.atan2(current.y - previous.y, current.x - previous.x);
-                    const outgoing = Math.atan2(next.y - current.y, next.x - current.x);
-                    let turn = Math.abs(outgoing - incoming);
-                    if (turn > Math.PI) turn = Math.PI * 2 - turn;
-                    // Curved petals receive more time than straight stems.
-                    const curvatureWeight = 1 + Math.min(turn / 0.48, 1) * 1.45;
-                    cumulative.push(cumulative[index - 1] + curvatureWeight);
+                    const start = points[index - 1];
+                    const end = points[index];
+                    const segmentLength = Math.hypot(end.x - start.x, end.y - start.y);
+                    const checks = Math.max(1, Math.ceil(segmentLength / (cellSize * 0.65)));
+                    let freshCells = 0;
+                    for (let step = 1; step <= checks; step += 1) {
+                        const position = step / checks;
+                        const x = start.x + (end.x - start.x) * position;
+                        const y = start.y + (end.y - start.y) * position;
+                        const key = `${Math.round(x / cellSize)}:${Math.round(y / cellSize)}`;
+                        if (!coveredCells.has(key)) {
+                            coveredCells.add(key);
+                            freshCells += 1;
+                        }
+                    }
+                    // The source art is a static edge-covering walk. Some
+                    // branches are necessarily revisited to keep four paths
+                    // continuous. Give those already-painted passages only a
+                    // sliver of time so the visible line never appears frozen.
+                    const novelty = freshCells / checks;
+                    cumulative.push(cumulative[index - 1] + 0.08 + novelty * 0.92);
                 }
                 const totalWeight = cumulative[cumulative.length - 1];
                 return {
                     length,
+                    effectiveLength: length * totalWeight / samples,
                     distanceAt(timeProgress) {
                         const target = clampProgress(timeProgress) * totalWeight;
                         let low = 0;
@@ -157,21 +173,22 @@
                     return linearMotionProfile(line);
                 });
             }
-            const longestPath = Math.max(1, ...motionProfiles.map(function (profile) { return profile.length; }));
-            const drawDelays = motionProfiles.map(function (_, index) { return 1100 + index * 110; });
+            const longestPath = Math.max(1, ...motionProfiles.map(function (profile) { return profile.effectiveLength; }));
+            const drawDelays = motionProfiles.map(function (_, index) { return 900 + index * 100; });
             const drawDurations = motionProfiles.map(function (profile) {
-                return 1500 + 1100 * profile.length / longestPath;
+                return 1650 + 850 * profile.effectiveLength / longestPath;
             });
             const drawFinish = Math.max(...drawDelays.map(function (delay, index) {
                 return delay + drawDurations[index];
             }));
-            const unwindBase = drawFinish + 420;
-            const unwindDurations = drawDurations.map(function (duration) { return 780 + duration * 0.2; });
+            const unwindBase = drawFinish + 90;
+            const unwindDurations = drawDurations.map(function (duration) { return 760 + duration * 0.2; });
             const unwindDelays = motionProfiles.map(function (_, index) { return unwindBase + index * 70; });
             const retreatBase = Math.max(...unwindDelays.map(function (delay, index) {
                 return delay + unwindDurations[index];
-            })) - 40;
+            })) - 180;
 
+            const motionStates = [];
             flowerLines.forEach(function (line, index) {
                 // Every approved flower path has pathLength="1". Keep all
                 // flower dashes in that normalised coordinate system; using
@@ -187,129 +204,94 @@
                 line.style.strokeDashoffset = "1";
                 line.style.opacity = "1";
 
-                const runner = line.cloneNode(false);
-                runner.removeAttribute("id");
-                runner.classList.remove("hydrangea-line");
-                runner.classList.add("hydrangea-runner");
-                runner.style.strokeDasharray = "0.045 0.955";
-                runner.style.strokeDashoffset = "0";
-                runner.style.opacity = "0";
-                line.after(runner);
-
                 const ingress = ingressLines[index];
+                let ingressLength = 1;
+                let segmentLength = 44;
                 if (ingress) {
                     const target = flowerStartInViewport(line);
                     ingress.setAttribute("d", ingressRoute(index, target));
-                    const ingressLength = ingress.getTotalLength();
-                    const segmentLength = Math.max(38, Math.min(58, viewportWidth * 0.045));
-                    const ingressDelay = index * 90;
-                    const ingressDuration = 1200;
-                    const retreatDelay = retreatBase + index * 70;
-                    const retreatDuration = 1100;
+                    ingressLength = ingress.getTotalLength();
+                    segmentLength = Math.max(38, Math.min(54, viewportWidth * 0.042));
                     ingress.style.strokeDasharray = `${segmentLength} ${ingressLength + segmentLength}`;
                     ingress.style.strokeDashoffset = "0";
-
-                    function ingressFrame(now) {
-                        const elapsed = now - sequenceStartedAt - ingressDelay;
-                        if (elapsed < 0) {
-                            requestAnimationFrame(ingressFrame);
-                            return;
-                        }
-                        const progress = Math.min(elapsed / ingressDuration, 1);
-                        const eased = smoothstep(progress);
-                        ingress.style.strokeDashoffset = `${-ingressLength * eased}`;
-                        if (progress < 0.08) {
-                            ingress.style.opacity = `${progress / 0.08}`;
-                        } else if (progress > 0.9) {
-                            ingress.style.opacity = `${(1 - progress) / 0.1}`;
-                        } else {
-                            ingress.style.opacity = "1";
-                        }
-                        if (progress < 1) {
-                            requestAnimationFrame(ingressFrame);
-                        } else {
-                            ingress.style.opacity = "0";
-                        }
-                    }
-                    requestAnimationFrame(ingressFrame);
-
-                    function retreatFrame(now) {
-                        const elapsed = now - sequenceStartedAt - retreatDelay;
-                        if (elapsed < 0) {
-                            requestAnimationFrame(retreatFrame);
-                            return;
-                        }
-                        const progress = Math.min(elapsed / retreatDuration, 1);
-                        const eased = smoothstep(progress);
-                        // Reverse the entrance dash from the flower start back
-                        // to its original point beyond the viewport.
-                        ingress.style.strokeDashoffset = `${-ingressLength * (1 - eased)}`;
-                        ingress.style.opacity = progress < 0.08
-                            ? `${progress / 0.08}`
-                            : progress > 0.9
-                                ? `${(1 - progress) / 0.1}`
-                                : "1";
-                        if (progress < 1) {
-                            requestAnimationFrame(retreatFrame);
-                        } else {
-                            ingress.style.opacity = "0";
-                        }
-                    }
-                    requestAnimationFrame(retreatFrame);
                 }
-
-                function drawFrame(now) {
-                    const elapsed = now - sequenceStartedAt - drawDelay;
-                    if (elapsed < 0) {
-                        requestAnimationFrame(drawFrame);
-                        return;
-                    }
-                    const progress = Math.min(elapsed / drawDuration, 1);
-                    const eased = smoothstep(progress);
-                    const travelled = motionProfile.distanceAt(eased);
-                    line.style.strokeDashoffset = `${1 - travelled}`;
-                    runner.style.strokeDashoffset = `${-0.955 * travelled}`;
-                    runner.style.opacity = progress < 0.04
-                        ? `${progress / 0.04}`
-                        : progress > 0.94
-                            ? `${(1 - progress) / 0.06}`
-                            : "1";
-                    if (progress < 1) {
-                        requestAnimationFrame(drawFrame);
-                    } else {
-                        line.style.strokeDashoffset = "0";
-                        runner.style.opacity = "0";
-                    }
-                }
-                requestAnimationFrame(drawFrame);
-
-                function unwindFrame(now) {
-                    const elapsed = now - sequenceStartedAt - unwindDelay;
-                    if (elapsed < 0) {
-                        requestAnimationFrame(unwindFrame);
-                        return;
-                    }
-                    const progress = Math.min(elapsed / unwindDuration, 1);
-                    const eased = smoothstep(progress);
-                    const remaining = motionProfile.distanceAt(1 - eased);
-                    // Positive offset removes ink from the far end back toward
-                    // the starting point while the runner marks that retreat.
-                    line.style.strokeDashoffset = `${1 - remaining}`;
-                    runner.style.strokeDashoffset = `${-0.955 * remaining}`;
-                    runner.style.opacity = progress < 0.06
-                        ? `${progress / 0.06}`
-                        : progress > 0.92
-                            ? `${(1 - progress) / 0.08}`
-                            : "1";
-                    if (progress < 1) {
-                        requestAnimationFrame(unwindFrame);
-                    } else {
-                        line.style.strokeDashoffset = "1";
-                        runner.style.opacity = "0";
-                    }
-                }
-                requestAnimationFrame(unwindFrame);
+                motionStates.push({
+                    line,
+                    ingress,
+                    ingressLength,
+                    motionProfile,
+                    ingressDelay: index * 90,
+                    ingressDuration: 1150,
+                    drawDelay,
+                    drawDuration,
+                    unwindDelay,
+                    unwindDuration,
+                    retreatDelay: retreatBase + index * 70,
+                    retreatDuration: 1050
+                });
             });
+
+            function phaseProgress(elapsed, delay, duration) {
+                return clampProgress((elapsed - delay) / duration);
+            }
+
+            const sequenceFinish = Math.max(...motionStates.map(function (state) {
+                return state.retreatDelay + state.retreatDuration;
+            }));
+
+            // One shared frame loop keeps all four strokes in the same visual
+            // clock. The previous per-phase loops competed on mobile and made
+            // the hand-off around the completed flower feel like a hitch.
+            function animateSequence(now) {
+                const elapsed = now - sequenceStartedAt;
+                motionStates.forEach(function (state) {
+                    const drawProgress = phaseProgress(elapsed, state.drawDelay, state.drawDuration);
+                    const unwindProgress = phaseProgress(elapsed, state.unwindDelay, state.unwindDuration);
+                    if (elapsed < state.drawDelay) {
+                        state.line.style.strokeDashoffset = "1";
+                    } else if (elapsed < state.drawDelay + state.drawDuration) {
+                        state.line.style.strokeDashoffset = `${1 - state.motionProfile.distanceAt(easeInOutSine(drawProgress))}`;
+                    } else if (elapsed < state.unwindDelay) {
+                        state.line.style.strokeDashoffset = "0";
+                    } else if (elapsed < state.unwindDelay + state.unwindDuration) {
+                        const remaining = state.motionProfile.distanceAt(1 - easeInOutSine(unwindProgress));
+                        state.line.style.strokeDashoffset = `${1 - remaining}`;
+                    } else {
+                        state.line.style.strokeDashoffset = "1";
+                    }
+
+                    if (!state.ingress) return;
+                    const ingressProgress = phaseProgress(elapsed, state.ingressDelay, state.ingressDuration);
+                    const retreatProgress = phaseProgress(elapsed, state.retreatDelay, state.retreatDuration);
+                    if (elapsed < state.ingressDelay) {
+                        state.ingress.style.opacity = "0";
+                    } else if (elapsed < state.ingressDelay + state.ingressDuration) {
+                        state.ingress.style.strokeDashoffset = `${-state.ingressLength * easeInOutSine(ingressProgress)}`;
+                        state.ingress.style.opacity = ingressProgress < 0.08
+                            ? `${ingressProgress / 0.08}`
+                            : ingressProgress > 0.9
+                                ? `${(1 - ingressProgress) / 0.1}`
+                                : "1";
+                    } else if (elapsed < state.retreatDelay) {
+                        state.ingress.style.opacity = "0";
+                    } else if (elapsed < state.retreatDelay + state.retreatDuration) {
+                        state.ingress.style.strokeDashoffset = `${-state.ingressLength * (1 - easeInOutSine(retreatProgress))}`;
+                        state.ingress.style.opacity = retreatProgress < 0.08
+                            ? `${retreatProgress / 0.08}`
+                            : retreatProgress > 0.9
+                                ? `${(1 - retreatProgress) / 0.1}`
+                                : "1";
+                    } else {
+                        state.ingress.style.opacity = "0";
+                    }
+                });
+                if (elapsed < sequenceFinish) requestAnimationFrame(animateSequence);
+            }
+            // Geometry preparation may take noticeably longer on a phone.
+            // Start the visual clock only after every path is ready so no
+            // device enters the sequence halfway through its first motion.
+            sequenceStartedAt = performance.now();
+            requestAnimationFrame(animateSequence);
         });
     </script>
     
@@ -344,12 +326,11 @@
 
     /*
      * HYDRANGEA INTRO — four continuous paths form the approved artwork.
-     * 0.0–1.5s  four short strokes flow inward on organic curved routes
-     * 1.1–4.0s  length- and curvature-aware strokes draw the cubic paths
-     * 4.0–4.4s  the completed hydrangea rests at the centre
-     * 4.4–5.7s  the paths unweave from their ends back to their beginnings
-     * 5.6–6.9s  the same strokes retreat along their entrance trajectories
-     * 6.9–7.7s  the opening sheet fades into the printed watermark
+     * 0.0–1.2s  four short strokes flow inward on organic curved routes
+     * 0.9–3.7s  the visible, previously unpainted flower paths are drawn
+     * 3.8–5.2s  the paths unweave without a static hold in the middle
+     * 5.0–6.4s  the same strokes retreat along their entrance trajectories
+     * 6.2–7.0s  the opening sheet fades into the printed watermark
      *
      * The intro and every page watermark read the same SVG source, so their
      * geometry can never drift apart during future revisions.
@@ -362,7 +343,7 @@
         z-index: 999;
         overflow: hidden;
         background: #fcfbf9;
-        animation: releaseIntro 0.85s ease 6.85s forwards;
+        animation: releaseIntro 0.85s ease 6.15s forwards;
     }
 
     .intro-stage {
@@ -381,27 +362,20 @@
         filter: drop-shadow(0 10px 20px rgba(68, 59, 52, 0.035));
     }
 
-    /*
-     * A short runner moves along each one-stroke route. The matching ink path
-     * reveals at the same pace, creating one uninterrupted drawing gesture.
-     */
-    .intro-stage .hydrangea-line,
-    .intro-stage .hydrangea-runner {
+    /* The approved centreline itself is the pen; no heavier runner sits on it. */
+    .intro-stage .hydrangea-line {
         fill: none;
-        stroke: #5f5954;
-        stroke-width: 1.85;
+        stroke: #625d58;
+        stroke-width: 1.65;
         stroke-linecap: round;
         stroke-linejoin: round;
         vector-effect: non-scaling-stroke;
+        shape-rendering: geometricPrecision;
     }
 
     .intro-stage .hydrangea-line {
         /* Prevent a flash of the completed drawing before JS measures it. */
         opacity: 0;
-    }
-
-    .intro-stage .hydrangea-runner {
-        stroke-width: 2.1;
     }
 
     /* Full-viewport curves are invisible; only a short travelling dash shows. */
@@ -415,11 +389,12 @@
 
     .ingress-stroke {
         fill: none;
-        stroke: #5f5954;
-        stroke-width: 1.9;
+        stroke: #625d58;
+        stroke-width: 1.65;
         stroke-linecap: round;
         stroke-linejoin: round;
         vector-effect: non-scaling-stroke;
+        shape-rendering: geometricPrecision;
         opacity: 0;
     }
 
@@ -458,7 +433,7 @@
         opacity: 0;
         color: #716b65;
         pointer-events: none;
-        animation: printWatermark 1.3s ease 6.25s forwards;
+        animation: printWatermark 1.3s ease 5.55s forwards;
     }
 
     .home-watermark svg { width: 100%; height: 100%; overflow: visible; }
@@ -483,7 +458,7 @@
         padding: 40px 20px;
         opacity: 0;
         transform: translateY(10px);
-        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 7s forwards;
+        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 6.25s forwards;
     }
 
     @keyframes contentReveal {
@@ -550,7 +525,7 @@
         .home-page .site-nav { margin-top: 28px; }
         .home-container { padding-top: 20px; }
         .intro-stage { width: min(68vw, 270px); }
-        .ingress-stroke { stroke-width: 1.75; }
+        .ingress-stroke { stroke-width: 1.55; }
         .home-watermark { width: 310px; right: -112px; bottom: -76px; opacity: 0; }
     }
 </style>
