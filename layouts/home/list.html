@@ -24,10 +24,10 @@
                 // can only see a white flash with no way to inspect the intro.
                 document.documentElement.classList.add("force-home-intro");
             }
-            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v10") === "true") {
+            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v11") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v10", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v11", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -63,8 +63,26 @@
                 return value * value * (3 - 2 * value);
             }
 
+            function clampProgress(value) {
+                return Math.max(0, Math.min(1, value));
+            }
+
+            function linearMotionProfile(line) {
+                const measuredLength = line.getTotalLength();
+                return {
+                    length: Number.isFinite(measuredLength) && measuredLength > 0 ? measuredLength : 1,
+                    distanceAt(timeProgress) {
+                        return clampProgress(timeProgress);
+                    }
+                };
+            }
+
             function buildMotionProfile(line, samples = 180) {
-                const length = line.getTotalLength();
+                // Array iteration helpers pass extra arguments to callbacks.
+                // Normalise the sample count so an accidental index can never
+                // produce a zero divisor and blank the complete intro.
+                samples = Number.isFinite(samples) && samples >= 24 ? Math.round(samples) : 180;
+                const length = linearMotionProfile(line).length;
                 const points = [];
                 for (let index = 0; index <= samples; index += 1) {
                     points.push(line.getPointAtLength(length * index / samples));
@@ -86,7 +104,7 @@
                 return {
                     length,
                     distanceAt(timeProgress) {
-                        const target = Math.max(0, Math.min(1, timeProgress)) * totalWeight;
+                        const target = clampProgress(timeProgress) * totalWeight;
                         let low = 0;
                         let high = samples;
                         while (low < high) {
@@ -127,8 +145,19 @@
                 ingressCanvas.setAttribute("viewBox", `0 0 ${viewportWidth} ${viewportHeight}`);
             }
 
-            const motionProfiles = flowerLines.map(buildMotionProfile);
-            const longestPath = Math.max(...motionProfiles.map(function (profile) { return profile.length; }));
+            let motionProfiles;
+            try {
+                motionProfiles = flowerLines.map(function (line) {
+                    return buildMotionProfile(line);
+                });
+            } catch (error) {
+                // Geometry sampling is an enhancement, not a requirement: if
+                // a browser rejects it, retain a visible linear draw instead.
+                motionProfiles = flowerLines.map(function (line) {
+                    return linearMotionProfile(line);
+                });
+            }
+            const longestPath = Math.max(1, ...motionProfiles.map(function (profile) { return profile.length; }));
             const drawDelays = motionProfiles.map(function (_, index) { return 1100 + index * 110; });
             const drawDurations = motionProfiles.map(function (profile) {
                 return 1500 + 1100 * profile.length / longestPath;
