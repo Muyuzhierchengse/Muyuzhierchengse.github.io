@@ -5,6 +5,13 @@
     --profile-line: #ded8d0;
 }
 
+/* Keep the horizontal centring axis identical on short and long pages. */
+html { scrollbar-gutter: stable; }
+
+@supports not (scrollbar-gutter: stable) {
+    html { overflow-y: scroll; }
+}
+
 /* Opt in to same-origin cross-document transitions for normal navigation. */
 @view-transition { navigation: auto; }
 
