@@ -11,10 +11,11 @@
         try {
             // Version the key whenever the opening artwork changes materially,
             // so returning visitors are introduced to the new sequence once.
-            if (sessionStorage.getItem("zhimu-home-intro-seen-v6") === "true") {
+            const forceIntro = new URLSearchParams(window.location.search).get("intro") === "1";
+            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v7") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v6", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v7", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -23,12 +24,49 @@
         // The visual sequence is decorative, so visitors can dismiss it at any
         // point without affecting navigation or the page content underneath.
         document.addEventListener("DOMContentLoaded", function () {
-            // Direct requestAnimationFrame updates are used instead of the Web
-            // Animations API because iOS Safari may discretise SVG dash motion.
-            document.querySelectorAll(".intro-stage .hydrangea-line").forEach(function (line, index) {
+            // A short visible dash first follows a full-screen Bezier route to
+            // the exact beginning of each flower stroke. The same dash then
+            // continues through the flower, so there is no rigid translation
+            // or sudden swap between two unrelated shapes.
+            const flowerLines = Array.from(document.querySelectorAll(".intro-stage .hydrangea-line"));
+            const ingressCanvas = document.querySelector(".ingress-canvas");
+            const ingressLines = Array.from(document.querySelectorAll(".ingress-stroke"));
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+
+            function smoothstep(value) {
+                return value * value * (3 - 2 * value);
+            }
+
+            function flowerStartInViewport(line) {
+                const firstPoint = line.getPointAtLength(0);
+                const svgPoint = line.ownerSVGElement.createSVGPoint();
+                svgPoint.x = firstPoint.x;
+                svgPoint.y = firstPoint.y;
+                return svgPoint.matrixTransform(line.getScreenCTM());
+            }
+
+            function ingressRoute(index, target) {
+                const w = viewportWidth;
+                const h = viewportHeight;
+                const routes = [
+                    { start: [-56, h * 0.22], c1: [w * 0.22, h * 0.13], c2: [target.x - w * 0.22, target.y + h * 0.04] },
+                    { start: [w * 0.78, -56], c1: [w * 0.82, h * 0.24], c2: [target.x + w * 0.16, target.y - h * 0.14] },
+                    { start: [-56, h * 0.78], c1: [w * 0.25, h * 0.84], c2: [target.x - w * 0.18, target.y - h * 0.08] },
+                    { start: [w * 0.78, h + 56], c1: [w * 0.68, h * 0.78], c2: [target.x + w * 0.18, target.y + h * 0.13] }
+                ];
+                const route = routes[index];
+                return `M ${route.start[0]} ${route.start[1]} C ${route.c1[0]} ${route.c1[1]}, ${route.c2[0]} ${route.c2[1]}, ${target.x} ${target.y}`;
+            }
+
+            if (ingressCanvas) {
+                ingressCanvas.setAttribute("viewBox", `0 0 ${viewportWidth} ${viewportHeight}`);
+            }
+
+            flowerLines.forEach(function (line, index) {
                 const length = line.getTotalLength();
-                const delay = 1420 + index * 80;
-                const duration = 2900;
+                const delay = 1360 + index * 90;
+                const duration = 3000;
 
                 line.style.strokeDasharray = `${length} ${length}`;
                 line.style.strokeDashoffset = `${length}`;
@@ -44,6 +82,43 @@
                 line.after(runner);
 
                 const startedAt = performance.now();
+
+                const ingress = ingressLines[index];
+                if (ingress) {
+                    const target = flowerStartInViewport(line);
+                    ingress.setAttribute("d", ingressRoute(index, target));
+                    const ingressLength = ingress.getTotalLength();
+                    const segmentLength = Math.max(38, Math.min(58, viewportWidth * 0.045));
+                    const ingressDelay = index * 90;
+                    const ingressDuration = 1500;
+                    ingress.style.strokeDasharray = `${segmentLength} ${ingressLength + segmentLength}`;
+                    ingress.style.strokeDashoffset = "0";
+
+                    function ingressFrame(now) {
+                        const elapsed = now - startedAt - ingressDelay;
+                        if (elapsed < 0) {
+                            requestAnimationFrame(ingressFrame);
+                            return;
+                        }
+                        const progress = Math.min(elapsed / ingressDuration, 1);
+                        const eased = smoothstep(progress);
+                        ingress.style.strokeDashoffset = `${-ingressLength * eased}`;
+                        if (progress < 0.08) {
+                            ingress.style.opacity = `${progress / 0.08}`;
+                        } else if (progress > 0.9) {
+                            ingress.style.opacity = `${(1 - progress) / 0.1}`;
+                        } else {
+                            ingress.style.opacity = "1";
+                        }
+                        if (progress < 1) {
+                            requestAnimationFrame(ingressFrame);
+                        } else {
+                            ingress.style.opacity = "0";
+                        }
+                    }
+                    requestAnimationFrame(ingressFrame);
+                }
+
                 function drawFrame(now) {
                     const elapsed = now - startedAt - delay;
                     if (elapsed < 0) {
@@ -52,7 +127,7 @@
                     }
                     const progress = Math.min(elapsed / duration, 1);
                     // Smoothstep is stable across browsers and keeps both ends calm.
-                    const eased = progress * progress * (3 - 2 * progress);
+                    const eased = smoothstep(progress);
                     line.style.strokeDashoffset = `${length * (1 - eased)}`;
                     runner.style.strokeDashoffset = `${-length * 0.955 * eased}`;
                     runner.style.opacity = progress < 0.04
@@ -110,7 +185,8 @@
 
     /*
      * HYDRANGEA INTRO — four continuous paths form the approved artwork.
-     * 0.0–4.3s  four fixed-length line heads travel and leave ink behind
+     * 0.0–1.7s  four short strokes flow inward on organic curved routes
+     * 1.3–4.5s  those strokes continue through the four one-line paths
      * 4.3–5.1s  the completed hydrangea rests at the centre
      * 4.6–5.8s  the flower dissolves into the printed watermark
      *
@@ -164,68 +240,26 @@
     }
 
     .intro-stage .hydrangea-runner {
-        stroke-width: 3.15;
+        stroke-width: 2.8;
     }
 
-    /*
-     * Four fixed-length threads enter from beyond the viewport. Their final
-     * endpoints coincide with the starts of the four SVG drawing paths; the
-     * path runners appear during the final crossfade, reading as one gesture.
-     */
-    .approach-thread {
+    /* Full-viewport curves are invisible; only a short travelling dash shows. */
+    .ingress-canvas {
         position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 54px;
-        height: 1.6px;
-        margin-left: -54px;
-        border-radius: 999px;
-        background: #5f5954;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+    }
+
+    .ingress-stroke {
+        fill: none;
+        stroke: #5f5954;
+        stroke-width: 2.35;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        vector-effect: non-scaling-stroke;
         opacity: 0;
-        transform-origin: right center;
-        animation: approachThread 1.45s cubic-bezier(.35, .02, .18, 1) var(--approach-delay) forwards;
-    }
-
-    .approach-thread--a {
-        --approach-delay: 0s;
-        --start-x: -55vw; --start-y: -12vh; --start-r: 12deg;
-        --mid-x: -28vw; --mid-y: -5vh; --mid-r: 2deg;
-        --end-x: -117px; --end-y: 5px; --end-r: -8deg;
-    }
-    .approach-thread--b {
-        --approach-delay: .08s;
-        --start-x: 16vw; --start-y: -55vh; --start-r: 98deg;
-        --mid-x: 8vw; --mid-y: -25vh; --mid-r: 72deg;
-        --end-x: -1px; --end-y: 16px; --end-r: 22deg;
-    }
-    .approach-thread--c {
-        --approach-delay: .16s;
-        --start-x: -56vw; --start-y: 24vh; --start-r: -18deg;
-        --mid-x: -31vw; --mid-y: 14vh; --mid-r: -8deg;
-        --end-x: -162px; --end-y: 45px; --end-r: 3deg;
-    }
-    .approach-thread--d {
-        --approach-delay: .24s;
-        --start-x: 20vw; --start-y: 54vh; --start-r: -76deg;
-        --mid-x: 12vw; --mid-y: 28vh; --mid-r: -88deg;
-        --end-x: 8px; --end-y: 120px; --end-r: -102deg;
-    }
-
-    @keyframes approachThread {
-        0% {
-            opacity: 0;
-            transform: translate(var(--start-x), var(--start-y)) rotate(var(--start-r));
-        }
-        12% { opacity: 1; }
-        58% {
-            opacity: 1;
-            transform: translate(var(--mid-x), var(--mid-y)) rotate(var(--mid-r));
-        }
-        88% { opacity: 1; }
-        100% {
-            opacity: 0;
-            transform: translate(var(--end-x), var(--end-y)) rotate(var(--end-r));
-        }
     }
 
     @keyframes releaseIntro {
@@ -350,11 +384,7 @@
         .home-page .site-nav { margin-top: 28px; }
         .home-container { padding-top: 20px; }
         .intro-stage { width: min(68vw, 270px); }
-        .approach-thread { width: 46px; margin-left: -46px; height: 1.45px; }
-        .approach-thread--a { --end-x: -83px; --end-y: 4px; }
-        .approach-thread--b { --end-x: -1px; --end-y: 11px; }
-        .approach-thread--c { --end-x: -115px; --end-y: 32px; }
-        .approach-thread--d { --end-x: 5px; --end-y: 86px; }
+        .ingress-stroke { stroke-width: 2.15; }
         .home-watermark { width: 310px; right: -112px; bottom: -76px; opacity: 0; }
     }
 </style>
@@ -364,12 +394,12 @@
     
 <!-- The full-viewport weave is decorative and deliberately absent after one session play. -->
 <div class="intro-flower-container">
-    <div class="approach-field" aria-hidden="true">
-        <span class="approach-thread approach-thread--a"></span>
-        <span class="approach-thread approach-thread--b"></span>
-        <span class="approach-thread approach-thread--c"></span>
-        <span class="approach-thread approach-thread--d"></span>
-    </div>
+    <svg class="ingress-canvas" aria-hidden="true" preserveAspectRatio="none">
+        <path class="ingress-stroke"></path>
+        <path class="ingress-stroke"></path>
+        <path class="ingress-stroke"></path>
+        <path class="ingress-stroke"></path>
+    </svg>
     <div class="intro-stage" aria-hidden="true">
         {{ partial "hydrangea-art.html" . }}
     </div>
