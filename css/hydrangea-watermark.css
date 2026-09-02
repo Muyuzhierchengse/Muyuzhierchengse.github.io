@@ -1,0 +1,59 @@
+/*
+ * Shared hydrangea paper mark.
+ * Each page places the same botanical seal in a different quiet margin so the
+ * motif feels printed into the site rather than attached to the content card.
+ */
+.page-watermark {
+    position: fixed;
+    width: clamp(310px, 34vw, 470px);
+    aspect-ratio: 1;
+    z-index: 0;
+    color: #716a64;
+    opacity: 0.072;
+    pointer-events: none;
+    user-select: none;
+}
+
+.page-watermark svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.page-watermark use {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 0.52;
+    vector-effect: non-scaling-stroke;
+}
+
+/* About has a long central column, so the seal sits in the left paper margin. */
+.page-watermark--about {
+    left: clamp(-190px, -11vw, -115px);
+    top: 39vh;
+    transform: rotate(-8deg);
+}
+
+/* The research atlas uses its wider right margin beside the programme grid. */
+.page-watermark--research {
+    right: clamp(-190px, -10vw, -105px);
+    top: 24vh;
+    transform: rotate(7deg);
+}
+
+/* Programme pages are text-heavy; keep the seal low and mostly off the sheet. */
+.page-watermark--programme {
+    left: clamp(-170px, -9vw, -92px);
+    bottom: clamp(-108px, -6vw, -58px);
+    transform: rotate(-5deg);
+}
+
+@media (max-width: 620px) {
+    .page-watermark {
+        width: 300px;
+        opacity: 0.056;
+    }
+    .page-watermark--about { left: -190px; top: 42vh; }
+    .page-watermark--research { right: -195px; top: 31vh; }
+    .page-watermark--programme { left: -190px; bottom: -94px; }
+}
