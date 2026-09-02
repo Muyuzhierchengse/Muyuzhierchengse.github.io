@@ -9,10 +9,12 @@
         // Play the entrance sequence once per browser tab/session. Returning
         // from About or Research should reveal the home page immediately.
         try {
-            if (sessionStorage.getItem("zhimu-home-intro-seen") === "true") {
+            // Version the key whenever the opening artwork changes materially,
+            // so returning visitors are introduced to the new sequence once.
+            if (sessionStorage.getItem("zhimu-home-intro-seen-v2") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v2", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
