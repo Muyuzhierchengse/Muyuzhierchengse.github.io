@@ -1,9 +1,9 @@
 .site-nav {
-    width: min(100%, 660px);
+    width: min(100%, 780px);
     margin: 0 auto 42px;
     padding: 0 20px;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     align-items: center;
     gap: 24px;
     box-sizing: border-box;
@@ -34,18 +34,18 @@
         width: 100%;
         margin-bottom: 34px;
         padding: 0 4px;
-        gap: 10px;
+        gap: 4px;
     }
 
     .site-nav a {
-        font-size: 11px;
-        letter-spacing: 2.2px;
+        font-size: 10px;
+        letter-spacing: 1.35px;
     }
 }
 
 @media (max-width: 360px) {
     .site-nav a {
-        font-size: 10px;
-        letter-spacing: 1.7px;
+        font-size: 9.5px;
+        letter-spacing: 1px;
     }
 }

@@ -41,6 +41,13 @@
     transform: rotate(7deg);
 }
 
+/* The publication ledger leaves a quiet lower-right margin beside the years. */
+.page-watermark--publications {
+    right: clamp(-180px, -10vw, -100px);
+    bottom: clamp(-112px, -6vw, -62px);
+    transform: rotate(8deg);
+}
+
 /* Programme pages are text-heavy; keep the seal low and mostly off the sheet. */
 .page-watermark--programme {
     left: clamp(-170px, -9vw, -92px);
@@ -55,5 +62,6 @@
     }
     .page-watermark--about { left: -190px; top: 42vh; }
     .page-watermark--research { right: -195px; top: 31vh; }
+    .page-watermark--publications { right: -195px; bottom: -98px; }
     .page-watermark--programme { left: -190px; bottom: -94px; }
 }
