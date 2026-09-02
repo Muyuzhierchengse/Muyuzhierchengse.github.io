@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | Zhimu Yang</title>
+    <link rel="stylesheet" href="/css/site-nav.css">
     <script>
         // Play the entrance sequence once per browser tab/session. Returning
         // from About or Research should reveal the home page immediately.
@@ -34,34 +35,12 @@
         overflow-x: hidden;
     }
 
-    .global-nav {
-        width: 100%;
-        max-width: 900px;
-        padding: 40px 20px 20px 20px;
-        display: flex;
-        justify-content: center;
-        gap: 40px;
-        box-sizing: border-box;
+    .home-page .site-nav {
+        margin-top: 40px;
         opacity: 0;
         transform: translateY(15px);
         /* 延迟至 3.8s，等待花朵动画结束 */
         animation: navReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 3.8s forwards;
-    }
-
-    .global-nav a {
-        text-decoration: none;
-        color: #888;
-        font-size: 13px;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        padding-bottom: 4px;
-        border-bottom: 1px solid transparent;
-        transition: all 0.4s ease;
-    }
-
-    .global-nav a:hover, .global-nav a.active {
-        color: #111;
-        border-bottom-color: #111;
     }
 
     @keyframes navReveal {
@@ -149,7 +128,7 @@
         display: none;
     }
 
-    .skip-home-intro .global-nav,
+    .skip-home-intro .site-nav,
     .skip-home-intro .home-container {
         opacity: 1;
         transform: none;
@@ -158,7 +137,7 @@
 
     @media (prefers-reduced-motion: reduce) {
         .intro-flower-container { display: none; }
-        .global-nav,
+        .site-nav,
         .home-container {
             opacity: 1;
             transform: none;
@@ -184,10 +163,15 @@
         color: #555; /* 降低纯黑的锐利感，模拟古典墨迹 */
         letter-spacing: 1.5px;
     }
+
+    @media (max-width: 520px) {
+        .home-page .site-nav { margin-top: 28px; }
+        .home-container { padding-top: 20px; }
+    }
 </style>
 
 </head>
-<body>
+<body class="home-page">
     
 <!-- 全新设计的复杂版紫阳花，11朵小花互相交织 -->
 <div class="intro-flower-container">
@@ -241,11 +225,7 @@
     </svg>
 </div>
 
-<nav class="global-nav">
-    <a href="/" class="active">H o m e</a>
-    <a href="/about">A b o u t</a>
-    <a href="/blog">R e s e a r c h</a>
-</nav>
+{{ partial "site-nav.html" (dict "active" "home") }}
 
 <div class="home-container">
     <header class="home-header">

@@ -14,7 +14,7 @@
     .about-container {
         max-width: 720px;
         margin: 0 auto;
-        padding: 60px 20px;
+        padding: 40px 20px 60px;
         /* 苹果风缓动入场 */
         animation: fadeIn 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         opacity: 0;
@@ -82,8 +82,9 @@
     }
     
     .item-header {
-        display: flex;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 18px;
         align-items: baseline;
         margin-bottom: 4px;
     }
@@ -169,17 +170,29 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         transform: translateY(-2px);
     }
+
+    @media (max-width: 560px) {
+        .about-container { padding: 28px 18px 52px; }
+        .section-title {
+            margin: 54px 0 26px;
+            font-size: 14px;
+            line-height: 1.6;
+            letter-spacing: 2.4px;
+            word-break: keep-all;
+        }
+        .academic-profile { font-size: 14.5px; }
+        .item-header { display: block; }
+        .item-date { display: block; margin-top: 3px; }
+        .item-meta { margin-top: 6px; }
+        .item-desc { text-align: left; }
+    }
 </style>
 {{ end }}
 
 {{ define "content" }}
 <div class="about-container">
     
-    <nav class="breadcrumb">
-        <a href="/">H o m e</a>
-        <a href="/about" class="active">A b o u t</a>
-        <a href="/blog">R e s e a r c h</a>
-    </nav>
+    {{ partial "site-nav.html" (dict "active" "about") }}
 
     <div class="divider">☙ ❖ ❧</div>
 
@@ -187,7 +200,7 @@
         <p>{{ .Params.philosophy }}</p>
     </section>
 
-    <h2 class="section-title">E d u c a t i o n &nbsp; & &nbsp; T r a i n i n g</h2>
+    <h2 class="section-title">Education &amp; Training</h2>
     
     {{ range .Params.education }}
     <div class="content-block">
@@ -202,7 +215,7 @@
     </div>
     {{ end }}
 
-    <h2 class="section-title">R e s e a r c h &nbsp; E x p e r i e n c e</h2>
+    <h2 class="section-title">Research Experience</h2>
 
     {{ range .Params.experience }}
     <div class="content-block">
@@ -221,7 +234,7 @@
     </div>
     {{ end }}
 
-    <h2 class="section-title">P u b l i c a t i o n s &nbsp; & &nbsp; M a n u s c r i p t s</h2>
+    <h2 class="section-title">Publications &amp; Manuscripts</h2>
 
     {{ range .Params.publications }}
     <div class="content-block">
@@ -237,7 +250,7 @@
     </div>
     {{ end }}
 
-    <h2 class="section-title">T e c h n i c a l &nbsp; S k i l l s</h2>
+    <h2 class="section-title">Technical Skills</h2>
     
     <div class="skills-container">
         {{ range .Params.skills }}
