@@ -12,10 +12,22 @@
             // Version the key whenever the opening artwork changes materially,
             // so returning visitors are introduced to the new sequence once.
             const forceIntro = new URLSearchParams(window.location.search).get("intro") === "1";
-            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v7") === "true") {
+            const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            document.documentElement.dataset.introMode = forceIntro
+                ? "forced"
+                : reducedMotion
+                    ? "reduced-motion"
+                    : "standard";
+            if (forceIntro) {
+                // A deliberate replay request must win over the operating
+                // system's reduced-motion preference, otherwise desktop users
+                // can only see a white flash with no way to inspect the intro.
+                document.documentElement.classList.add("force-home-intro");
+            }
+            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v8") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v7", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v8", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -359,6 +371,11 @@
             animation: none;
         }
         .home-watermark { opacity: 0.11; transform: none; animation: none; }
+
+        /* `?intro=1` is an explicit request to preview the animation. */
+        .force-home-intro .intro-flower-container {
+            display: block;
+        }
     }
 
     .avatar { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; filter: grayscale(30%) contrast(1.1); margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); }
