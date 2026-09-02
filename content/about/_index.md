@@ -69,12 +69,4 @@ publications:
     authors: "Shaode Yu, Ze Chen, **Zhimu Yang**, Jiacheng Gu, Bizu Feng, Qiurui Sun"
     status: "IEEE ICASSP 2025. [Paper](https://doi.org/10.1109/ICASSP49660.2025.10890447) · [arXiv](https://arxiv.org/abs/2409.07762) · [Code](https://github.com/Muyuzhierchengse/TaylorKAN)"
 
-skills: 
-  - "Theoretical Computer Science"
-  - "Machine Learning"
-  - "Quantum Compilation"
-  - "Graph Theory"
-  - "Algorithm Design"
-  - "Python, C++, PyTorch"
-  - "ROS"
 ---
