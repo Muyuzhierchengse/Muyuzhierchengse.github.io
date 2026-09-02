@@ -525,6 +525,27 @@
     .social-links { margin-bottom: 50px; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
     .social-links a { color: #777; text-decoration: none; margin: 0 12px; transition: color 0.4s ease; }
     .social-links a:hover { color: #111; }
+
+    /* Give the desktop identity composition more presence without scaling the page chrome. */
+    @media (min-width: 900px) {
+        .avatar {
+            width: 116px;
+            height: 116px;
+            margin-bottom: 16px;
+        }
+
+        .signature-mark {
+            width: min(420px, 88vw);
+            margin-bottom: 14px;
+        }
+
+        .description {
+            font-size: 16px;
+            margin-bottom: 32px;
+        }
+
+        .social-links { font-size: 12.5px; }
+    }
     
     .home-footer {
         margin-top: 90px;
