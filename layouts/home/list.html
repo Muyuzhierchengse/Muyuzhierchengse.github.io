@@ -24,10 +24,10 @@
                 // can only see a white flash with no way to inspect the intro.
                 document.documentElement.classList.add("force-home-intro");
             }
-            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v8") === "true") {
+            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v9") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v8", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v9", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -36,15 +36,28 @@
         // The visual sequence is decorative, so visitors can dismiss it at any
         // point without affecting navigation or the page content underneath.
         document.addEventListener("DOMContentLoaded", function () {
+            const skipButton = document.querySelector(".intro-skip");
+            if (skipButton) {
+                skipButton.addEventListener("click", function () {
+                    document.documentElement.classList.add("intro-complete");
+                });
+            }
+
+            const introContainer = document.querySelector(".intro-flower-container");
+            if (!introContainer || window.getComputedStyle(introContainer).display === "none") {
+                return;
+            }
+
             // A short visible dash first follows a full-screen Bezier route to
-            // the exact beginning of each flower stroke. The same dash then
-            // continues through the flower, so there is no rigid translation
-            // or sudden swap between two unrelated shapes.
+            // the exact beginning of each flower stroke. It then draws the
+            // normalised one-line path, reverses through that path, and finally
+            // retreats along the very same Bezier route used for its entrance.
             const flowerLines = Array.from(document.querySelectorAll(".intro-stage .hydrangea-line"));
             const ingressCanvas = document.querySelector(".ingress-canvas");
             const ingressLines = Array.from(document.querySelectorAll(".ingress-stroke"));
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
+            const sequenceStartedAt = performance.now();
 
             function smoothstep(value) {
                 return value * value * (3 - 2 * value);
@@ -76,24 +89,27 @@
             }
 
             flowerLines.forEach(function (line, index) {
-                const length = line.getTotalLength();
-                const delay = 1360 + index * 90;
-                const duration = 3000;
+                // Every approved flower path has pathLength="1". Keep all
+                // flower dashes in that normalised coordinate system; using
+                // getTotalLength() here makes browsers reveal the whole path
+                // at once instead of drawing it progressively.
+                const drawDelay = 1100 + index * 90;
+                const drawDuration = 2400;
+                const unwindDelay = 4100 + index * 70;
+                const unwindDuration = 1050;
 
-                line.style.strokeDasharray = `${length} ${length}`;
-                line.style.strokeDashoffset = `${length}`;
+                line.style.strokeDasharray = "1 1";
+                line.style.strokeDashoffset = "1";
                 line.style.opacity = "1";
 
                 const runner = line.cloneNode(false);
                 runner.removeAttribute("id");
                 runner.classList.remove("hydrangea-line");
                 runner.classList.add("hydrangea-runner");
-                runner.style.strokeDasharray = `${length * 0.045} ${length * 0.955}`;
+                runner.style.strokeDasharray = "0.045 0.955";
                 runner.style.strokeDashoffset = "0";
                 runner.style.opacity = "0";
                 line.after(runner);
-
-                const startedAt = performance.now();
 
                 const ingress = ingressLines[index];
                 if (ingress) {
@@ -102,12 +118,14 @@
                     const ingressLength = ingress.getTotalLength();
                     const segmentLength = Math.max(38, Math.min(58, viewportWidth * 0.045));
                     const ingressDelay = index * 90;
-                    const ingressDuration = 1500;
+                    const ingressDuration = 1200;
+                    const retreatDelay = 5120 + index * 70;
+                    const retreatDuration = 1100;
                     ingress.style.strokeDasharray = `${segmentLength} ${ingressLength + segmentLength}`;
                     ingress.style.strokeDashoffset = "0";
 
                     function ingressFrame(now) {
-                        const elapsed = now - startedAt - ingressDelay;
+                        const elapsed = now - sequenceStartedAt - ingressDelay;
                         if (elapsed < 0) {
                             requestAnimationFrame(ingressFrame);
                             return;
@@ -129,19 +147,43 @@
                         }
                     }
                     requestAnimationFrame(ingressFrame);
+
+                    function retreatFrame(now) {
+                        const elapsed = now - sequenceStartedAt - retreatDelay;
+                        if (elapsed < 0) {
+                            requestAnimationFrame(retreatFrame);
+                            return;
+                        }
+                        const progress = Math.min(elapsed / retreatDuration, 1);
+                        const eased = smoothstep(progress);
+                        // Reverse the entrance dash from the flower start back
+                        // to its original point beyond the viewport.
+                        ingress.style.strokeDashoffset = `${-ingressLength * (1 - eased)}`;
+                        ingress.style.opacity = progress < 0.08
+                            ? `${progress / 0.08}`
+                            : progress > 0.9
+                                ? `${(1 - progress) / 0.1}`
+                                : "1";
+                        if (progress < 1) {
+                            requestAnimationFrame(retreatFrame);
+                        } else {
+                            ingress.style.opacity = "0";
+                        }
+                    }
+                    requestAnimationFrame(retreatFrame);
                 }
 
                 function drawFrame(now) {
-                    const elapsed = now - startedAt - delay;
+                    const elapsed = now - sequenceStartedAt - drawDelay;
                     if (elapsed < 0) {
                         requestAnimationFrame(drawFrame);
                         return;
                     }
-                    const progress = Math.min(elapsed / duration, 1);
+                    const progress = Math.min(elapsed / drawDuration, 1);
                     // Smoothstep is stable across browsers and keeps both ends calm.
                     const eased = smoothstep(progress);
-                    line.style.strokeDashoffset = `${length * (1 - eased)}`;
-                    runner.style.strokeDashoffset = `${-length * 0.955 * eased}`;
+                    line.style.strokeDashoffset = `${1 - eased}`;
+                    runner.style.strokeDashoffset = `${-0.955 * eased}`;
                     runner.style.opacity = progress < 0.04
                         ? `${progress / 0.04}`
                         : progress > 0.94
@@ -155,14 +197,33 @@
                     }
                 }
                 requestAnimationFrame(drawFrame);
-            });
 
-            const skipButton = document.querySelector(".intro-skip");
-            if (skipButton) {
-                skipButton.addEventListener("click", function () {
-                    document.documentElement.classList.add("intro-complete");
-                });
-            }
+                function unwindFrame(now) {
+                    const elapsed = now - sequenceStartedAt - unwindDelay;
+                    if (elapsed < 0) {
+                        requestAnimationFrame(unwindFrame);
+                        return;
+                    }
+                    const progress = Math.min(elapsed / unwindDuration, 1);
+                    const eased = smoothstep(progress);
+                    // Positive offset removes ink from the far end back toward
+                    // the starting point while the runner marks that retreat.
+                    line.style.strokeDashoffset = `${eased}`;
+                    runner.style.strokeDashoffset = `${-0.955 * (1 - eased)}`;
+                    runner.style.opacity = progress < 0.06
+                        ? `${progress / 0.06}`
+                        : progress > 0.92
+                            ? `${(1 - progress) / 0.08}`
+                            : "1";
+                    if (progress < 1) {
+                        requestAnimationFrame(unwindFrame);
+                    } else {
+                        line.style.strokeDashoffset = "1";
+                        runner.style.opacity = "0";
+                    }
+                }
+                requestAnimationFrame(unwindFrame);
+            });
         });
     </script>
     
@@ -188,7 +249,7 @@
         margin-top: 40px;
         opacity: 0;
         transform: translateY(15px);
-        animation: navReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 5.15s forwards;
+        animation: navReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 6.55s forwards;
     }
 
     @keyframes navReveal {
@@ -197,10 +258,12 @@
 
     /*
      * HYDRANGEA INTRO — four continuous paths form the approved artwork.
-     * 0.0–1.7s  four short strokes flow inward on organic curved routes
-     * 1.3–4.5s  those strokes continue through the four one-line paths
-     * 4.3–5.1s  the completed hydrangea rests at the centre
-     * 4.6–5.8s  the flower dissolves into the printed watermark
+     * 0.0–1.5s  four short strokes flow inward on organic curved routes
+     * 1.1–3.8s  those strokes progressively draw the four one-line paths
+     * 3.8–4.1s  the completed hydrangea rests at the centre
+     * 4.1–5.4s  the paths unweave from their ends back to their beginnings
+     * 5.1–6.5s  the same strokes retreat along their entrance trajectories
+     * 6.4–7.2s  the opening sheet fades into the printed watermark
      *
      * The intro and every page watermark read the same SVG source, so their
      * geometry can never drift apart during future revisions.
@@ -213,7 +276,7 @@
         z-index: 999;
         overflow: hidden;
         background: #fcfbf9;
-        animation: releaseIntro 1s ease 5.15s forwards;
+        animation: releaseIntro 0.85s ease 6.35s forwards;
     }
 
     .intro-stage {
@@ -309,7 +372,7 @@
         opacity: 0;
         color: #716b65;
         pointer-events: none;
-        animation: printWatermark 1.6s ease 4.55s forwards;
+        animation: printWatermark 1.3s ease 5.85s forwards;
     }
 
     .home-watermark svg { width: 100%; height: 100%; overflow: visible; }
@@ -334,7 +397,7 @@
         padding: 40px 20px;
         opacity: 0;
         transform: translateY(10px);
-        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 5.05s forwards;
+        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 6.5s forwards;
     }
 
     @keyframes contentReveal {
