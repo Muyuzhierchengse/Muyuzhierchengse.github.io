@@ -1,0 +1,142 @@
+{{ define "styles" }}
+<style>
+    :root { --ink: #25231f; --muted: #706a62; --line: #ded9d0; --paper: #fcfbf9; }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0; background: var(--paper); color: var(--ink);
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+        line-height: 1.75; -webkit-font-smoothing: antialiased;
+    }
+    .programme-page { width: min(1020px, calc(100% - 40px)); margin: 0 auto; padding: 52px 0 90px; }
+    .breadcrumb { text-align: center; margin-bottom: 54px; }
+    .breadcrumb a {
+        color: #888; text-decoration: none; font-size: 12px; letter-spacing: 3px;
+        text-transform: uppercase; margin: 0 15px; transition: color .3s ease;
+    }
+    .breadcrumb a:hover, .breadcrumb a.active { color: #111; border-bottom: 1px solid #111; }
+    .programme-hero { max-width: 760px; margin: 0 auto 48px; text-align: center; }
+    .programme-index { color: #958d83; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; }
+    .programme-hero h1 { margin: 14px 0 14px; font-size: clamp(34px, 6vw, 62px); line-height: 1.05; font-weight: normal; letter-spacing: -1px; }
+    .programme-hero p { max-width: 640px; margin: 0 auto; color: #625d56; font-size: 16px; font-style: italic; }
+    .hero-divider { margin-top: 30px; color: #c8c1b7; letter-spacing: 8px; }
+    .thesis {
+        display: grid; grid-template-columns: 190px 1fr; gap: 42px; padding: 30px 0;
+        border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin-bottom: 52px;
+    }
+    .thesis-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #8a837a; }
+    .thesis p { margin: 0; font-size: 18px; line-height: 1.65; }
+    .programme-layout { display: grid; grid-template-columns: minmax(0, 1fr) 250px; gap: 64px; }
+    .programme-section { margin-bottom: 58px; }
+    .section-heading { margin: 0 0 22px; font-size: 14px; letter-spacing: 4px; text-transform: uppercase; font-weight: normal; }
+    .research-question { margin: 0 0 14px; padding: 14px 0 14px 20px; border-left: 1px solid #cfc8be; font-size: 15px; }
+    .work-item { padding: 21px 0; border-top: 1px solid #e4dfd8; }
+    .work-item:last-child { border-bottom: 1px solid #e4dfd8; }
+    .work-title { font-size: 16px; font-weight: bold; line-height: 1.45; }
+    .work-meta { margin-top: 5px; color: var(--muted); font-size: 13px; font-style: italic; }
+    .work-links { margin-top: 10px; }
+    .work-links a {
+        display: inline-block; margin-right: 16px; color: #3d3934; text-decoration: none;
+        border-bottom: 1px dotted #999087; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    }
+    .work-links a:hover { color: #000; border-bottom-style: solid; }
+    .direction { margin-bottom: 24px; }
+    .direction h3 { margin: 0 0 4px; font-size: 15px; }
+    .direction p { margin: 0; color: #57524c; font-size: 14px; }
+    .programme-aside { position: sticky; top: 34px; align-self: start; }
+    .aside-block { margin-bottom: 36px; }
+    .aside-title { margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #e2ddd6; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; }
+    .programme-nav a { display: block; padding: 7px 0; color: #777169; text-decoration: none; font-size: 13px; }
+    .programme-nav a:hover, .programme-nav a.active { color: #111; }
+    .application-list { margin: 0; padding: 0; list-style: none; }
+    .application-list li { margin: 0 0 9px; color: #5e5952; font-size: 13px; }
+    .application-list li::before { content: "◦"; margin-right: 8px; color: #aaa197; }
+    .back-link { color: #555049; text-decoration: none; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    @media (max-width: 780px) {
+        .programme-layout { grid-template-columns: 1fr; gap: 18px; }
+        .programme-aside { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .thesis { grid-template-columns: 1fr; gap: 10px; }
+    }
+    @media (max-width: 520px) {
+        .programme-page { width: min(100% - 28px, 1020px); padding-top: 34px; }
+        .breadcrumb a { margin: 0 8px; letter-spacing: 2px; }
+        .programme-aside { grid-template-columns: 1fr; }
+    }
+</style>
+{{ end }}
+
+{{ define "content" }}
+<div class="programme-page">
+    <nav class="breadcrumb">
+        <a href="/">H o m e</a>
+        <a href="/about">A b o u t</a>
+        <a href="/blog" class="active">R e s e a r c h</a>
+    </nav>
+
+    <header class="programme-hero">
+        <div class="programme-index">Programme {{ .Params.programme }} · {{ .Params.kicker }}</div>
+        <h1>{{ .Title }}</h1>
+        <p>{{ .Params.summary }}</p>
+        <div class="hero-divider">☙ ═══════════ ❧</div>
+    </header>
+
+    <section class="thesis">
+        <div class="thesis-label">Central Thesis</div>
+        <p>{{ .Params.thesis }}</p>
+    </section>
+
+    <div class="programme-layout">
+        <main>
+            <section class="programme-section">
+                <h2 class="section-heading">Research Questions</h2>
+                {{ range .Params.questions }}
+                <p class="research-question">{{ . }}</p>
+                {{ end }}
+            </section>
+
+            <section class="programme-section">
+                <h2 class="section-heading">Research Record</h2>
+                {{ range .Params.works }}
+                <article class="work-item">
+                    <div class="work-title">{{ .title }}</div>
+                    <div class="work-meta">{{ .meta }}</div>
+                    {{ if or .paper .code }}
+                    <div class="work-links">
+                        {{ with .paper }}<a href="{{ . }}" target="_blank" rel="noopener">Paper ↗</a>{{ end }}
+                        {{ with .code }}<a href="{{ . }}" target="_blank" rel="noopener">Code ↗</a>{{ end }}
+                    </div>
+                    {{ end }}
+                </article>
+                {{ end }}
+            </section>
+
+            <section class="programme-section">
+                <h2 class="section-heading">Research Map</h2>
+                {{ range .Params.directions }}
+                <div class="direction">
+                    <h3>{{ .title }}</h3>
+                    <p>{{ .text }}</p>
+                </div>
+                {{ end }}
+            </section>
+        </main>
+
+        <aside class="programme-aside">
+            <div class="aside-block programme-nav">
+                <div class="aside-title">Programmes</div>
+                <a href="/blog/polynomial-networks/"{{ if eq .File.ContentBaseName "polynomial-networks" }} class="active"{{ end }}>I · Polynomial Networks</a>
+                <a href="/blog/quantum-compilation/"{{ if eq .File.ContentBaseName "quantum-compilation" }} class="active"{{ end }}>II · Quantum Compilation</a>
+                <a href="/blog/gnn-interpretability/"{{ if eq .File.ContentBaseName "gnn-interpretability" }} class="active"{{ end }}>III · GNN Interpretability</a>
+            </div>
+
+            <div class="aside-block">
+                <div class="aside-title">Application Fields</div>
+                <ul class="application-list">
+                    {{ range .Params.applications }}<li>{{ . }}</li>{{ end }}
+                </ul>
+            </div>
+
+            <a class="back-link" href="/blog/">← Research Atlas</a>
+        </aside>
+    </div>
+</div>
+{{ end }}

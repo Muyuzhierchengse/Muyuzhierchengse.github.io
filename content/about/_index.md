@@ -14,7 +14,7 @@ education:
     meta: "Research Intern | Supervisor: Shenggen Zheng"
   - title: "Communication University of China"
     date: "Sep 2021 - Jul 2025"
-    meta: "Bachelor of Science in Artificial Intelligence | GPA: 83/100"
+    meta: "Bachelor of Science in Artificial Intelligence"
 
 experience:
   - title: "Quantum Circuit Compilation for Silicon Architectures"
@@ -59,15 +59,15 @@ experience:
     desc: "Evaluated the architectural limitations and multimodal generative capabilities of GAN models, alongside other generative frameworks (CycleGAN, DRIT, Diffusion)."
 
 publications:
-  - title: "PaSCQ: Pattern-Based Compilation for Silicon Quantum Computers with Crossbar Architecture"
-    authors: "Zhimu Yang, et al."
-    status: "Under review at ISCA 2026."
+  - title: "A Polynomial Architecture-Attribution Co-Design Framework for Exact Aumann-Shapley Attribution in GNNs"
+    authors: "Bizu Feng, **Zhimu Yang**, Shuming Wang, Shaode Yu, Yuan Cheng, Xiaojun Qian, Zixin Hu"
+    status: "arXiv:2607.21094. [Paper](https://arxiv.org/abs/2607.21094) · [Code](https://github.com/Muyuzhierchengse/APEX)"
   - title: "FSX: Message Flow Sensitivity Enhanced Structural Explainer for Graph Neural Networks"
-    authors: "Zhimu Yang, et al."
-    status: "Under review at IJCAI 2026. [arXiv:2601.14730](https://arxiv.org/abs/2601.14730)"
+    authors: "Bizu Feng, **Zhimu Yang**, Shaode Yu, Zixin Hu"
+    status: "arXiv:2601.14730. [Paper](https://arxiv.org/abs/2601.14730)"
   - title: "Exploring Kolmogorov-Arnold networks for realistic image sharpness assessment"
-    authors: "Yu S, Chen Z, Yang Z, et al."
-    status: "Published in IEEE ICASSP 2025. [arXiv:2409.07762](https://arxiv.org/abs/2409.07762)"
+    authors: "Shaode Yu, Ze Chen, **Zhimu Yang**, Jiacheng Gu, Bizu Feng, Qiurui Sun"
+    status: "IEEE ICASSP 2025. [Paper](https://doi.org/10.1109/ICASSP49660.2025.10890447) · [arXiv](https://arxiv.org/abs/2409.07762) · [Code](https://github.com/Muyuzhierchengse/TaylorKAN)"
 
 skills: 
   - "Theoretical Computer Science"
