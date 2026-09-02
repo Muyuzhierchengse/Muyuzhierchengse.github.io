@@ -11,10 +11,10 @@
         try {
             // Version the key whenever the opening artwork changes materially,
             // so returning visitors are introduced to the new sequence once.
-            if (sessionStorage.getItem("zhimu-home-intro-seen-v2") === "true") {
+            if (sessionStorage.getItem("zhimu-home-intro-seen-v3") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v2", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v3", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -62,12 +62,11 @@
     }
 
     /*
-     * HYDRANGEA INTRO — five-part timeline
-     * 0.0–2.8s  travelling threads gather from the edges
-     * 0.4–3.5s  florets follow curved trajectories and are drawn
-     * 3.5–4.2s  the completed hydrangea rests at the centre
-     * 4.2–5.5s  moving lines disperse while the watermark is printed
-     * 5.1–6.2s  navigation and page content are revealed
+     * HYDRANGEA INTRO — the travelling strokes are the flower material.
+     * 0.0–2.8s  fixed-length strokes drift in along individual curves
+     * 2.8–4.2s  each stroke extends around its final petal outline
+     * 4.2–5.1s  the completed hydrangea rests at the centre
+     * 4.6–5.8s  the flower dissolves into the printed watermark
      *
      * The source geometry remains vector-only. Every petal is an instance of
      * #hydrangea-floret, keeping the artwork editable and the page lightweight.
@@ -79,7 +78,7 @@
         z-index: 999;
         overflow: hidden;
         background: #fcfbf9;
-        animation: releaseIntro 1s ease 5.45s forwards;
+        animation: releaseIntro 1s ease 5.15s forwards;
     }
 
     .intro-stage {
@@ -98,76 +97,50 @@
         filter: drop-shadow(0 10px 20px rgba(68, 59, 52, 0.035));
     }
 
-    /* Each floret travels through a hand-tuned bend before joining the bloom. */
+    /*
+     * Only a short dash is visible during flight. Once it reaches its final
+     * position the same dash lengthens around the path and becomes the petal.
+     * There are no separate guide lines in this version.
+     */
     .floret {
         opacity: 0;
         transform-origin: 0 0;
-        animation: weaveFloret 5.2s cubic-bezier(0.22, 0.7, 0.2, 1) var(--delay) forwards;
+        animation: assembleFloret 4.75s cubic-bezier(0.22, 0.7, 0.2, 1) var(--delay) forwards;
     }
 
     .floret use {
         fill: none;
-        stroke: #615b56;
-        stroke-width: 0.72;
+        stroke: #5f5954;
+        stroke-width: 0.8;
         stroke-linecap: round;
         stroke-linejoin: round;
-        stroke-dasharray: 260;
-        stroke-dashoffset: 260;
+        stroke-dasharray: 18 242;
+        stroke-dashoffset: 96;
         vector-effect: non-scaling-stroke;
-        animation: drawFloret 3.5s cubic-bezier(0.25, 1, 0.5, 1) var(--delay) forwards;
+        animation: becomePetal 4.75s cubic-bezier(0.25, 1, 0.5, 1) var(--delay) forwards;
     }
 
-    @keyframes weaveFloret {
+    @keyframes assembleFloret {
         0% {
-            transform: translate(var(--startX), var(--startY)) rotate(var(--startR)) scale(0.12);
+            transform: translate(var(--startX), var(--startY)) rotate(var(--startR)) scale(.55);
             opacity: 0;
         }
-        10% { opacity: 0.74; }
-        38% {
-            transform: translate(var(--bendX), var(--bendY)) rotate(var(--bendR)) scale(var(--midScale));
-            opacity: 0.9;
+        8% { opacity: 0.9; }
+        36% {
+            transform: translate(var(--bendX), var(--bendY)) rotate(var(--bendR)) scale(.55);
+            opacity: 0.96;
         }
-        65%, 80% {
+        60%, 100% {
             transform: translate(var(--endX), var(--endY)) rotate(var(--endR)) scale(var(--scale));
             opacity: 1;
         }
-        100% {
-            transform: translate(var(--exitX), var(--exitY)) rotate(var(--exitR)) scale(var(--exitScale));
-            opacity: 0;
-        }
     }
 
-    @keyframes drawFloret {
-        to { stroke-dashoffset: 0; }
-    }
-
-    /* Long hairline strokes create the impression of the flower being woven. */
-    .thread-field {
-        position: absolute;
-        inset: -4%;
-        width: 108%;
-        height: 108%;
-        overflow: visible;
-    }
-
-    .thread-field path {
-        fill: none;
-        stroke: #817a73;
-        stroke-width: 0.75;
-        stroke-linecap: round;
-        vector-effect: non-scaling-stroke;
-        opacity: 0;
-        stroke-dasharray: 1;
-        stroke-dashoffset: 1;
-        animation: weaveThread 5s cubic-bezier(0.42, 0, 0.2, 1) var(--thread-delay) forwards;
-    }
-
-    @keyframes weaveThread {
-        0% { opacity: 0; stroke-dashoffset: 1; }
-        12% { opacity: 0.36; }
-        55% { opacity: 0.5; stroke-dashoffset: 0; }
-        72% { opacity: 0.25; stroke-dashoffset: 0; }
-        100% { opacity: 0; stroke-dashoffset: -1; }
+    @keyframes becomePetal {
+        0% { stroke-dasharray: 18 242; stroke-dashoffset: 96; }
+        48% { stroke-dasharray: 18 242; stroke-dashoffset: -34; }
+        60% { stroke-dasharray: 18 242; stroke-dashoffset: 0; }
+        84%, 100% { stroke-dasharray: 260 0; stroke-dashoffset: 0; }
     }
 
     @keyframes releaseIntro {
@@ -205,7 +178,7 @@
         opacity: 0;
         color: #716b65;
         pointer-events: none;
-        animation: printWatermark 1.6s ease 4.35s forwards;
+        animation: printWatermark 1.6s ease 4.55s forwards;
     }
 
     .home-watermark svg { width: 100%; height: 100%; overflow: visible; }
@@ -218,7 +191,7 @@
 
     @keyframes printWatermark {
         from { opacity: 0; transform: translate(18px, 14px) rotate(3deg) scale(1.03); }
-        to { opacity: 0.055; transform: translate(0, 0) rotate(0) scale(1); }
+        to { opacity: 0.075; transform: translate(0, 0) rotate(0) scale(1); }
     }
 
     .home-container {
@@ -230,7 +203,7 @@
         padding: 40px 20px;
         opacity: 0;
         transform: translateY(10px);
-        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 5.35s forwards;
+        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 5.05s forwards;
     }
 
     @keyframes contentReveal {
@@ -253,7 +226,7 @@
 
     .skip-home-intro .home-watermark,
     .intro-complete .home-watermark {
-        opacity: 0.055;
+        opacity: 0.075;
         transform: none;
         animation: none;
     }
@@ -266,7 +239,7 @@
             transform: none;
             animation: none;
         }
-        .home-watermark { opacity: 0.055; transform: none; animation: none; }
+        .home-watermark { opacity: 0.075; transform: none; animation: none; }
     }
 
     .avatar { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; filter: grayscale(30%) contrast(1.1); margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); }
@@ -308,31 +281,20 @@
 
 <!-- The full-viewport weave is decorative and deliberately absent after one session play. -->
 <div class="intro-flower-container">
-    <svg class="thread-field" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true">
-        <path pathLength="1" style="--thread-delay: 0s" d="M-40 72 C175 78 286 242 500 350" />
-        <path pathLength="1" style="--thread-delay: .12s" d="M1040 92 C814 108 716 254 500 350" />
-        <path pathLength="1" style="--thread-delay: .24s" d="M-40 630 C196 602 302 448 500 350" />
-        <path pathLength="1" style="--thread-delay: .05s" d="M1040 618 C814 596 700 448 500 350" />
-        <path pathLength="1" style="--thread-delay: .3s" d="M492-40 C418 142 430 230 500 350" />
-        <path pathLength="1" style="--thread-delay: .18s" d="M514 740 C590 580 570 454 500 350" />
-        <path pathLength="1" style="--thread-delay: .36s" d="M-40 354 C176 300 318 306 500 350" />
-        <path pathLength="1" style="--thread-delay: .08s" d="M1040 338 C824 410 684 400 500 350" />
-    </svg>
-
     <div class="intro-stage" aria-hidden="true">
         <svg class="intro-flower" viewBox="-120 -120 240 240">
-            <!-- The custom properties describe entry, curved bend, bloom, and exit. -->
-            <g class="floret" style="--startX:-155px;--startY:-175px;--startR:-90deg;--bendX:-68px;--bendY:-72px;--bendR:-32deg;--endX:0px;--endY:0px;--endR:15deg;--exitX:170px;--exitY:-120px;--exitR:92deg;--scale:.9;--midScale:.5;--exitScale:.65;--delay:0s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-220px;--startY:-40px;--startR:-55deg;--bendX:-100px;--bendY:-80px;--bendR:8deg;--endX:-24px;--endY:-23px;--endR:45deg;--exitX:-180px;--exitY:-130px;--exitR:110deg;--scale:.75;--midScale:.42;--exitScale:.54;--delay:.08s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:220px;--startY:-140px;--startR:80deg;--bendX:100px;--bendY:-65px;--bendR:18deg;--endX:25px;--endY:-18px;--endR:-20deg;--exitX:190px;--exitY:-100px;--exitR:-105deg;--scale:.7;--midScale:.39;--exitScale:.5;--delay:.16s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-230px;--startY:100px;--startR:-120deg;--bendX:-100px;--bendY:45px;--bendR:-58deg;--endX:-38px;--endY:4px;--endR:-15deg;--exitX:-220px;--exitY:60px;--exitR:-118deg;--scale:.65;--midScale:.36;--exitScale:.47;--delay:.22s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:230px;--startY:90px;--startR:130deg;--bendX:110px;--bendY:50px;--bendR:78deg;--endX:38px;--endY:3px;--endR:35deg;--exitX:230px;--exitY:90px;--exitR:140deg;--scale:.65;--midScale:.36;--exitScale:.47;--delay:.28s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-120px;--startY:220px;--startR:-150deg;--bendX:-75px;--bendY:100px;--bendR:118deg;--endX:-21px;--endY:28px;--endR:65deg;--exitX:-140px;--exitY:210px;--exitR:170deg;--scale:.7;--midScale:.39;--exitScale:.5;--delay:.34s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:140px;--startY:220px;--startR:155deg;--bendX:75px;--bendY:100px;--bendR:-95deg;--endX:24px;--endY:26px;--endR:-50deg;--exitX:160px;--exitY:200px;--exitR:-165deg;--scale:.75;--midScale:.42;--exitScale:.54;--delay:.38s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:20px;--startY:-230px;--startR:-75deg;--bendX:55px;--bendY:-110px;--bendR:-28deg;--endX:3px;--endY:-42px;--endR:10deg;--exitX:40px;--exitY:-220px;--exitR:88deg;--scale:.55;--midScale:.31;--exitScale:.4;--delay:.12s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-20px;--startY:230px;--startR:180deg;--bendX:-55px;--bendY:110px;--bendR:125deg;--endX:-2px;--endY:42px;--endR:80deg;--exitX:-30px;--exitY:230px;--exitR:184deg;--scale:.6;--midScale:.34;--exitScale:.43;--delay:.2s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-220px;--startY:-160px;--startR:-70deg;--bendX:-85px;--bendY:-22px;--bendR:-8deg;--endX:-12px;--endY:-4px;--endR:30deg;--exitX:-190px;--exitY:-160px;--exitR:132deg;--scale:.5;--midScale:.28;--exitScale:.36;--delay:.3s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:220px;--startY:-15px;--startR:90deg;--bendX:90px;--bendY:25px;--bendR:35deg;--endX:15px;--endY:7px;--endR:-10deg;--exitX:220px;--exitY:-20px;--exitR:-105deg;--scale:.5;--midScale:.28;--exitScale:.36;--delay:.36s"><use href="#hydrangea-floret" /></g>
+            <!-- The custom properties describe entry, curved bend, and final bloom. -->
+            <g class="floret" style="--startX:-20vw;--startY:-48vh;--startR:-90deg;--bendX:-68px;--bendY:-72px;--bendR:-32deg;--endX:0px;--endY:0px;--endR:15deg;--scale:.9;--delay:0s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-48vw;--startY:-25vh;--startR:-55deg;--bendX:-100px;--bendY:-80px;--bendR:8deg;--endX:-24px;--endY:-23px;--endR:45deg;--scale:.75;--delay:.08s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:48vw;--startY:-36vh;--startR:80deg;--bendX:100px;--bendY:-65px;--bendR:18deg;--endX:25px;--endY:-18px;--endR:-20deg;--scale:.7;--delay:.16s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-50vw;--startY:20vh;--startR:-120deg;--bendX:-100px;--bendY:45px;--bendR:-58deg;--endX:-38px;--endY:4px;--endR:-15deg;--scale:.65;--delay:.22s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:50vw;--startY:18vh;--startR:130deg;--bendX:110px;--bendY:50px;--bendR:78deg;--endX:38px;--endY:3px;--endR:35deg;--scale:.65;--delay:.28s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-30vw;--startY:48vh;--startR:-150deg;--bendX:-75px;--bendY:100px;--bendR:118deg;--endX:-21px;--endY:28px;--endR:65deg;--scale:.7;--delay:.34s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:32vw;--startY:48vh;--startR:155deg;--bendX:75px;--bendY:100px;--bendR:-95deg;--endX:24px;--endY:26px;--endR:-50deg;--scale:.75;--delay:.38s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:5vw;--startY:-50vh;--startR:-75deg;--bendX:55px;--bendY:-110px;--bendR:-28deg;--endX:3px;--endY:-42px;--endR:10deg;--scale:.55;--delay:.12s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-5vw;--startY:50vh;--startR:180deg;--bendX:-55px;--bendY:110px;--bendR:125deg;--endX:-2px;--endY:42px;--endR:80deg;--scale:.6;--delay:.2s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-48vw;--startY:-38vh;--startR:-70deg;--bendX:-85px;--bendY:-22px;--bendR:-8deg;--endX:-12px;--endY:-4px;--endR:30deg;--scale:.5;--delay:.3s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:48vw;--startY:-5vh;--startR:90deg;--bendX:90px;--bendY:25px;--bendR:35deg;--endX:15px;--endY:7px;--endR:-10deg;--scale:.5;--delay:.36s"><use href="#hydrangea-floret" /></g>
         </svg>
     </div>
     <button class="intro-skip" type="button">Skip</button>

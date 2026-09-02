@@ -12,6 +12,8 @@
     }
 
     .about-container {
+        position: relative;
+        z-index: 1;
         max-width: 720px;
         margin: 0 auto;
         padding: 40px 20px 60px;
@@ -190,6 +192,7 @@
 {{ end }}
 
 {{ define "content" }}
+{{ partial "hydrangea-watermark.html" (dict "placement" "about") }}
 <div class="about-container">
     
     {{ partial "site-nav.html" (dict "active" "about") }}
