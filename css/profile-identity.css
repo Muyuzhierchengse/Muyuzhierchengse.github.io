@@ -11,6 +11,11 @@
 .profile-identity {
     box-sizing: border-box;
     color: var(--profile-ink);
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.4;
     text-align: center;
     view-transition-name: profile-identity;
 }
@@ -43,6 +48,7 @@
     justify-content: center;
     color: #aaa39c;
     font-size: 12px;
+    line-height: 1.5;
     letter-spacing: 2px;
     text-transform: uppercase;
 }
@@ -98,6 +104,8 @@
     position: sticky;
     top: 34px;
     width: 260px;
+    min-width: 260px;
+    min-height: 506px;
     padding: 30px 22px 27px;
     border-top: 1px solid var(--profile-line);
     border-bottom: 1px solid var(--profile-line);
@@ -108,6 +116,8 @@
     height: 104px;
     margin: 0 auto 19px;
 }
+
+.profile-identity--rail .profile-identity__body { width: 100%; }
 
 .profile-identity--rail .profile-identity__signature {
     width: 224px;
@@ -120,6 +130,7 @@
     color: #292622;
     font-size: 18px;
     font-weight: normal;
+    line-height: 1.35;
     letter-spacing: 2px;
 }
 
@@ -128,6 +139,7 @@
     color: #77716a;
     font-size: 12px;
     font-style: italic;
+    line-height: 1.5;
 }
 
 .profile-identity__focus {
@@ -142,6 +154,7 @@
     margin-bottom: 11px;
     color: #9a8e82;
     font-size: 9.5px;
+    line-height: 1.4;
     letter-spacing: 2.2px;
     text-transform: uppercase;
 }
@@ -191,6 +204,11 @@
     grid-template-columns: 260px minmax(0, 1fr);
     gap: clamp(44px, 5vw, 76px);
     align-items: start;
+}
+
+.inner-page-layout > .profile-identity--rail {
+    align-self: start;
+    justify-self: start;
 }
 
 .inner-page-content {
@@ -246,6 +264,8 @@
     .profile-identity--rail {
         position: static;
         width: min(620px, 100%);
+        min-width: 0;
+        min-height: 0;
         margin: 0 auto 54px;
         padding: 18px 20px;
         display: grid;
@@ -289,6 +309,7 @@
 
     .profile-identity--rail {
         width: 100%;
+        min-width: 0;
         margin-bottom: 44px;
         padding: 15px 10px;
         grid-template-columns: 62px minmax(0, 1fr);
