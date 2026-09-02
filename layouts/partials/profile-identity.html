@@ -4,7 +4,20 @@
     <div class="profile-identity__body">
         {{ if eq $mode "hero" }}<h1 class="profile-identity__sr-only">Zhimu Yang</h1>{{ end }}
         <img class="profile-identity__signature" src="/images/zhimu-yang-signature.png" alt="" aria-hidden="true">
+        {{ if eq $mode "hero" }}
         <p class="profile-identity__description">Aspiring Student in Theoretical Computer Science.</p>
+        {{ else }}
+        <h2 class="profile-identity__name">Zhimu Yang</h2>
+        <p class="profile-identity__role">Theoretical Computer Science</p>
+        <div class="profile-identity__focus">
+            <div class="profile-identity__focus-label">Research Interests</div>
+            <ul>
+                <li>Algorithms &amp; Complexity</li>
+                <li>Quantum Computing</li>
+                <li>Interpretable AI</li>
+            </ul>
+        </div>
+        {{ end }}
         <nav class="profile-identity__links" aria-label="Profile links">
             <a href="https://github.com/muyuzhierchengse" target="_blank" rel="noopener">GitHub</a>
             <span aria-hidden="true">·</span>
