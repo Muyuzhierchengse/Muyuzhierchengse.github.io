@@ -24,10 +24,10 @@
                 // can only see a white flash with no way to inspect the intro.
                 document.documentElement.classList.add("force-home-intro");
             }
-            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v9") === "true") {
+            if (!forceIntro && sessionStorage.getItem("zhimu-home-intro-seen-v10") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v9", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v10", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -63,6 +63,45 @@
                 return value * value * (3 - 2 * value);
             }
 
+            function buildMotionProfile(line, samples = 180) {
+                const length = line.getTotalLength();
+                const points = [];
+                for (let index = 0; index <= samples; index += 1) {
+                    points.push(line.getPointAtLength(length * index / samples));
+                }
+                const cumulative = [0];
+                for (let index = 1; index <= samples; index += 1) {
+                    const previous = points[Math.max(0, index - 2)];
+                    const current = points[index - 1];
+                    const next = points[index];
+                    const incoming = Math.atan2(current.y - previous.y, current.x - previous.x);
+                    const outgoing = Math.atan2(next.y - current.y, next.x - current.x);
+                    let turn = Math.abs(outgoing - incoming);
+                    if (turn > Math.PI) turn = Math.PI * 2 - turn;
+                    // Curved petals receive more time than straight stems.
+                    const curvatureWeight = 1 + Math.min(turn / 0.48, 1) * 1.45;
+                    cumulative.push(cumulative[index - 1] + curvatureWeight);
+                }
+                const totalWeight = cumulative[cumulative.length - 1];
+                return {
+                    length,
+                    distanceAt(timeProgress) {
+                        const target = Math.max(0, Math.min(1, timeProgress)) * totalWeight;
+                        let low = 0;
+                        let high = samples;
+                        while (low < high) {
+                            const middle = Math.floor((low + high) / 2);
+                            if (cumulative[middle] < target) low = middle + 1;
+                            else high = middle;
+                        }
+                        const index = Math.max(1, low);
+                        const span = cumulative[index] - cumulative[index - 1] || 1;
+                        const local = (target - cumulative[index - 1]) / span;
+                        return ((index - 1) + local) / samples;
+                    }
+                };
+            }
+
             function flowerStartInViewport(line) {
                 const firstPoint = line.getPointAtLength(0);
                 const svgPoint = line.ownerSVGElement.createSVGPoint();
@@ -88,15 +127,32 @@
                 ingressCanvas.setAttribute("viewBox", `0 0 ${viewportWidth} ${viewportHeight}`);
             }
 
+            const motionProfiles = flowerLines.map(buildMotionProfile);
+            const longestPath = Math.max(...motionProfiles.map(function (profile) { return profile.length; }));
+            const drawDelays = motionProfiles.map(function (_, index) { return 1100 + index * 110; });
+            const drawDurations = motionProfiles.map(function (profile) {
+                return 1500 + 1100 * profile.length / longestPath;
+            });
+            const drawFinish = Math.max(...drawDelays.map(function (delay, index) {
+                return delay + drawDurations[index];
+            }));
+            const unwindBase = drawFinish + 420;
+            const unwindDurations = drawDurations.map(function (duration) { return 780 + duration * 0.2; });
+            const unwindDelays = motionProfiles.map(function (_, index) { return unwindBase + index * 70; });
+            const retreatBase = Math.max(...unwindDelays.map(function (delay, index) {
+                return delay + unwindDurations[index];
+            })) - 40;
+
             flowerLines.forEach(function (line, index) {
                 // Every approved flower path has pathLength="1". Keep all
                 // flower dashes in that normalised coordinate system; using
                 // getTotalLength() here makes browsers reveal the whole path
                 // at once instead of drawing it progressively.
-                const drawDelay = 1100 + index * 90;
-                const drawDuration = 2400;
-                const unwindDelay = 4100 + index * 70;
-                const unwindDuration = 1050;
+                const motionProfile = motionProfiles[index];
+                const drawDelay = drawDelays[index];
+                const drawDuration = drawDurations[index];
+                const unwindDelay = unwindDelays[index];
+                const unwindDuration = unwindDurations[index];
 
                 line.style.strokeDasharray = "1 1";
                 line.style.strokeDashoffset = "1";
@@ -119,7 +175,7 @@
                     const segmentLength = Math.max(38, Math.min(58, viewportWidth * 0.045));
                     const ingressDelay = index * 90;
                     const ingressDuration = 1200;
-                    const retreatDelay = 5120 + index * 70;
+                    const retreatDelay = retreatBase + index * 70;
                     const retreatDuration = 1100;
                     ingress.style.strokeDasharray = `${segmentLength} ${ingressLength + segmentLength}`;
                     ingress.style.strokeDashoffset = "0";
@@ -180,10 +236,10 @@
                         return;
                     }
                     const progress = Math.min(elapsed / drawDuration, 1);
-                    // Smoothstep is stable across browsers and keeps both ends calm.
                     const eased = smoothstep(progress);
-                    line.style.strokeDashoffset = `${1 - eased}`;
-                    runner.style.strokeDashoffset = `${-0.955 * eased}`;
+                    const travelled = motionProfile.distanceAt(eased);
+                    line.style.strokeDashoffset = `${1 - travelled}`;
+                    runner.style.strokeDashoffset = `${-0.955 * travelled}`;
                     runner.style.opacity = progress < 0.04
                         ? `${progress / 0.04}`
                         : progress > 0.94
@@ -206,10 +262,11 @@
                     }
                     const progress = Math.min(elapsed / unwindDuration, 1);
                     const eased = smoothstep(progress);
+                    const remaining = motionProfile.distanceAt(1 - eased);
                     // Positive offset removes ink from the far end back toward
                     // the starting point while the runner marks that retreat.
-                    line.style.strokeDashoffset = `${eased}`;
-                    runner.style.strokeDashoffset = `${-0.955 * (1 - eased)}`;
+                    line.style.strokeDashoffset = `${1 - remaining}`;
+                    runner.style.strokeDashoffset = `${-0.955 * remaining}`;
                     runner.style.opacity = progress < 0.06
                         ? `${progress / 0.06}`
                         : progress > 0.92
@@ -249,7 +306,7 @@
         margin-top: 40px;
         opacity: 0;
         transform: translateY(15px);
-        animation: navReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 6.55s forwards;
+        animation: navReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 7.05s forwards;
     }
 
     @keyframes navReveal {
@@ -259,11 +316,11 @@
     /*
      * HYDRANGEA INTRO — four continuous paths form the approved artwork.
      * 0.0–1.5s  four short strokes flow inward on organic curved routes
-     * 1.1–3.8s  those strokes progressively draw the four one-line paths
-     * 3.8–4.1s  the completed hydrangea rests at the centre
-     * 4.1–5.4s  the paths unweave from their ends back to their beginnings
-     * 5.1–6.5s  the same strokes retreat along their entrance trajectories
-     * 6.4–7.2s  the opening sheet fades into the printed watermark
+     * 1.1–4.0s  length- and curvature-aware strokes draw the cubic paths
+     * 4.0–4.4s  the completed hydrangea rests at the centre
+     * 4.4–5.7s  the paths unweave from their ends back to their beginnings
+     * 5.6–6.9s  the same strokes retreat along their entrance trajectories
+     * 6.9–7.7s  the opening sheet fades into the printed watermark
      *
      * The intro and every page watermark read the same SVG source, so their
      * geometry can never drift apart during future revisions.
@@ -276,7 +333,7 @@
         z-index: 999;
         overflow: hidden;
         background: #fcfbf9;
-        animation: releaseIntro 0.85s ease 6.35s forwards;
+        animation: releaseIntro 0.85s ease 6.85s forwards;
     }
 
     .intro-stage {
@@ -303,7 +360,7 @@
     .intro-stage .hydrangea-runner {
         fill: none;
         stroke: #5f5954;
-        stroke-width: 2.35;
+        stroke-width: 1.85;
         stroke-linecap: round;
         stroke-linejoin: round;
         vector-effect: non-scaling-stroke;
@@ -315,7 +372,7 @@
     }
 
     .intro-stage .hydrangea-runner {
-        stroke-width: 2.8;
+        stroke-width: 2.1;
     }
 
     /* Full-viewport curves are invisible; only a short travelling dash shows. */
@@ -330,7 +387,7 @@
     .ingress-stroke {
         fill: none;
         stroke: #5f5954;
-        stroke-width: 2.35;
+        stroke-width: 1.9;
         stroke-linecap: round;
         stroke-linejoin: round;
         vector-effect: non-scaling-stroke;
@@ -372,14 +429,14 @@
         opacity: 0;
         color: #716b65;
         pointer-events: none;
-        animation: printWatermark 1.3s ease 5.85s forwards;
+        animation: printWatermark 1.3s ease 6.25s forwards;
     }
 
     .home-watermark svg { width: 100%; height: 100%; overflow: visible; }
     .home-watermark .hydrangea-line {
         fill: none;
         stroke: currentColor;
-        stroke-width: 2.4;
+        stroke-width: 2.1;
         vector-effect: non-scaling-stroke;
     }
 
@@ -397,7 +454,7 @@
         padding: 40px 20px;
         opacity: 0;
         transform: translateY(10px);
-        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 6.5s forwards;
+        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 7s forwards;
     }
 
     @keyframes contentReveal {
@@ -464,7 +521,7 @@
         .home-page .site-nav { margin-top: 28px; }
         .home-container { padding-top: 20px; }
         .intro-stage { width: min(68vw, 270px); }
-        .ingress-stroke { stroke-width: 2.15; }
+        .ingress-stroke { stroke-width: 1.75; }
         .home-watermark { width: 310px; right: -112px; bottom: -76px; opacity: 0; }
     }
 </style>
