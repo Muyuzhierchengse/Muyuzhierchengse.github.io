@@ -1,0 +1,205 @@
+{{ define "styles" }}
+<style>
+    body {
+        margin: 0;
+        background: #fcfbf9;
+        color: #2a2a2a;
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .publications-container {
+        position: relative;
+        z-index: 1;
+        width: min(860px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 40px 0 76px;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: publicationReveal 1.2s cubic-bezier(.25, 1, .5, 1) forwards;
+    }
+
+    @keyframes publicationReveal {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .publications-header {
+        max-width: 680px;
+        margin: 0 auto 66px;
+        text-align: center;
+    }
+
+    .publications-kicker {
+        color: #9b8573;
+        font-size: 11px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+    .publications-title {
+        margin: 15px 0 10px;
+        color: #211f1d;
+        font-size: clamp(30px, 5vw, 48px);
+        font-weight: normal;
+        letter-spacing: 4px;
+    }
+
+    .publications-subtitle {
+        margin: 0;
+        color: #6e6862;
+        font-size: 15px;
+        font-style: italic;
+        line-height: 1.75;
+    }
+
+    .divider {
+        margin-top: 28px;
+        color: #c8c1b7;
+        font-size: 16px;
+        letter-spacing: 8px;
+        user-select: none;
+    }
+
+    .year-group {
+        display: grid;
+        grid-template-columns: 112px minmax(0, 1fr);
+        gap: 34px;
+        margin-bottom: 58px;
+    }
+
+    .year-label {
+        padding-top: 3px;
+        color: #9b8573;
+        font-size: 13px;
+        letter-spacing: 3px;
+    }
+
+    .publication-item {
+        padding: 0 0 31px;
+        border-bottom: 1px solid #ded9d2;
+    }
+
+    .publication-item + .publication-item { padding-top: 31px; }
+    .publication-item:last-child { padding-bottom: 0; border-bottom: 0; }
+
+    .publication-title {
+        margin: 0 0 9px;
+        color: #171614;
+        font-size: 17px;
+        font-weight: normal;
+        line-height: 1.55;
+    }
+
+    .publication-authors {
+        margin-bottom: 7px;
+        color: #625d58;
+        font-size: 13.5px;
+        font-style: italic;
+        line-height: 1.65;
+    }
+
+    .publication-authors strong { color: #2a2724; font-weight: 600; }
+
+    .publication-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 10px 20px;
+    }
+
+    .publication-venue {
+        color: #8b8179;
+        font-size: 11px;
+        letter-spacing: 1.35px;
+        text-transform: uppercase;
+    }
+
+    .publication-links { display: flex; gap: 16px; }
+
+    .publication-links a {
+        color: #5d554e;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        text-decoration: none;
+        text-transform: uppercase;
+        border-bottom: 1px solid #c8b9aa;
+        transition: color .3s ease, border-color .3s ease;
+    }
+
+    .publication-links a:hover,
+    .publication-links a:focus-visible {
+        color: #111;
+        border-color: #111;
+    }
+
+    @media (max-width: 620px) {
+        .publications-container {
+            width: min(100% - 36px, 860px);
+            padding-top: 28px;
+        }
+
+        .publications-header { margin-bottom: 52px; }
+        .publications-kicker { letter-spacing: 3px; }
+        .publications-title { letter-spacing: 3px; }
+
+        .year-group {
+            display: block;
+            margin-bottom: 50px;
+        }
+
+        .year-label {
+            margin-bottom: 22px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ded9d2;
+        }
+
+        .publication-title { font-size: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .publications-container { opacity: 1; transform: none; animation: none; }
+    }
+</style>
+{{ end }}
+
+{{ define "content" }}
+{{ partial "hydrangea-watermark.html" (dict "placement" "publications") }}
+<div class="publications-container">
+    {{ partial "site-nav.html" (dict "active" "publications") }}
+
+    <header class="publications-header">
+        <div class="publications-kicker">Scholarly Record</div>
+        <h1 class="publications-title">Publications</h1>
+        <p class="publications-subtitle">{{ .Params.subtitle }}</p>
+        <div class="divider">☙ ❖ ❧</div>
+    </header>
+
+    <main aria-label="Publication list">
+        {{ range .Params.years }}
+        <section class="year-group" aria-labelledby="year-{{ .year }}">
+            <div class="year-label" id="year-{{ .year }}">{{ .year }}</div>
+            <div>
+                {{ range .publications }}
+                {{ $publicationTitle := .title }}
+                <article class="publication-item">
+                    <h2 class="publication-title">{{ .title }}</h2>
+                    <div class="publication-authors">{{ .authors | markdownify }}</div>
+                    <div class="publication-meta">
+                        <span class="publication-venue">{{ .venue }}</span>
+                        {{ with .links }}
+                        <nav class="publication-links" aria-label="Links for {{ $publicationTitle }}">
+                            {{ range . }}
+                            <a href="{{ .url }}" target="_blank" rel="noopener">{{ .label }}</a>
+                            {{ end }}
+                        </nav>
+                        {{ end }}
+                    </div>
+                </article>
+                {{ end }}
+            </div>
+        </section>
+        {{ end }}
+    </main>
+</div>
+{{ end }}

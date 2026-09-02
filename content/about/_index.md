@@ -58,15 +58,4 @@ experience:
     meta: "Communication University of China, MIPG"
     desc: "Evaluated the architectural limitations and multimodal generative capabilities of GAN models, alongside other generative frameworks (CycleGAN, DRIT, Diffusion)."
 
-publications:
-  - title: "A Polynomial Architecture-Attribution Co-Design Framework for Exact Aumann-Shapley Attribution in GNNs"
-    authors: "Bizu Feng, **Zhimu Yang**, Shuming Wang, Shaode Yu, Yuan Cheng, Xiaojun Qian, Zixin Hu"
-    status: "arXiv:2607.21094. [Paper](https://arxiv.org/abs/2607.21094) · [Code](https://github.com/Muyuzhierchengse/APEX)"
-  - title: "FSX: Message Flow Sensitivity Enhanced Structural Explainer for Graph Neural Networks"
-    authors: "Bizu Feng, **Zhimu Yang**, Shaode Yu, Zixin Hu"
-    status: "arXiv:2601.14730. [Paper](https://arxiv.org/abs/2601.14730)"
-  - title: "Exploring Kolmogorov-Arnold networks for realistic image sharpness assessment"
-    authors: "Shaode Yu, Ze Chen, **Zhimu Yang**, Jiacheng Gu, Bizu Feng, Qiurui Sun"
-    status: "IEEE ICASSP 2025. [Paper](https://doi.org/10.1109/ICASSP49660.2025.10890447) · [arXiv](https://arxiv.org/abs/2409.07762) · [Code](https://github.com/Muyuzhierchengse/TaylorKAN)"
-
 ---

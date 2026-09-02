@@ -237,22 +237,6 @@
     </div>
     {{ end }}
 
-    <h2 class="section-title">Publications &amp; Manuscripts</h2>
-
-    {{ range .Params.publications }}
-    <div class="content-block">
-        <div style="font-size: 15px; margin-bottom: 6px;">
-            ◈ <b>{{ .title }}</b>
-        </div>
-        <div class="item-meta" style="margin-bottom: 4px;">
-            {{ .authors | markdownify }}
-        </div>
-        <div style="font-size: 14px; color: #555;">
-            {{ .status | markdownify }}
-        </div>
-    </div>
-    {{ end }}
-
 </div>
 {{ end }}
 
