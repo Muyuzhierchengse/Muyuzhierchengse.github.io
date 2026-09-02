@@ -11,10 +11,10 @@
         try {
             // Version the key whenever the opening artwork changes materially,
             // so returning visitors are introduced to the new sequence once.
-            if (sessionStorage.getItem("zhimu-home-intro-seen-v5") === "true") {
+            if (sessionStorage.getItem("zhimu-home-intro-seen-v6") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v5", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v6", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -23,13 +23,12 @@
         // The visual sequence is decorative, so visitors can dismiss it at any
         // point without affecting navigation or the page content underneath.
         document.addEventListener("DOMContentLoaded", function () {
-            // Use each path's measured length rather than a normalized CSS
-            // estimate. This guarantees a genuinely blank first frame in every
-            // browser, with the permanent ink revealed only behind the runner.
+            // Direct requestAnimationFrame updates are used instead of the Web
+            // Animations API because iOS Safari may discretise SVG dash motion.
             document.querySelectorAll(".intro-stage .hydrangea-line").forEach(function (line, index) {
                 const length = line.getTotalLength();
-                const delay = index * 180;
-                const duration = 3900;
+                const delay = 1420 + index * 80;
+                const duration = 2900;
 
                 line.style.strokeDasharray = `${length} ${length}`;
                 line.style.strokeDashoffset = `${length}`;
@@ -44,23 +43,31 @@
                 runner.style.opacity = "0";
                 line.after(runner);
 
-                line.animate(
-                    [
-                        { strokeDashoffset: length },
-                        { strokeDashoffset: 0 }
-                    ],
-                    { duration, delay, easing: "cubic-bezier(.45,.02,.2,1)", fill: "forwards" }
-                );
-
-                runner.animate(
-                    [
-                        { strokeDashoffset: 0, opacity: 0 },
-                        { strokeDashoffset: -length * 0.04, opacity: 1, offset: 0.04 },
-                        { strokeDashoffset: -length * 0.90, opacity: 1, offset: 0.94 },
-                        { strokeDashoffset: -length * 0.955, opacity: 0 }
-                    ],
-                    { duration, delay, easing: "cubic-bezier(.45,.02,.2,1)", fill: "forwards" }
-                );
+                const startedAt = performance.now();
+                function drawFrame(now) {
+                    const elapsed = now - startedAt - delay;
+                    if (elapsed < 0) {
+                        requestAnimationFrame(drawFrame);
+                        return;
+                    }
+                    const progress = Math.min(elapsed / duration, 1);
+                    // Smoothstep is stable across browsers and keeps both ends calm.
+                    const eased = progress * progress * (3 - 2 * progress);
+                    line.style.strokeDashoffset = `${length * (1 - eased)}`;
+                    runner.style.strokeDashoffset = `${-length * 0.955 * eased}`;
+                    runner.style.opacity = progress < 0.04
+                        ? `${progress / 0.04}`
+                        : progress > 0.94
+                            ? `${(1 - progress) / 0.06}`
+                            : "1";
+                    if (progress < 1) {
+                        requestAnimationFrame(drawFrame);
+                    } else {
+                        line.style.strokeDashoffset = "0";
+                        runner.style.opacity = "0";
+                    }
+                }
+                requestAnimationFrame(drawFrame);
             });
 
             const skipButton = document.querySelector(".intro-skip");
@@ -111,6 +118,7 @@
      * geometry can never drift apart during future revisions.
      */
     .intro-flower-container {
+        --flower-size: clamp(260px, 34vw, 380px);
         position: fixed;
         inset: 0;
         pointer-events: none;
@@ -124,7 +132,7 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: clamp(260px, 34vw, 380px);
+        width: var(--flower-size);
         aspect-ratio: 1;
         transform: translate(-50%, -50%);
     }
@@ -157,6 +165,67 @@
 
     .intro-stage .hydrangea-runner {
         stroke-width: 3.15;
+    }
+
+    /*
+     * Four fixed-length threads enter from beyond the viewport. Their final
+     * endpoints coincide with the starts of the four SVG drawing paths; the
+     * path runners appear during the final crossfade, reading as one gesture.
+     */
+    .approach-thread {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 54px;
+        height: 1.6px;
+        margin-left: -54px;
+        border-radius: 999px;
+        background: #5f5954;
+        opacity: 0;
+        transform-origin: right center;
+        animation: approachThread 1.45s cubic-bezier(.35, .02, .18, 1) var(--approach-delay) forwards;
+    }
+
+    .approach-thread--a {
+        --approach-delay: 0s;
+        --start-x: -55vw; --start-y: -12vh; --start-r: 12deg;
+        --mid-x: -28vw; --mid-y: -5vh; --mid-r: 2deg;
+        --end-x: -117px; --end-y: 5px; --end-r: -8deg;
+    }
+    .approach-thread--b {
+        --approach-delay: .08s;
+        --start-x: 16vw; --start-y: -55vh; --start-r: 98deg;
+        --mid-x: 8vw; --mid-y: -25vh; --mid-r: 72deg;
+        --end-x: -1px; --end-y: 16px; --end-r: 22deg;
+    }
+    .approach-thread--c {
+        --approach-delay: .16s;
+        --start-x: -56vw; --start-y: 24vh; --start-r: -18deg;
+        --mid-x: -31vw; --mid-y: 14vh; --mid-r: -8deg;
+        --end-x: -162px; --end-y: 45px; --end-r: 3deg;
+    }
+    .approach-thread--d {
+        --approach-delay: .24s;
+        --start-x: 20vw; --start-y: 54vh; --start-r: -76deg;
+        --mid-x: 12vw; --mid-y: 28vh; --mid-r: -88deg;
+        --end-x: 8px; --end-y: 120px; --end-r: -102deg;
+    }
+
+    @keyframes approachThread {
+        0% {
+            opacity: 0;
+            transform: translate(var(--start-x), var(--start-y)) rotate(var(--start-r));
+        }
+        12% { opacity: 1; }
+        58% {
+            opacity: 1;
+            transform: translate(var(--mid-x), var(--mid-y)) rotate(var(--mid-r));
+        }
+        88% { opacity: 1; }
+        100% {
+            opacity: 0;
+            transform: translate(var(--end-x), var(--end-y)) rotate(var(--end-r));
+        }
     }
 
     @keyframes releaseIntro {
@@ -281,6 +350,11 @@
         .home-page .site-nav { margin-top: 28px; }
         .home-container { padding-top: 20px; }
         .intro-stage { width: min(68vw, 270px); }
+        .approach-thread { width: 46px; margin-left: -46px; height: 1.45px; }
+        .approach-thread--a { --end-x: -83px; --end-y: 4px; }
+        .approach-thread--b { --end-x: -1px; --end-y: 11px; }
+        .approach-thread--c { --end-x: -115px; --end-y: 32px; }
+        .approach-thread--d { --end-x: 5px; --end-y: 86px; }
         .home-watermark { width: 310px; right: -112px; bottom: -76px; opacity: 0; }
     }
 </style>
@@ -290,6 +364,12 @@
     
 <!-- The full-viewport weave is decorative and deliberately absent after one session play. -->
 <div class="intro-flower-container">
+    <div class="approach-field" aria-hidden="true">
+        <span class="approach-thread approach-thread--a"></span>
+        <span class="approach-thread approach-thread--b"></span>
+        <span class="approach-thread approach-thread--c"></span>
+        <span class="approach-thread approach-thread--d"></span>
+    </div>
     <div class="intro-stage" aria-hidden="true">
         {{ partial "hydrangea-art.html" . }}
     </div>
