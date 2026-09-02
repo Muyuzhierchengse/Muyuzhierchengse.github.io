@@ -17,6 +17,17 @@
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
         }
+
+        // The visual sequence is decorative, so visitors can dismiss it at any
+        // point without affecting navigation or the page content underneath.
+        document.addEventListener("DOMContentLoaded", function () {
+            const skipButton = document.querySelector(".intro-skip");
+            if (skipButton) {
+                skipButton.addEventListener("click", function () {
+                    document.documentElement.classList.add("intro-complete");
+                });
+            }
+        });
     </script>
     
 <style>
@@ -36,67 +47,91 @@
     }
 
     .home-page .site-nav {
+        position: relative;
+        z-index: 1;
         margin-top: 40px;
         opacity: 0;
         transform: translateY(15px);
-        /* 延迟至 3.8s，等待花朵动画结束 */
-        animation: navReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 3.8s forwards;
+        animation: navReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 5.15s forwards;
     }
 
     @keyframes navReveal {
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 修复居中：使用 fixed 定位确保花朵不受页面流影响，绝对居于屏幕中心 */
+    /*
+     * HYDRANGEA INTRO — five-part timeline
+     * 0.0–2.8s  travelling threads gather from the edges
+     * 0.4–3.5s  florets follow curved trajectories and are drawn
+     * 3.5–4.2s  the completed hydrangea rests at the centre
+     * 4.2–5.5s  moving lines disperse while the watermark is printed
+     * 5.1–6.2s  navigation and page content are revealed
+     *
+     * The source geometry remains vector-only. Every petal is an instance of
+     * #hydrangea-floret, keeping the artwork editable and the page lightweight.
+     */
     .intro-flower-container {
         position: fixed;
-        top: 50%;
-        left: 50%;
-        width: 240px;
-        height: 240px;
-        transform: translate(-50%, -50%);
+        inset: 0;
         pointer-events: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         z-index: 999;
-        /* 退场时间延后，给足复杂图形绘制的时间 */
-        animation: smoothFadeOut 1.5s cubic-bezier(0.33, 1, 0.68, 1) 3.6s forwards;
+        overflow: hidden;
+        background: #fcfbf9;
+        animation: releaseIntro 1s ease 5.45s forwards;
+    }
+
+    .intro-stage {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: clamp(230px, 30vw, 330px);
+        aspect-ratio: 1;
+        transform: translate(-50%, -50%);
     }
 
     .intro-flower {
         width: 100%;
         height: 100%;
         overflow: visible;
+        filter: drop-shadow(0 10px 20px rgba(68, 59, 52, 0.035));
     }
 
-    /* 单朵小花的漫游入场 */
+    /* Each floret travels through a hand-tuned bend before joining the bloom. */
     .floret {
         opacity: 0;
-        /* 引入 --scale 控制大小层级，让花球更有立体感 */
-        animation: wanderIn 2.2s cubic-bezier(0.25, 1, 0.4, 1) var(--delay) forwards;
+        transform-origin: 0 0;
+        animation: weaveFloret 5.2s cubic-bezier(0.22, 0.7, 0.2, 1) var(--delay) forwards;
     }
 
-    .floret path {
+    .floret use {
         fill: none;
-        stroke: #4a4a4a;
-        stroke-width: 0.8;
+        stroke: #615b56;
+        stroke-width: 0.72;
         stroke-linecap: round;
         stroke-linejoin: round;
         stroke-dasharray: 260;
         stroke-dashoffset: 260;
-        animation: drawFloret 2.2s cubic-bezier(0.25, 1, 0.5, 1) var(--delay) forwards;
+        vector-effect: non-scaling-stroke;
+        animation: drawFloret 3.5s cubic-bezier(0.25, 1, 0.5, 1) var(--delay) forwards;
     }
 
-    @keyframes wanderIn {
-        0% { 
-            transform: translate(var(--startX), var(--startY)) rotate(calc(var(--endR) - 90deg)) scale(0.1); 
-            opacity: 0; 
+    @keyframes weaveFloret {
+        0% {
+            transform: translate(var(--startX), var(--startY)) rotate(var(--startR)) scale(0.12);
+            opacity: 0;
         }
-        20% { opacity: 1; }
-        100% { 
-            transform: translate(var(--endX), var(--endY)) rotate(var(--endR)) scale(var(--scale)); 
-            opacity: 1; 
+        10% { opacity: 0.74; }
+        38% {
+            transform: translate(var(--bendX), var(--bendY)) rotate(var(--bendR)) scale(var(--midScale));
+            opacity: 0.9;
+        }
+        65%, 80% {
+            transform: translate(var(--endX), var(--endY)) rotate(var(--endR)) scale(var(--scale));
+            opacity: 1;
+        }
+        100% {
+            transform: translate(var(--exitX), var(--exitY)) rotate(var(--exitR)) scale(var(--exitScale));
+            opacity: 0;
         }
     }
 
@@ -104,45 +139,132 @@
         to { stroke-dashoffset: 0; }
     }
 
-    @keyframes smoothFadeOut {
-        0% { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); }
-        100% { opacity: 0; transform: translate(-50%, -55%) scale(1.03); filter: blur(1px); } 
+    /* Long hairline strokes create the impression of the flower being woven. */
+    .thread-field {
+        position: absolute;
+        inset: -4%;
+        width: 108%;
+        height: 108%;
+        overflow: visible;
+    }
+
+    .thread-field path {
+        fill: none;
+        stroke: #817a73;
+        stroke-width: 0.75;
+        stroke-linecap: round;
+        vector-effect: non-scaling-stroke;
+        opacity: 0;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        animation: weaveThread 5s cubic-bezier(0.42, 0, 0.2, 1) var(--thread-delay) forwards;
+    }
+
+    @keyframes weaveThread {
+        0% { opacity: 0; stroke-dashoffset: 1; }
+        12% { opacity: 0.36; }
+        55% { opacity: 0.5; stroke-dashoffset: 0; }
+        72% { opacity: 0.25; stroke-dashoffset: 0; }
+        100% { opacity: 0; stroke-dashoffset: -1; }
+    }
+
+    @keyframes releaseIntro {
+        0% { opacity: 1; visibility: visible; }
+        100% { opacity: 0; visibility: hidden; }
+    }
+
+    .intro-skip {
+        position: absolute;
+        right: clamp(20px, 4vw, 54px);
+        bottom: clamp(18px, 4vh, 38px);
+        padding: 8px 4px;
+        border: 0;
+        border-bottom: 1px solid rgba(65, 60, 55, 0.25);
+        background: transparent;
+        color: #8a847e;
+        font: 10px/1 Georgia, serif;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        cursor: pointer;
+        pointer-events: auto;
+    }
+
+    .intro-skip:hover,
+    .intro-skip:focus-visible { color: #2a2a2a; border-color: #2a2a2a; }
+
+    /* The final "printed" motif is a separate copy for a seamless crossfade. */
+    .home-watermark {
+        position: fixed;
+        right: clamp(-76px, -4vw, -24px);
+        bottom: clamp(-64px, -3vw, -18px);
+        width: clamp(260px, 34vw, 480px);
+        aspect-ratio: 1;
+        z-index: 0;
+        opacity: 0;
+        color: #716b65;
+        pointer-events: none;
+        animation: printWatermark 1.6s ease 4.35s forwards;
+    }
+
+    .home-watermark svg { width: 100%; height: 100%; overflow: visible; }
+    .home-watermark use {
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 0.52;
+        vector-effect: non-scaling-stroke;
+    }
+
+    @keyframes printWatermark {
+        from { opacity: 0; transform: translate(18px, 14px) rotate(3deg) scale(1.03); }
+        to { opacity: 0.055; transform: translate(0, 0) rotate(0) scale(1); }
     }
 
     .home-container {
+        position: relative;
+        z-index: 1;
         max-width: 640px;
         width: 100%;
         text-align: center;
         padding: 40px 20px;
         opacity: 0;
         transform: translateY(10px);
-        /* 主内容延迟至 4.1s 出现 */
-        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 4.1s forwards;
+        animation: contentReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) 5.35s forwards;
     }
 
     @keyframes contentReveal {
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .skip-home-intro .intro-flower-container {
+    .skip-home-intro .intro-flower-container,
+    .intro-complete .intro-flower-container {
         display: none;
     }
 
     .skip-home-intro .site-nav,
-    .skip-home-intro .home-container {
+    .skip-home-intro .home-container,
+    .intro-complete .site-nav,
+    .intro-complete .home-container {
         opacity: 1;
+        transform: none;
+        animation: none;
+    }
+
+    .skip-home-intro .home-watermark,
+    .intro-complete .home-watermark {
+        opacity: 0.055;
         transform: none;
         animation: none;
     }
 
     @media (prefers-reduced-motion: reduce) {
         .intro-flower-container { display: none; }
-        .site-nav,
+        .home-page .site-nav,
         .home-container {
             opacity: 1;
             transform: none;
             animation: none;
         }
+        .home-watermark { opacity: 0.055; transform: none; animation: none; }
     }
 
     .avatar { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; filter: grayscale(30%) contrast(1.1); margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); }
@@ -167,61 +289,67 @@
     @media (max-width: 520px) {
         .home-page .site-nav { margin-top: 28px; }
         .home-container { padding-top: 20px; }
+        .intro-stage { width: min(68vw, 270px); }
+        .home-watermark { width: 310px; right: -112px; bottom: -76px; opacity: 0; }
     }
 </style>
 
 </head>
 <body class="home-page">
     
-<!-- 全新设计的复杂版紫阳花，11朵小花互相交织 -->
+<!-- One reusable petal drawing feeds both the moving flower and final watermark. -->
+<svg width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+        <path id="hydrangea-floret" d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
+    </defs>
+</svg>
+
+<!-- The full-viewport weave is decorative and deliberately absent after one session play. -->
 <div class="intro-flower-container">
-    <!-- viewBox 居中法：以 (0,0) 为绝对中心点 -->
-    <svg class="intro-flower" viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg">
-        
-        <!-- Center -->
-        <g class="floret" style="--startX: -120px; --startY: -150px; --endX: 0px; --endY: 0px; --endR: 15deg; --scale: 0.9; --delay: 0s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Top Left -->
-        <g class="floret" style="--startX: -150px; --startY: -50px; --endX: -22px; --endY: -22px; --endR: 45deg; --scale: 0.75; --delay: 0.15s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Top Right -->
-        <g class="floret" style="--startX: 150px; --startY: -100px; --endX: 24px; --endY: -18px; --endR: -20deg; --scale: 0.7; --delay: 0.3s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Left -->
-        <g class="floret" style="--startX: -150px; --startY: 100px; --endX: -35px; --endY: 6px; --endR: -15deg; --scale: 0.65; --delay: 0.4s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Right -->
-        <g class="floret" style="--startX: 150px; --startY: 150px; --endX: 35px; --endY: 4px; --endR: 35deg; --scale: 0.65; --delay: 0.5s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Bottom Left -->
-        <g class="floret" style="--startX: -50px; --startY: 150px; --endX: -20px; --endY: 26px; --endR: 65deg; --scale: 0.7; --delay: 0.65s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Bottom Right -->
-        <g class="floret" style="--startX: 100px; --startY: 150px; --endX: 22px; --endY: 24px; --endR: -50deg; --scale: 0.75; --delay: 0.75s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Outer Top -->
-        <g class="floret" style="--startX: 0px; --startY: -180px; --endX: 2px; --endY: -38px; --endR: 10deg; --scale: 0.55; --delay: 0.85s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Outer Bottom -->
-        <g class="floret" style="--startX: 0px; --startY: 180px; --endX: -2px; --endY: 40px; --endR: 80deg; --scale: 0.6; --delay: 0.95s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Inner Filler 1 -->
-        <g class="floret" style="--startX: -100px; --startY: 0px; --endX: -12px; --endY: -2px; --endR: 30deg; --scale: 0.5; --delay: 1.05s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
-        <!-- Inner Filler 2 -->
-        <g class="floret" style="--startX: 100px; --startY: 0px; --endX: 14px; --endY: 8px; --endR: -10deg; --scale: 0.5; --delay: 1.1s;">
-            <path d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </g>
+    <svg class="thread-field" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true">
+        <path pathLength="1" style="--thread-delay: 0s" d="M-40 72 C175 78 286 242 500 350" />
+        <path pathLength="1" style="--thread-delay: .12s" d="M1040 92 C814 108 716 254 500 350" />
+        <path pathLength="1" style="--thread-delay: .24s" d="M-40 630 C196 602 302 448 500 350" />
+        <path pathLength="1" style="--thread-delay: .05s" d="M1040 618 C814 596 700 448 500 350" />
+        <path pathLength="1" style="--thread-delay: .3s" d="M492-40 C418 142 430 230 500 350" />
+        <path pathLength="1" style="--thread-delay: .18s" d="M514 740 C590 580 570 454 500 350" />
+        <path pathLength="1" style="--thread-delay: .36s" d="M-40 354 C176 300 318 306 500 350" />
+        <path pathLength="1" style="--thread-delay: .08s" d="M1040 338 C824 410 684 400 500 350" />
+    </svg>
+
+    <div class="intro-stage" aria-hidden="true">
+        <svg class="intro-flower" viewBox="-120 -120 240 240">
+            <!-- The custom properties describe entry, curved bend, bloom, and exit. -->
+            <g class="floret" style="--startX:-155px;--startY:-175px;--startR:-90deg;--bendX:-68px;--bendY:-72px;--bendR:-32deg;--endX:0px;--endY:0px;--endR:15deg;--exitX:170px;--exitY:-120px;--exitR:92deg;--scale:.9;--midScale:.5;--exitScale:.65;--delay:0s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-220px;--startY:-40px;--startR:-55deg;--bendX:-100px;--bendY:-80px;--bendR:8deg;--endX:-24px;--endY:-23px;--endR:45deg;--exitX:-180px;--exitY:-130px;--exitR:110deg;--scale:.75;--midScale:.42;--exitScale:.54;--delay:.08s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:220px;--startY:-140px;--startR:80deg;--bendX:100px;--bendY:-65px;--bendR:18deg;--endX:25px;--endY:-18px;--endR:-20deg;--exitX:190px;--exitY:-100px;--exitR:-105deg;--scale:.7;--midScale:.39;--exitScale:.5;--delay:.16s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-230px;--startY:100px;--startR:-120deg;--bendX:-100px;--bendY:45px;--bendR:-58deg;--endX:-38px;--endY:4px;--endR:-15deg;--exitX:-220px;--exitY:60px;--exitR:-118deg;--scale:.65;--midScale:.36;--exitScale:.47;--delay:.22s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:230px;--startY:90px;--startR:130deg;--bendX:110px;--bendY:50px;--bendR:78deg;--endX:38px;--endY:3px;--endR:35deg;--exitX:230px;--exitY:90px;--exitR:140deg;--scale:.65;--midScale:.36;--exitScale:.47;--delay:.28s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-120px;--startY:220px;--startR:-150deg;--bendX:-75px;--bendY:100px;--bendR:118deg;--endX:-21px;--endY:28px;--endR:65deg;--exitX:-140px;--exitY:210px;--exitR:170deg;--scale:.7;--midScale:.39;--exitScale:.5;--delay:.34s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:140px;--startY:220px;--startR:155deg;--bendX:75px;--bendY:100px;--bendR:-95deg;--endX:24px;--endY:26px;--endR:-50deg;--exitX:160px;--exitY:200px;--exitR:-165deg;--scale:.75;--midScale:.42;--exitScale:.54;--delay:.38s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:20px;--startY:-230px;--startR:-75deg;--bendX:55px;--bendY:-110px;--bendR:-28deg;--endX:3px;--endY:-42px;--endR:10deg;--exitX:40px;--exitY:-220px;--exitR:88deg;--scale:.55;--midScale:.31;--exitScale:.4;--delay:.12s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-20px;--startY:230px;--startR:180deg;--bendX:-55px;--bendY:110px;--bendR:125deg;--endX:-2px;--endY:42px;--endR:80deg;--exitX:-30px;--exitY:230px;--exitR:184deg;--scale:.6;--midScale:.34;--exitScale:.43;--delay:.2s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:-220px;--startY:-160px;--startR:-70deg;--bendX:-85px;--bendY:-22px;--bendR:-8deg;--endX:-12px;--endY:-4px;--endR:30deg;--exitX:-190px;--exitY:-160px;--exitR:132deg;--scale:.5;--midScale:.28;--exitScale:.36;--delay:.3s"><use href="#hydrangea-floret" /></g>
+            <g class="floret" style="--startX:220px;--startY:-15px;--startR:90deg;--bendX:90px;--bendY:25px;--bendR:35deg;--endX:15px;--endY:7px;--endR:-10deg;--exitX:220px;--exitY:-20px;--exitR:-105deg;--scale:.5;--midScale:.28;--exitScale:.36;--delay:.36s"><use href="#hydrangea-floret" /></g>
+        </svg>
+    </div>
+    <button class="intro-skip" type="button">Skip</button>
+</div>
+
+<!-- Persistent background impression: the bloom survives as a faint paper watermark. -->
+<div class="home-watermark" aria-hidden="true">
+    <svg viewBox="-120 -120 240 240">
+        <g transform="translate(0 0) rotate(15) scale(.9)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(-24 -23) rotate(45) scale(.75)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(25 -18) rotate(-20) scale(.7)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(-38 4) rotate(-15) scale(.65)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(38 3) rotate(35) scale(.65)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(-21 28) rotate(65) scale(.7)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(24 26) rotate(-50) scale(.75)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(3 -42) rotate(10) scale(.55)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(-2 42) rotate(80) scale(.6)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(-12 -4) rotate(30) scale(.5)"><use href="#hydrangea-floret" /></g>
+        <g transform="translate(15 7) rotate(-10) scale(.5)"><use href="#hydrangea-floret" /></g>
     </svg>
 </div>
 
