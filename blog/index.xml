@@ -1,11 +1,1 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Blog &amp; Notes on Zhimu Yang</title>
-    <link>http://localhost:1313/blog/</link>
-    <description>Recent content in Blog &amp; Notes on Zhimu Yang</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Research on Zhimu Yang</title><link>https://Muyuzhierchengse.github.io/blog/</link><description>Recent content in Research on Zhimu Yang</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Wed, 02 Sep 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://Muyuzhierchengse.github.io/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>GNN Interpretability</title><link>https://Muyuzhierchengse.github.io/blog/gnn-interpretability/</link><pubDate>Wed, 02 Sep 2026 00:00:00 +0000</pubDate><guid>https://Muyuzhierchengse.github.io/blog/gnn-interpretability/</guid><description>A programme for explanations that respect graph structure, message-passing dynamics, and attribution principles.</description></item><item><title>Polynomial Networks</title><link>https://Muyuzhierchengse.github.io/blog/polynomial-networks/</link><pubDate>Wed, 02 Sep 2026 00:00:00 +0000</pubDate><guid>https://Muyuzhierchengse.github.io/blog/polynomial-networks/</guid><description>A programme for neural architectures whose algebraic structure is explicit enough to study, control, and reuse.</description></item><item><title>Quantum Compilation</title><link>https://Muyuzhierchengse.github.io/blog/quantum-compilation/</link><pubDate>Wed, 02 Sep 2026 00:00:00 +0000</pubDate><guid>https://Muyuzhierchengse.github.io/blog/quantum-compilation/</guid><description>A programme on translating quantum algorithms into executable structures under the geometry, motion, and control constraints of physical hardware.</description></item></channel></rss>
