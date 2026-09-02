@@ -11,10 +11,10 @@
         try {
             // Version the key whenever the opening artwork changes materially,
             // so returning visitors are introduced to the new sequence once.
-            if (sessionStorage.getItem("zhimu-home-intro-seen-v3") === "true") {
+            if (sessionStorage.getItem("zhimu-home-intro-seen-v4") === "true") {
                 document.documentElement.classList.add("skip-home-intro");
             } else {
-                sessionStorage.setItem("zhimu-home-intro-seen-v3", "true");
+                sessionStorage.setItem("zhimu-home-intro-seen-v4", "true");
             }
         } catch (error) {
             // If storage is unavailable, keep the normal first-visit animation.
@@ -23,6 +23,19 @@
         // The visual sequence is decorative, so visitors can dismiss it at any
         // point without affecting navigation or the page content underneath.
         document.addEventListener("DOMContentLoaded", function () {
+            // Duplicate each approved path as a short travelling "pen nib".
+            // The original path reveals the permanent ink immediately behind it.
+            document.querySelectorAll(".intro-stage .hydrangea-line").forEach(function (line, index) {
+                const delay = `${index * 0.18}s`;
+                line.style.setProperty("--path-delay", delay);
+                const runner = line.cloneNode(false);
+                runner.removeAttribute("id");
+                runner.classList.remove("hydrangea-line");
+                runner.classList.add("hydrangea-runner");
+                runner.style.setProperty("--path-delay", delay);
+                line.after(runner);
+            });
+
             const skipButton = document.querySelector(".intro-skip");
             if (skipButton) {
                 skipButton.addEventListener("click", function () {
@@ -62,14 +75,13 @@
     }
 
     /*
-     * HYDRANGEA INTRO — the travelling strokes are the flower material.
-     * 0.0–2.8s  fixed-length strokes drift in along individual curves
-     * 2.8–4.2s  each stroke extends around its final petal outline
-     * 4.2–5.1s  the completed hydrangea rests at the centre
+     * HYDRANGEA INTRO — four continuous paths form the approved artwork.
+     * 0.0–4.3s  four fixed-length line heads travel and leave ink behind
+     * 4.3–5.1s  the completed hydrangea rests at the centre
      * 4.6–5.8s  the flower dissolves into the printed watermark
      *
-     * The source geometry remains vector-only. Every petal is an instance of
-     * #hydrangea-floret, keeping the artwork editable and the page lightweight.
+     * The intro and every page watermark read the same SVG source, so their
+     * geometry can never drift apart during future revisions.
      */
     .intro-flower-container {
         position: fixed;
@@ -85,12 +97,12 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: clamp(230px, 30vw, 330px);
+        width: clamp(260px, 34vw, 380px);
         aspect-ratio: 1;
         transform: translate(-50%, -50%);
     }
 
-    .intro-flower {
+    .intro-stage svg {
         width: 100%;
         height: 100%;
         overflow: visible;
@@ -98,49 +110,42 @@
     }
 
     /*
-     * Only a short dash is visible during flight. Once it reaches its final
-     * position the same dash lengthens around the path and becomes the petal.
-     * There are no separate guide lines in this version.
+     * A short runner moves along each one-stroke route. The matching ink path
+     * reveals at the same pace, creating one uninterrupted drawing gesture.
      */
-    .floret {
-        opacity: 0;
-        transform-origin: 0 0;
-        animation: assembleFloret 4.75s cubic-bezier(0.22, 0.7, 0.2, 1) var(--delay) forwards;
-    }
-
-    .floret use {
+    .intro-stage .hydrangea-line,
+    .intro-stage .hydrangea-runner {
         fill: none;
         stroke: #5f5954;
-        stroke-width: 0.8;
+        stroke-width: 4.2;
         stroke-linecap: round;
         stroke-linejoin: round;
-        stroke-dasharray: 18 242;
-        stroke-dashoffset: 96;
         vector-effect: non-scaling-stroke;
-        animation: becomePetal 4.75s cubic-bezier(0.25, 1, 0.5, 1) var(--delay) forwards;
     }
 
-    @keyframes assembleFloret {
-        0% {
-            transform: translate(var(--startX), var(--startY)) rotate(var(--startR)) scale(.55);
-            opacity: 0;
-        }
-        8% { opacity: 0.9; }
-        36% {
-            transform: translate(var(--bendX), var(--bendY)) rotate(var(--bendR)) scale(.55);
-            opacity: 0.96;
-        }
-        60%, 100% {
-            transform: translate(var(--endX), var(--endY)) rotate(var(--endR)) scale(var(--scale));
-            opacity: 1;
-        }
+    .intro-stage .hydrangea-line {
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        animation: leaveHydrangeaInk 3.9s cubic-bezier(.45, .02, .2, 1) var(--path-delay) forwards;
     }
 
-    @keyframes becomePetal {
-        0% { stroke-dasharray: 18 242; stroke-dashoffset: 96; }
-        48% { stroke-dasharray: 18 242; stroke-dashoffset: -34; }
-        60% { stroke-dasharray: 18 242; stroke-dashoffset: 0; }
-        84%, 100% { stroke-dasharray: 260 0; stroke-dashoffset: 0; }
+    .intro-stage .hydrangea-runner {
+        stroke-width: 6;
+        stroke-dasharray: .045 .955;
+        stroke-dashoffset: 0;
+        animation: travelHydrangeaLine 3.9s cubic-bezier(.45, .02, .2, 1) var(--path-delay) forwards;
+    }
+
+    @keyframes leaveHydrangeaInk {
+        from { stroke-dashoffset: 1; }
+        to { stroke-dashoffset: 0; }
+    }
+
+    @keyframes travelHydrangeaLine {
+        0% { stroke-dashoffset: 0; opacity: 0; }
+        4% { opacity: 1; }
+        92% { opacity: 1; }
+        100% { stroke-dashoffset: -.955; opacity: 0; }
     }
 
     @keyframes releaseIntro {
@@ -182,16 +187,16 @@
     }
 
     .home-watermark svg { width: 100%; height: 100%; overflow: visible; }
-    .home-watermark use {
+    .home-watermark .hydrangea-line {
         fill: none;
         stroke: currentColor;
-        stroke-width: 0.52;
+        stroke-width: 4.2;
         vector-effect: non-scaling-stroke;
     }
 
     @keyframes printWatermark {
         from { opacity: 0; transform: translate(18px, 14px) rotate(3deg) scale(1.03); }
-        to { opacity: 0.075; transform: translate(0, 0) rotate(0) scale(1); }
+        to { opacity: 0.11; transform: translate(0, 0) rotate(0) scale(1); }
     }
 
     .home-container {
@@ -226,7 +231,7 @@
 
     .skip-home-intro .home-watermark,
     .intro-complete .home-watermark {
-        opacity: 0.075;
+        opacity: 0.11;
         transform: none;
         animation: none;
     }
@@ -239,7 +244,7 @@
             transform: none;
             animation: none;
         }
-        .home-watermark { opacity: 0.075; transform: none; animation: none; }
+        .home-watermark { opacity: 0.11; transform: none; animation: none; }
     }
 
     .avatar { width: 104px; height: 104px; border-radius: 50%; object-fit: cover; filter: grayscale(30%) contrast(1.1); margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.03); }
@@ -272,49 +277,17 @@
 </head>
 <body class="home-page">
     
-<!-- One reusable petal drawing feeds both the moving flower and final watermark. -->
-<svg width="0" height="0" aria-hidden="true" focusable="false">
-    <defs>
-        <path id="hydrangea-floret" d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-    </defs>
-</svg>
-
 <!-- The full-viewport weave is decorative and deliberately absent after one session play. -->
 <div class="intro-flower-container">
     <div class="intro-stage" aria-hidden="true">
-        <svg class="intro-flower" viewBox="-120 -120 240 240">
-            <!-- The custom properties describe entry, curved bend, and final bloom. -->
-            <g class="floret" style="--startX:-20vw;--startY:-48vh;--startR:-90deg;--bendX:-68px;--bendY:-72px;--bendR:-32deg;--endX:0px;--endY:0px;--endR:15deg;--scale:.9;--delay:0s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-48vw;--startY:-25vh;--startR:-55deg;--bendX:-100px;--bendY:-80px;--bendR:8deg;--endX:-24px;--endY:-23px;--endR:45deg;--scale:.75;--delay:.08s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:48vw;--startY:-36vh;--startR:80deg;--bendX:100px;--bendY:-65px;--bendR:18deg;--endX:25px;--endY:-18px;--endR:-20deg;--scale:.7;--delay:.16s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-50vw;--startY:20vh;--startR:-120deg;--bendX:-100px;--bendY:45px;--bendR:-58deg;--endX:-38px;--endY:4px;--endR:-15deg;--scale:.65;--delay:.22s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:50vw;--startY:18vh;--startR:130deg;--bendX:110px;--bendY:50px;--bendR:78deg;--endX:38px;--endY:3px;--endR:35deg;--scale:.65;--delay:.28s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-30vw;--startY:48vh;--startR:-150deg;--bendX:-75px;--bendY:100px;--bendR:118deg;--endX:-21px;--endY:28px;--endR:65deg;--scale:.7;--delay:.34s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:32vw;--startY:48vh;--startR:155deg;--bendX:75px;--bendY:100px;--bendR:-95deg;--endX:24px;--endY:26px;--endR:-50deg;--scale:.75;--delay:.38s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:5vw;--startY:-50vh;--startR:-75deg;--bendX:55px;--bendY:-110px;--bendR:-28deg;--endX:3px;--endY:-42px;--endR:10deg;--scale:.55;--delay:.12s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-5vw;--startY:50vh;--startR:180deg;--bendX:-55px;--bendY:110px;--bendR:125deg;--endX:-2px;--endY:42px;--endR:80deg;--scale:.6;--delay:.2s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:-48vw;--startY:-38vh;--startR:-70deg;--bendX:-85px;--bendY:-22px;--bendR:-8deg;--endX:-12px;--endY:-4px;--endR:30deg;--scale:.5;--delay:.3s"><use href="#hydrangea-floret" /></g>
-            <g class="floret" style="--startX:48vw;--startY:-5vh;--startR:90deg;--bendX:90px;--bendY:25px;--bendR:35deg;--endX:15px;--endY:7px;--endR:-10deg;--scale:.5;--delay:.36s"><use href="#hydrangea-floret" /></g>
-        </svg>
+        {{ partial "hydrangea-art.html" . }}
     </div>
     <button class="intro-skip" type="button">Skip</button>
 </div>
 
 <!-- Persistent background impression: the bloom survives as a faint paper watermark. -->
 <div class="home-watermark" aria-hidden="true">
-    <svg viewBox="-120 -120 240 240">
-        <g transform="translate(0 0) rotate(15) scale(.9)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(-24 -23) rotate(45) scale(.75)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(25 -18) rotate(-20) scale(.7)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(-38 4) rotate(-15) scale(.65)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(38 3) rotate(35) scale(.65)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(-21 28) rotate(65) scale(.7)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(24 26) rotate(-50) scale(.75)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(3 -42) rotate(10) scale(.55)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(-2 42) rotate(80) scale(.6)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(-12 -4) rotate(30) scale(.5)"><use href="#hydrangea-floret" /></g>
-        <g transform="translate(15 7) rotate(-10) scale(.5)"><use href="#hydrangea-floret" /></g>
-    </svg>
+    {{ partial "hydrangea-art.html" . }}
 </div>
 
 {{ partial "site-nav.html" (dict "active" "home") }}

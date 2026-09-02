@@ -1,19 +1,4 @@
-<!-- Shared watermark: the path is the same floret geometry used by the intro. -->
+<!-- Shared watermark: this exact four-path artwork is also drawn by the intro. -->
 <div class="page-watermark page-watermark--{{ .placement }}" aria-hidden="true">
-    <svg viewBox="-120 -120 240 240" focusable="false">
-        <defs>
-            <path id="page-hydrangea-floret" d="M0,0 C-12,-10 -12,-25 0,-30 C12,-25 12,-10 0,0 M0,0 C10,-12 25,-12 30,0 C25,12 10,12 0,0 M0,0 C12,10 12,25 0,30 C-12,25 -12,10 0,0 M0,0 C-10,12 -25,12 -30,0 C-25,-12 -10,-12 0,0" />
-        </defs>
-        <g transform="translate(0 0) rotate(15) scale(.9)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(-24 -23) rotate(45) scale(.75)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(25 -18) rotate(-20) scale(.7)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(-38 4) rotate(-15) scale(.65)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(38 3) rotate(35) scale(.65)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(-21 28) rotate(65) scale(.7)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(24 26) rotate(-50) scale(.75)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(3 -42) rotate(10) scale(.55)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(-2 42) rotate(80) scale(.6)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(-12 -4) rotate(30) scale(.5)"><use href="#page-hydrangea-floret" /></g>
-        <g transform="translate(15 7) rotate(-10) scale(.5)"><use href="#page-hydrangea-floret" /></g>
-    </svg>
+    {{ partial "hydrangea-art.html" . }}
 </div>
