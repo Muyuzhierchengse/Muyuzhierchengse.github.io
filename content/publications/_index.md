@@ -4,32 +4,14 @@ date: 2026-09-02
 layout: "list"
 subtitle: "Papers and manuscripts, arranged as a concise scholarly record."
 
-# Ongoing work is intentionally described only by field and broad status.
-# Keep private titles, venues, repositories, collaborators, and submission details out of this list.
-ongoing_intro: "Selected directions currently moving through the research process. Further details will be shared when they are ready."
-ongoing:
-  - field: "Graph Neural Network Interpretability"
-    status: "Coming Soon"
-    status_key: "coming-soon"
-  - field: "Architecture-Aware Quantum Compilation"
-    status: "Under Review"
-    status_key: "under-review"
-  - field: "Fault-Tolerant Quantum Systems"
-    status: "Coming Soon"
-    status_key: "coming-soon"
-  - field: "Personalized Speech Synthesis"
-    status: "In Progress"
-    status_key: "in-progress"
-  - field: "Alternative Learning Architectures"
-    status: "In Progress"
-    status_key: "in-progress"
-
 years:
   - year: "2026"
     publications:
       - title: "A Polynomial Architecture-Attribution Co-Design Framework for Exact Aumann-Shapley Attribution in GNNs"
         authors: "Bizu Feng, **Zhimu Yang**, Shuming Wang, Shaode Yu, Yuan Cheng, Xiaojun Qian, Zixin Hu"
         venue: "arXiv:2607.21094"
+        status: "Under Review"
+        status_key: "under-review"
         links:
           - label: "Paper"
             url: "https://arxiv.org/abs/2607.21094"
@@ -38,9 +20,27 @@ years:
       - title: "FSX: Message Flow Sensitivity Enhanced Structural Explainer for Graph Neural Networks"
         authors: "Bizu Feng, **Zhimu Yang**, Shaode Yu, Zixin Hu"
         venue: "arXiv:2601.14730"
+        status: "Revision Planned"
+        status_key: "revision-planned"
         links:
           - label: "Paper"
             url: "https://arxiv.org/abs/2601.14730"
+      # Private work stays intentionally anonymous: field and broad status only.
+      - title: "Graph Neural Network Interpretability"
+        status: "Coming Soon"
+        status_key: "coming-soon"
+      - title: "Architecture-Aware Quantum Compilation"
+        status: "Under Review"
+        status_key: "under-review"
+      - title: "Error-Correction-Aware Quantum Compilation"
+        status: "Coming Soon"
+        status_key: "coming-soon"
+      - title: "Personalized Speech Synthesis"
+        status: "In Progress"
+        status_key: "in-progress"
+      - title: "Alternative Learning Architectures"
+        status: "In Progress"
+        status_key: "in-progress"
   - year: "2025"
     publications:
       - title: "Exploring Kolmogorov-Arnold Networks for Realistic Image Sharpness Assessment"
