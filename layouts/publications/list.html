@@ -134,6 +134,86 @@
         border-color: #111;
     }
 
+    .ongoing-section {
+        display: grid;
+        grid-template-columns: 112px minmax(0, 1fr);
+        gap: 34px;
+        margin-top: 76px;
+        padding-top: 42px;
+        border-top: 1px solid #d8d2ca;
+    }
+
+    .ongoing-heading {
+        margin: 0;
+        color: #9b8573;
+        font-size: 13px;
+        font-weight: normal;
+        letter-spacing: 2.5px;
+        line-height: 1.7;
+        text-transform: uppercase;
+    }
+
+    .ongoing-intro {
+        max-width: 620px;
+        margin: 0 0 24px;
+        color: #746d67;
+        font-size: 13.5px;
+        font-style: italic;
+        line-height: 1.75;
+    }
+
+    .ongoing-list {
+        border-top: 1px solid #ded9d2;
+    }
+
+    .ongoing-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        min-height: 58px;
+        padding: 8px 0;
+        border-bottom: 1px solid #ded9d2;
+    }
+
+    .ongoing-field {
+        margin: 0;
+        color: #272421;
+        font-size: 15px;
+        font-weight: normal;
+        line-height: 1.5;
+    }
+
+    .status-badge {
+        flex: 0 0 auto;
+        padding: 5px 9px 4px;
+        border: 1px solid;
+        border-radius: 2px;
+        font-size: 10px;
+        letter-spacing: 1.15px;
+        line-height: 1;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .status-badge--under-review {
+        color: #765747;
+        background: #f3eae4;
+        border-color: #d7c2b5;
+    }
+
+    .status-badge--coming-soon {
+        color: #77683d;
+        background: #f4f0e3;
+        border-color: #d7cda8;
+    }
+
+    .status-badge--in-progress {
+        color: #526861;
+        background: #eaf0ed;
+        border-color: #bfcfc8;
+    }
+
     @media (max-width: 620px) {
         .publications-container {
             width: 100%;
@@ -155,6 +235,24 @@
         }
 
         .publication-title { font-size: 16px; }
+
+        .ongoing-section {
+            display: block;
+            margin-top: 60px;
+            padding-top: 34px;
+        }
+
+        .ongoing-heading { margin-bottom: 16px; }
+        .ongoing-intro { margin-bottom: 20px; }
+
+        .ongoing-item {
+            align-items: flex-start;
+            gap: 16px;
+            min-height: 0;
+            padding: 16px 0;
+        }
+
+        .ongoing-field { font-size: 14.5px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -200,6 +298,25 @@
                     </div>
                 </article>
                 {{ end }}
+            </div>
+        </section>
+        {{ end }}
+
+        {{ with .Params.ongoing }}
+        <section class="ongoing-section" aria-labelledby="ongoing-heading">
+            <h2 class="ongoing-heading" id="ongoing-heading">Research<br>in Progress</h2>
+            <div>
+                {{ with $.Params.ongoing_intro }}
+                <p class="ongoing-intro">{{ . }}</p>
+                {{ end }}
+                <div class="ongoing-list">
+                    {{ range . }}
+                    <article class="ongoing-item">
+                        <h3 class="ongoing-field">{{ .field }}</h3>
+                        <span class="status-badge status-badge--{{ .status_key }}">{{ .status }}</span>
+                    </article>
+                    {{ end }}
+                </div>
             </div>
         </section>
         {{ end }}

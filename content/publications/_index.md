@@ -4,6 +4,26 @@ date: 2026-09-02
 layout: "list"
 subtitle: "Papers and manuscripts, arranged as a concise scholarly record."
 
+# Ongoing work is intentionally described only by field and broad status.
+# Keep private titles, venues, repositories, collaborators, and submission details out of this list.
+ongoing_intro: "Selected directions currently moving through the research process. Further details will be shared when they are ready."
+ongoing:
+  - field: "Graph Neural Network Interpretability"
+    status: "Coming Soon"
+    status_key: "coming-soon"
+  - field: "Architecture-Aware Quantum Compilation"
+    status: "Under Review"
+    status_key: "under-review"
+  - field: "Fault-Tolerant Quantum Systems"
+    status: "Coming Soon"
+    status_key: "coming-soon"
+  - field: "Personalized Speech Synthesis"
+    status: "In Progress"
+    status_key: "in-progress"
+  - field: "Alternative Learning Architectures"
+    status: "In Progress"
+    status_key: "in-progress"
+
 years:
   - year: "2026"
     publications:
