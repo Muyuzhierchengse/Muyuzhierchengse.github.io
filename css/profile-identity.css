@@ -144,11 +144,20 @@ html { scrollbar-gutter: stable; }
 }
 
 .profile-identity__role {
-    margin: 5px 0 25px;
+    margin: 5px 0 10px;
     color: #77716a;
     font-size: 12px;
     font-style: italic;
     line-height: 1.5;
+}
+
+.profile-identity__availability {
+    margin: 0 0 22px;
+    color: #8a796b;
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
 }
 
 .profile-identity__focus {
@@ -296,7 +305,8 @@ html { scrollbar-gutter: stable; }
     }
 
     .profile-identity__name { font-size: 16px; }
-    .profile-identity__role { margin: 2px 0 10px; }
+    .profile-identity__role { margin: 2px 0 4px; }
+    .profile-identity__availability { margin: 0 0 10px; }
     .profile-identity__focus { display: none; }
 
     .profile-identity--rail .profile-identity__links { justify-content: flex-start; }
@@ -333,6 +343,11 @@ html { scrollbar-gutter: stable; }
     .profile-identity--rail .profile-identity__signature { width: 148px; }
     .profile-identity__name { font-size: 14px; letter-spacing: 1.4px; }
     .profile-identity__role { display: none; }
+    .profile-identity__availability {
+        margin-bottom: 7px;
+        font-size: 9px;
+        letter-spacing: .8px;
+    }
     .profile-identity--rail .profile-identity__links { font-size: 9px; letter-spacing: 1px; }
     .profile-identity--rail .profile-identity__links a { margin: 0 4px; }
 }
