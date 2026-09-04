@@ -41,14 +41,10 @@ html { scrollbar-gutter: stable; }
 .profile-identity__signature {
     display: block;
     height: auto;
-}
-
-/* The signature is a transparent PNG with dark ink; lift only its ink in dark themes. */
-@media (prefers-color-scheme: dark) {
-    .profile-identity__signature {
-        filter: brightness(0) invert(91%) sepia(8%) saturate(248%) hue-rotate(346deg) brightness(102%) contrast(91%);
-        opacity: .9;
-    }
+    /* White source ink plus difference blending follows the rendered backdrop,
+       independent of whether the browser and operating system agree on theme. */
+    filter: brightness(0) invert(1);
+    mix-blend-mode: difference;
 }
 
 .profile-identity__description {
