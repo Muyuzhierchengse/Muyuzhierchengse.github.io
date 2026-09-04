@@ -78,6 +78,17 @@
         margin: 0 auto;
     }
 
+    .academic-opportunity {
+        max-width: 560px;
+        margin: 22px auto 0;
+        padding-top: 18px;
+        border-top: 1px solid #e6e0d9;
+        color: #716a64;
+        font-size: 14px;
+        font-style: italic;
+        line-height: 1.75;
+    }
+
     /* 条目排版（经历、教育、论文） */
     .content-block {
         margin-bottom: 35px;
@@ -203,6 +214,9 @@
 
     <section class="academic-profile">
         <p>{{ .Params.philosophy }}</p>
+        {{ with .Params.opportunity }}
+        <p class="academic-opportunity">{{ . }}</p>
+        {{ end }}
     </section>
 
     <h2 class="section-title">Education &amp; Training</h2>
