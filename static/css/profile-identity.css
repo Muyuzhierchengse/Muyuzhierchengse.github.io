@@ -43,6 +43,14 @@ html { scrollbar-gutter: stable; }
     height: auto;
 }
 
+/* The signature is a transparent PNG with dark ink; lift only its ink in dark themes. */
+@media (prefers-color-scheme: dark) {
+    .profile-identity__signature {
+        filter: brightness(0) invert(91%) sepia(8%) saturate(248%) hue-rotate(346deg) brightness(102%) contrast(91%);
+        opacity: .9;
+    }
+}
+
 .profile-identity__description {
     color: #66615c;
     font-style: italic;
