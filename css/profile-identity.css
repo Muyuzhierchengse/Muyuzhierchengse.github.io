@@ -41,10 +41,15 @@ html { scrollbar-gutter: stable; }
 .profile-identity__signature {
     display: block;
     height: auto;
-    /* White source ink plus difference blending follows the rendered backdrop,
-       independent of whether the browser and operating system agree on theme. */
-    filter: brightness(0) invert(1);
-    mix-blend-mode: difference;
+    /* Dark ink is the safe fallback: the authored site is light, and the
+       signature must remain legible when scripts or blend modes are blocked. */
+    filter: none;
+}
+
+/* Switch only after the rendered background has actually been measured as
+   dark. This deliberately does not infer the page colour from system theme. */
+html[data-signature-ink="light"] .profile-identity__signature {
+    filter: brightness(0) invert(91%) sepia(8%) saturate(248%) hue-rotate(346deg) brightness(102%) contrast(91%);
 }
 
 .profile-identity__description {
