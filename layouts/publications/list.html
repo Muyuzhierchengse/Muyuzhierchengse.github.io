@@ -62,18 +62,75 @@
         user-select: none;
     }
 
-    .year-group {
-        display: grid;
-        grid-template-columns: 112px minmax(0, 1fr);
-        gap: 34px;
-        margin-bottom: 58px;
+    .record-section + .record-section {
+        margin-top: 82px;
     }
 
-    .year-label {
-        padding-top: 3px;
+    .record-section-header {
+        margin-bottom: 34px;
+        padding-bottom: 17px;
+        border-bottom: 1px solid #d8d1c9;
+    }
+
+    .record-section-kicker {
+        margin-bottom: 7px;
         color: #9b8573;
-        font-size: 13px;
-        letter-spacing: 3px;
+        font-size: 10px;
+        letter-spacing: 2.8px;
+        text-transform: uppercase;
+    }
+
+    .record-section-title {
+        margin: 0;
+        color: #26221f;
+        font-size: 23px;
+        font-weight: normal;
+        letter-spacing: 1.6px;
+    }
+
+    .record-section-note {
+        max-width: 620px;
+        margin: 9px 0 0;
+        color: #77706a;
+        font-size: 13.5px;
+        font-style: italic;
+        line-height: 1.7;
+    }
+
+    .programme-group {
+        display: grid;
+        grid-template-columns: 188px minmax(0, 1fr);
+        gap: 38px;
+        padding: 36px 0;
+        border-bottom: 1px solid #ded9d2;
+    }
+
+    .programme-group:first-of-type { padding-top: 0; }
+    .programme-group:last-child { padding-bottom: 0; border-bottom: 0; }
+
+    .programme-label {
+        margin: 0 0 10px;
+        color: #332e2a;
+        font-size: 14px;
+        font-weight: normal;
+        line-height: 1.45;
+        letter-spacing: 1.2px;
+    }
+
+    .programme-note {
+        margin: 0;
+        color: #817a73;
+        font-size: 12px;
+        font-style: italic;
+        line-height: 1.65;
+    }
+
+    .publication-year {
+        display: inline-block;
+        min-width: 36px;
+        color: #9b8573;
+        font-size: 10.5px;
+        letter-spacing: 1.7px;
     }
 
     .publication-item {
@@ -83,6 +140,11 @@
 
     .publication-item + .publication-item { padding-top: 31px; }
     .publication-item:last-child { padding-bottom: 0; border-bottom: 0; }
+
+    .publication-list--additional .publication-item {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
 
     .publication-title-line {
         display: grid;
@@ -188,16 +250,15 @@
         .publications-kicker { letter-spacing: 3px; }
         .publications-title { letter-spacing: 3px; }
 
-        .year-group {
+        .record-section + .record-section { margin-top: 64px; }
+
+        .programme-group {
             display: block;
-            margin-bottom: 50px;
+            padding: 31px 0;
         }
 
-        .year-label {
-            margin-bottom: 22px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #ded9d2;
-        }
+        .programme-heading { margin-bottom: 23px; }
+        .programme-label { margin-bottom: 6px; }
 
         .publication-title { font-size: 16px; }
 
@@ -234,11 +295,21 @@
     </header>
 
     <main aria-label="Publication list">
-        {{ range .Params.years }}
-        <section class="year-group" aria-labelledby="year-{{ .year }}">
-            <div class="year-label" id="year-{{ .year }}">{{ .year }}</div>
-            <div>
-                {{ range .publications }}
+        <section class="record-section" aria-labelledby="core-research-title">
+            <header class="record-section-header">
+                <div class="record-section-kicker">Principal Directions</div>
+                <h2 class="record-section-title" id="core-research-title">Core Research</h2>
+                <p class="record-section-note">Work aligned with the research programmes I intend to develop over the longer term.</p>
+            </header>
+
+            {{ range .Params.core_research }}
+            <section class="programme-group">
+                <header class="programme-heading">
+                    <h3 class="programme-label">{{ .programme }}</h3>
+                    <p class="programme-note">{{ .note }}</p>
+                </header>
+                <div class="publication-list">
+                    {{ range .publications }}
                 {{ $publicationTitle := .title }}
                 {{ $statusKey := .status_key }}
                 <article class="publication-item">
@@ -251,8 +322,8 @@
                     {{ with .authors }}
                     <div class="publication-authors">{{ . | markdownify }}</div>
                     {{ end }}
-                    {{ if or .venue .links }}
                     <div class="publication-meta">
+                        {{ with .year }}<span class="publication-year">{{ . }}</span>{{ end }}
                         {{ with .venue }}
                         <span class="publication-venue">{{ . }}</span>
                         {{ end }}
@@ -264,12 +335,48 @@
                         </nav>
                         {{ end }}
                     </div>
+                </article>
                     {{ end }}
+                </div>
+            </section>
+            {{ end }}
+        </section>
+
+        <section class="record-section" aria-labelledby="additional-work-title">
+            <header class="record-section-header">
+                <div class="record-section-kicker">Broader Practice</div>
+                <h2 class="record-section-title" id="additional-work-title">Additional Scholarly Work</h2>
+                <p class="record-section-note">Exploratory and collaborative work beyond my principal research directions.</p>
+            </header>
+            <div class="publication-list publication-list--additional">
+                {{ range .Params.additional_work }}
+                {{ $publicationTitle := .title }}
+                {{ $statusKey := .status_key }}
+                <article class="publication-item">
+                    <div class="publication-title-line">
+                        <h2 class="publication-title">{{ .title }}</h2>
+                        {{ with .status }}
+                        <span class="status-badge status-badge--{{ $statusKey }}">{{ . }}</span>
+                        {{ end }}
+                    </div>
+                    {{ with .authors }}
+                    <div class="publication-authors">{{ . | markdownify }}</div>
+                    {{ end }}
+                    <div class="publication-meta">
+                        {{ with .year }}<span class="publication-year">{{ . }}</span>{{ end }}
+                        {{ with .venue }}<span class="publication-venue">{{ . }}</span>{{ end }}
+                        {{ with .links }}
+                        <nav class="publication-links" aria-label="Links for {{ $publicationTitle }}">
+                            {{ range . }}
+                            <a href="{{ .url }}" target="_blank" rel="noopener">{{ .label }}</a>
+                            {{ end }}
+                        </nav>
+                        {{ end }}
+                    </div>
                 </article>
                 {{ end }}
             </div>
         </section>
-        {{ end }}
     </main>
         </div>
     </div>
