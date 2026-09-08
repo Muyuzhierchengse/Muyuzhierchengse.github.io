@@ -55,6 +55,13 @@
     transform: rotate(-5deg);
 }
 
+/* Elsewhere keeps the seal near the far edge, like a quiet maker's mark. */
+.page-watermark--elsewhere {
+    right: clamp(-184px, -10vw, -102px);
+    top: 46vh;
+    transform: rotate(-9deg);
+}
+
 @media (max-width: 620px) {
     .page-watermark {
         width: 300px;
@@ -64,4 +71,5 @@
     .page-watermark--research { right: -195px; top: 31vh; }
     .page-watermark--publications { right: -195px; bottom: -98px; }
     .page-watermark--programme { left: -190px; bottom: -94px; }
+    .page-watermark--elsewhere { right: -198px; top: 54vh; }
 }
