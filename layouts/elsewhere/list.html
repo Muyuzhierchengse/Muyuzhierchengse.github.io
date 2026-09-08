@@ -1,0 +1,249 @@
+{{ define "styles" }}
+<style>
+    body {
+        margin: 0;
+        background: #fcfbf9;
+        color: #2a2825;
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .elsewhere-container {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 860px;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: elsewhereReveal 1.2s cubic-bezier(.25, 1, .5, 1) forwards;
+    }
+
+    @keyframes elsewhereReveal {
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .elsewhere-header {
+        max-width: 680px;
+        margin: 0 auto 62px;
+        text-align: center;
+    }
+
+    .elsewhere-kicker {
+        color: #9b8573;
+        font-size: 11px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+    .elsewhere-title {
+        margin: 15px 0 10px;
+        color: #211f1d;
+        font-size: clamp(30px, 5vw, 48px);
+        font-weight: normal;
+        letter-spacing: 4px;
+    }
+
+    .elsewhere-subtitle {
+        margin: 0;
+        color: #6e6862;
+        font-size: 15px;
+        font-style: italic;
+        line-height: 1.75;
+    }
+
+    .elsewhere-divider {
+        margin-top: 28px;
+        color: #c8c1b7;
+        font-size: 16px;
+        letter-spacing: 8px;
+        user-select: none;
+    }
+
+    .elsewhere-intro {
+        max-width: 650px;
+        margin: 0 auto 46px;
+        color: #55504b;
+        font-size: 15px;
+        line-height: 1.85;
+        text-align: center;
+    }
+
+    .elsewhere-section {
+        display: grid;
+        grid-template-columns: 154px minmax(0, 1fr);
+        gap: 42px;
+        padding: 37px 0;
+        border-top: 1px solid #ded8d0;
+    }
+
+    .elsewhere-section:last-child { border-bottom: 1px solid #ded8d0; }
+
+    .elsewhere-number {
+        margin-bottom: 7px;
+        color: #a28d7b;
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .elsewhere-section-title {
+        margin: 0;
+        color: #282420;
+        font-size: 16px;
+        font-weight: normal;
+        line-height: 1.5;
+        letter-spacing: 1.1px;
+    }
+
+    .elsewhere-description {
+        margin: 0 0 14px;
+        color: #4f4a46;
+        font-size: 15px;
+        line-height: 1.75;
+    }
+
+    .elsewhere-state {
+        margin: 0;
+        color: #8a827b;
+        font-size: 13px;
+        font-style: italic;
+        line-height: 1.7;
+    }
+
+    .elsewhere-work {
+        margin-top: 20px;
+        padding: 19px 21px 18px;
+        border-left: 1px solid #cbbdaf;
+        background: rgba(242, 238, 232, .42);
+    }
+
+    .elsewhere-work-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 8px 20px;
+        margin-bottom: 7px;
+    }
+
+    .elsewhere-work-title {
+        margin: 0;
+        color: #24211e;
+        font-size: 16px;
+        font-weight: normal;
+    }
+
+    .elsewhere-work-status {
+        color: #7b6d62;
+        font-size: 10px;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
+
+    .elsewhere-work p {
+        margin: 0;
+        color: #625c56;
+        font-size: 13.5px;
+        line-height: 1.7;
+    }
+
+    .elsewhere-work-link {
+        display: inline-block;
+        margin-top: 11px;
+        padding-bottom: 2px;
+        border-bottom: 1px solid #c6b5a5;
+        color: #635950;
+        font-size: 10.5px;
+        letter-spacing: 1.35px;
+        text-decoration: none;
+        text-transform: uppercase;
+    }
+
+    .elsewhere-work-link:hover,
+    .elsewhere-work-link:focus-visible {
+        color: #111;
+        border-color: #111;
+    }
+
+    @media (max-width: 620px) {
+        .elsewhere-header { margin-bottom: 48px; }
+        .elsewhere-kicker { letter-spacing: 3px; }
+        .elsewhere-title { letter-spacing: 3px; }
+        .elsewhere-intro { font-size: 14.5px; text-align: left; }
+
+        .elsewhere-section {
+            display: block;
+            padding: 31px 0;
+        }
+
+        .elsewhere-section-heading { margin-bottom: 18px; }
+        .elsewhere-work { padding: 17px 16px 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .elsewhere-container { opacity: 1; transform: none; animation: none; }
+    }
+</style>
+{{ end }}
+
+{{ define "content" }}
+{{ partial "hydrangea-watermark.html" (dict "placement" "elsewhere") }}
+<div class="inner-page-frame">
+    {{ partial "site-nav.html" (dict "active" "elsewhere") }}
+    <div class="inner-page-layout">
+        {{ partial "profile-identity.html" (dict "mode" "rail") }}
+        <div class="elsewhere-container inner-page-content">
+            <header class="elsewhere-header">
+                <div class="elsewhere-kicker">Beyond the Research Programme</div>
+                <h1 class="elsewhere-title">Elsewhere</h1>
+                <p class="elsewhere-subtitle">{{ .Params.subtitle }}</p>
+                <div class="elsewhere-divider">☙ ❖ ❧</div>
+            </header>
+
+            <p class="elsewhere-intro">An evolving cabinet of stories, playable systems, and experiments pursued for curiosity—the parts of my work that belong beside, rather than inside, my principal academic programme.</p>
+
+            <main aria-label="Creative and exploratory work">
+                <section class="elsewhere-section" aria-labelledby="elsewhere-writing">
+                    <header class="elsewhere-section-heading">
+                        <div class="elsewhere-number">I</div>
+                        <h2 class="elsewhere-section-title" id="elsewhere-writing">Writing</h2>
+                    </header>
+                    <div>
+                        <p class="elsewhere-description">Fiction, long-form narratives, and fragments of imagined worlds.</p>
+                        <p class="elsewhere-state">Selected pieces will be added when they are ready to be read.</p>
+                    </div>
+                </section>
+
+                <section class="elsewhere-section" aria-labelledby="elsewhere-games">
+                    <header class="elsewhere-section-heading">
+                        <div class="elsewhere-number">II</div>
+                        <h2 class="elsewhere-section-title" id="elsewhere-games">Games &amp; Interactive Works</h2>
+                    </header>
+                    <div>
+                        <p class="elsewhere-description">Game concepts, systems, prototypes, and experiments in interactive storytelling.</p>
+                        <p class="elsewhere-state">Design notes and playable work will appear here as they take shape.</p>
+                    </div>
+                </section>
+
+                <section class="elsewhere-section" aria-labelledby="elsewhere-experiments">
+                    <header class="elsewhere-section-heading">
+                        <div class="elsewhere-number">III</div>
+                        <h2 class="elsewhere-section-title" id="elsewhere-experiments">Experiments</h2>
+                    </header>
+                    <div>
+                        <p class="elsewhere-description">Personal tools and technical ideas explored for play, listening, and making.</p>
+                        <article class="elsewhere-work">
+                            <div class="elsewhere-work-header">
+                                <h3 class="elsewhere-work-title">Personalized Speech Synthesis</h3>
+                                <span class="elsewhere-work-status">In Progress</span>
+                            </div>
+                            <p>A personal exploration of small-sample voice synthesis, developed for listening and musical play.</p>
+                            <a class="elsewhere-work-link" href="/publications/#additional-work-title">Scholarly record</a>
+                        </article>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+</div>
+{{ end }}
