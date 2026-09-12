@@ -2,6 +2,7 @@
 title: "About"
 date: 2026-05-29
 layout: "list"
+description: "Academic background, research experience, education, and current research interests of Zhimu Yang."
 
 philosophy: "I am an student fundamentally driven by a rational pursuit of the essence of mathematics and computation. My work lies at the intersection of Theoretical Computer Science (TCS), Quantum Computing, and Artificial Intelligence. I view scientific research as a pure endeavor to advance human knowledge—an evolution of axioms dedicated to the progress of civilization, strictly for all humankind."
 opportunity: "I am currently seeking opportunities to deepen my training and contribute to research in theoretical computer science, whether through a research internship or doctoral study."

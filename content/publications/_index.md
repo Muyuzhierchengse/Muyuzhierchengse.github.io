@@ -3,6 +3,7 @@ title: "Publications"
 date: 2026-09-02
 layout: "list"
 subtitle: "Papers and manuscripts, organised by the research programmes they support."
+description: "Publications and manuscripts by Zhimu Yang in interpretable learning, polynomial neural networks, graph neural networks, and quantum computing."
 
 core_research:
   - programme: "Structured & Interpretable Learning"

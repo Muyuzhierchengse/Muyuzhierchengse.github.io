@@ -1,0 +1,42 @@
+{{- $title := partial "seo-title.html" . -}}
+{{- $description := .Params.description | default .Params.summary | default .Site.Params.description -}}
+{{- $image := .Site.Params.image | absURL -}}
+    <meta name="description" content="{{ $description }}">
+    <link rel="canonical" href="{{ .Permalink }}">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+    <meta property="og:title" content="{{ $title }}">
+    <meta property="og:description" content="{{ $description }}">
+    <meta property="og:url" content="{{ .Permalink }}">
+    <meta property="og:image" content="{{ $image }}">
+    <meta property="og:image:alt" content="Portrait of Zhimu Yang">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ $title }}">
+    <meta name="twitter:description" content="{{ $description }}">
+    <meta name="twitter:image" content="{{ $image }}">
+    <meta name="twitter:image:alt" content="Portrait of Zhimu Yang">
+{{- if .IsHome }}
+{{- $sameAs := slice .Site.Params.github .Site.Params.scholar -}}
+{{- $person := dict
+    "@type" "Person"
+    "@id" (printf "%s#person" .Site.BaseURL)
+    "name" .Site.Params.name
+    "url" .Site.BaseURL
+    "image" $image
+    "description" .Site.Params.description
+    "alumniOf" (dict "@type" "CollegeOrUniversity" "name" "Communication University of China")
+    "knowsAbout" (slice "Theoretical Computer Science" "Quantum Computing" "Quantum Compilation" "Polynomial Neural Networks" "Graph Neural Network Interpretability")
+    "sameAs" $sameAs
+-}}
+{{- $profilePage := dict
+    "@context" "https://schema.org"
+    "@type" "ProfilePage"
+    "@id" (printf "%s#profile" .Site.BaseURL)
+    "url" .Permalink
+    "name" $title
+    "mainEntity" $person
+-}}
+    <script type="application/ld+json">{{ $profilePage | jsonify | safeJS }}</script>
+{{- end }}

@@ -1,10 +1,15 @@
-baseURL = 'https://Muyuzhierchengse.github.io/'
+baseURL = 'https://muyuzhierchengse.github.io/'
 languageCode = 'en-us'
 title = 'Zhimu Yang'
+disableKinds = ['taxonomy', 'term']
 
 [params]
 name = "Zhimu Yang"
-description = "Scientist"
+description = "Zhimu Yang researches theoretical computer science, quantum computing, polynomial neural networks, and interpretable graph learning."
+homeTitle = "Zhimu Yang | Theoretical Computer Science and Quantum Computing"
+image = "images/photo.jpg"
+github = "https://github.com/muyuzhierchengse"
+scholar = "https://scholar.google.com/citations?user=kn206EMAAAAJ"
 
 [markup]
   [markup.highlight]
