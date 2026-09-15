@@ -4,6 +4,7 @@ date: 2026-09-02
 programme: "I"
 kicker: "Algebraic Models"
 summary: "A programme for neural architectures whose algebraic structure is explicit enough to study, control, and reuse."
+topics: "TaylorKAN · Polynomial architectures · Exact attribution"
 thesis: "Polynomial structure can serve as a common language between approximation theory, neural architecture design, and exact interpretation."
 questions:
   - "Which neural constructions are genuinely new, and which are reparameterisations of polynomial models?"
@@ -11,13 +12,27 @@ questions:
   - "Can algebraically constrained networks make attribution exact without surrendering predictive performance?"
 works:
   - title: "Exploring Kolmogorov-Arnold Networks for Realistic Image Sharpness Assessment"
+    type: "Paper"
+    featured: true
+    summary: "A Taylor-expansion-based KAN architecture for blind assessment of realistic image sharpness."
     meta: "TaylorKAN · IEEE ICASSP 2025"
     paper: "https://doi.org/10.1109/ICASSP49660.2025.10890447"
     code: "https://github.com/Muyuzhierchengse/TaylorKAN"
   - title: "A Polynomial Architecture-Attribution Co-Design Framework for Exact Aumann-Shapley Attribution in GNNs"
+    type: "Paper"
+    featured: true
+    status: "Under Review"
+    status_key: "under-review"
+    summary: "A co-design framework connecting polynomial graph architectures with exact Aumann–Shapley attribution."
     meta: "APEX · arXiv:2607.21094"
     paper: "https://arxiv.org/abs/2607.21094"
     code: "https://github.com/Muyuzhierchengse/APEX"
+  - title: "Alternative Learning Architectures"
+    type: "Research Direction"
+    featured: false
+    status: "In Progress"
+    status_key: "in-progress"
+    summary: "Ongoing investigations into learning architectures with explicit mathematical structure."
 directions:
   - title: "From TaylorKAN to a family of polynomial architectures"
     text: "Generalise the Taylor-series construction beyond a single model and organise polynomial networks by basis, degree, interaction order, and compositional depth."
