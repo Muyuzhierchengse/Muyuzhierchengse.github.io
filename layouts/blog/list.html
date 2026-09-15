@@ -36,7 +36,7 @@
 
     .research-header {
         max-width: 720px;
-        margin: 0 auto 48px;
+        margin: 0 auto 42px;
         text-align: center;
     }
 
@@ -78,39 +78,15 @@
         letter-spacing: 8px;
     }
 
-    .research-intro {
-        display: grid;
-        grid-template-columns: 190px minmax(0, 1fr);
-        gap: 42px;
-        margin-bottom: 18px;
-        padding: 30px 0;
-        border-top: 1px solid var(--research-line);
-        border-bottom: 1px solid var(--research-line);
-    }
-
-    .research-intro h2 {
-        margin: 0;
-        font-size: 13px;
-        font-weight: normal;
-        letter-spacing: 3px;
-        line-height: 1.55;
-        text-transform: uppercase;
-    }
-
-    .research-intro p {
-        margin: 0;
-        color: #514c46;
-        font-size: 16px;
-    }
-
     .programme-section {
         display: grid;
         grid-template-columns: 210px minmax(0, 1fr);
         gap: clamp(34px, 5vw, 64px);
-        padding: 62px 0;
+        padding: 46px 0;
         border-bottom: 1px solid var(--research-line);
     }
 
+    .programme-section:first-child { border-top: 1px solid var(--research-line); }
     .programme-section:last-child { padding-bottom: 12px; border-bottom: 0; }
     .programme-heading { position: sticky; top: 34px; align-self: start; }
 
@@ -145,7 +121,8 @@
     .programme-record { min-width: 0; }
 
     .programme-record__label {
-        margin: 0 0 14px;
+        margin: 0;
+        padding: 0 2px 10px;
         color: #8e857b;
         font-size: 11px;
         font-weight: normal;
@@ -155,26 +132,23 @@
 
     .research-output {
         position: relative;
-        margin-bottom: 14px;
-        padding: 21px 22px 20px;
-        border: 1px solid #e0dad2;
-        border-left-color: #c8beb3;
-        background: var(--research-wash);
-        transition: border-color .3s ease, background-color .3s ease, transform .3s ease;
+        margin: 0;
+        padding: 16px 2px 15px;
+        border: 0;
+        border-top: 1px solid #e3ddd5;
+        background: transparent;
+        transition: color .25s ease;
     }
 
-    .research-output:hover {
-        transform: translateY(-2px);
-        border-color: #c8beb3;
-        background: rgba(255, 255, 255, .62);
-    }
+    .research-output:hover h3 { color: #000; }
 
     .research-output__topline {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 10px;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 7px 14px;
+        margin-bottom: 5px;
     }
 
     .research-output__type {
@@ -198,30 +172,16 @@
 
     .research-output h3 {
         margin: 0;
-        font-size: 19px;
+        font-size: 16px;
         font-weight: normal;
-        line-height: 1.42;
-    }
-
-    .research-output__summary {
-        margin: 8px 0 0;
-        color: #6d665f;
-        font-size: 14px;
-        line-height: 1.65;
-    }
-
-    .research-output__meta {
-        margin-top: 9px;
-        color: #918980;
-        font-size: 12px;
-        font-style: italic;
+        line-height: 1.45;
     }
 
     .research-output__links {
         display: flex;
         flex-wrap: wrap;
         gap: 15px;
-        margin-top: 15px;
+        margin-top: 7px;
     }
 
     .research-output__links a {
@@ -270,13 +230,11 @@
     }
 
     .more-works[open] summary::after { transform: rotate(225deg) translate(-2px, -2px); }
-    .more-works__content { padding-top: 14px; }
+    .more-works__content { padding-top: 6px; }
 
     @media (max-width: 820px) {
-        .research-intro,
         .programme-section { grid-template-columns: 1fr; }
-        .research-intro { gap: 12px; }
-        .programme-section { gap: 27px; padding: 50px 0; }
+        .programme-section { gap: 24px; padding: 40px 0; }
         .programme-heading { position: static; }
         .programme-heading p { max-width: 650px; }
     }
@@ -284,12 +242,12 @@
     @media (max-width: 520px) {
         .research-title { font-size: 21px; letter-spacing: 4px; }
         .research-subtitle { font-size: 15px; }
-        .research-header { margin-bottom: 38px; }
-        .programme-section { padding: 42px 0; }
+        .research-header { margin-bottom: 34px; }
+        .programme-section { padding: 34px 0; }
         .programme-heading h2 { font-size: 24px; }
-        .research-output { padding: 18px 17px 17px; }
+        .research-output { padding: 14px 1px 13px; }
         .research-output__topline { align-items: flex-start; gap: 10px; }
-        .research-output h3 { font-size: 18px; }
+        .research-output h3 { font-size: 16px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -310,14 +268,9 @@
             <header class="research-header">
                 <div class="research-kicker">Questions · Works · Notes</div>
                 <h1 class="research-title">Research</h1>
-                <p class="research-subtitle">Research lines organised by the questions they pursue, with selected papers and notes gathered in place.</p>
+                <p class="research-subtitle">Research lines organised by their questions, with selected papers and notes shown in context.</p>
                 <div class="research-divider">☙ ❖ ❧</div>
             </header>
-
-            <section class="research-intro">
-                <h2>An Evolving<br>Research Record</h2>
-                <p>Each line connects a longer research direction with the work that develops it. Representative papers and notes remain visible; the rest can be opened without leaving the page.</p>
-            </section>
 
             <main aria-label="Research programmes">
                 {{ range .Pages.ByParam "programme" }}
@@ -341,8 +294,6 @@
                                 {{ with .status }}<span class="research-output__status research-output__status--{{ $statusKey }}">{{ . }}</span>{{ end }}
                             </div>
                             <h3>{{ .title }}</h3>
-                            {{ with .summary }}<p class="research-output__summary">{{ . }}</p>{{ end }}
-                            {{ with .meta }}<div class="research-output__meta">{{ . }}</div>{{ end }}
                             {{ if or .paper .code .pdf }}
                             <nav class="research-output__links" aria-label="Links for {{ .title }}">
                                 {{ with .paper }}<a href="{{ . }}" target="_blank" rel="noopener">Paper</a>{{ end }}
@@ -365,8 +316,6 @@
                                         {{ with .status }}<span class="research-output__status research-output__status--{{ $statusKey }}">{{ . }}</span>{{ end }}
                                     </div>
                                     <h3>{{ .title }}</h3>
-                                    {{ with .summary }}<p class="research-output__summary">{{ . }}</p>{{ end }}
-                                    {{ with .meta }}<div class="research-output__meta">{{ . }}</div>{{ end }}
                                     {{ if or .paper .code .pdf }}
                                     <nav class="research-output__links" aria-label="Links for {{ .title }}">
                                         {{ with .paper }}<a href="{{ . }}" target="_blank" rel="noopener">Paper</a>{{ end }}
