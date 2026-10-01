@@ -24,7 +24,7 @@
         position: relative;
         z-index: 1;
         width: 100%;
-        max-width: 1040px;
+        max-width: 860px;
         margin: 0;
         padding: 0;
         animation: researchReveal .9s cubic-bezier(.25, 1, .5, 1) forwards;
@@ -35,8 +35,8 @@
     @keyframes researchReveal { to { opacity: 1; transform: none; } }
 
     .research-header {
-        max-width: 720px;
-        margin: 0 auto 42px;
+        max-width: 680px;
+        margin: 0 auto 66px;
         text-align: center;
     }
 
@@ -50,31 +50,33 @@
     }
 
     .research-kicker {
-        color: #938b80;
+        color: #9b8573;
         font-size: 11px;
         letter-spacing: 4px;
     }
 
     .research-title {
-        margin: 12px 0 8px;
-        font-size: 28px;
+        margin: 15px 0 10px;
+        color: #211f1d;
+        font-size: clamp(30px, 5vw, 48px);
         font-weight: normal;
-        letter-spacing: 7px;
-        text-transform: uppercase;
+        letter-spacing: 4px;
     }
 
     .research-subtitle {
-        max-width: 620px;
-        margin: 0 auto;
-        color: #69645d;
-        font-size: 16px;
+        margin: 0;
+        color: #6e6862;
+        font-size: 15px;
         font-style: italic;
+        line-height: 1.75;
     }
 
     .research-divider {
         margin-top: 28px;
         color: #c8c1b7;
+        font-size: 16px;
         letter-spacing: 8px;
+        user-select: none;
     }
 
     .programme-section {
@@ -225,9 +227,9 @@
     }
 
     @media (max-width: 520px) {
-        .research-title { font-size: 21px; letter-spacing: 4px; }
-        .research-subtitle { font-size: 15px; }
-        .research-header { margin-bottom: 34px; }
+        .research-kicker { letter-spacing: 3px; }
+        .research-title { letter-spacing: 3px; }
+        .research-header { margin-bottom: 52px; }
         .programme-section { padding: 34px 0; }
         .programme-heading h2 { font-size: 24px; }
         .research-output { padding: 14px 15px 13px; }
