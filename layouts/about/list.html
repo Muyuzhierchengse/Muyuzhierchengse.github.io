@@ -122,9 +122,11 @@
     }
 
     /* 左侧引线设计，用于描述和突出贡献 */
-    .item-desc {
-        --reveal-height: 14rem;
+    .item-desc-reveal {
         --reveal-space: 10px;
+    }
+
+    .item-desc {
         font-size: 14.5px;
         color: #333;
         padding-left: 18px;
@@ -231,7 +233,9 @@
         </div>
         <div class="item-meta">{{ .meta }}</div>
         {{ with .desc }}
-        <div class="item-desc reveal-detail">{{ . }}</div>
+        <div class="item-desc-reveal reveal-detail">
+            <div class="reveal-detail__inner"><div class="item-desc">{{ . }}</div></div>
+        </div>
         {{ end }}
     </div>
     {{ end }}
@@ -250,7 +254,9 @@
         </div>
         <div class="item-meta">{{ .meta }}</div>
         {{ with .desc }}
-        <div class="item-desc reveal-detail">{{ . }}</div>
+        <div class="item-desc-reveal reveal-detail">
+            <div class="reveal-detail__inner"><div class="item-desc">{{ . }}</div></div>
+        </div>
         {{ end }}
     </div>
     {{ end }}

@@ -275,8 +275,10 @@
                         <div class="programme-eyebrow">{{ .Params.programme }} · {{ .Params.kicker }}</div>
                         <h2>{{ .Title }}</h2>
                         <div class="programme-details reveal-detail">
-                            <p>{{ .Params.summary }}</p>
-                            {{ with .Params.topics }}<div class="programme-topics">{{ . }}</div>{{ end }}
+                            <div class="reveal-detail__inner">
+                                <p>{{ .Params.summary }}</p>
+                                {{ with .Params.topics }}<div class="programme-topics">{{ . }}</div>{{ end }}
+                            </div>
                         </div>
                     </header>
 
