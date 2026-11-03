@@ -3,37 +3,48 @@
 }
 
 .reveal-detail {
-    max-height: 0;
+    display: grid;
+    grid-template-rows: 0fr;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-    overflow: hidden;
     opacity: 0;
     visibility: hidden;
-    clip-path: inset(0 0 100% 0);
-    transform: translateY(-8px) scaleY(.985);
-    transform-origin: top center;
     pointer-events: none;
     transition:
-        max-height .82s cubic-bezier(.22, 1, .36, 1),
-        margin .72s cubic-bezier(.22, 1, .36, 1),
-        clip-path .68s cubic-bezier(.22, 1, .36, 1),
-        opacity .42s ease .08s,
-        transform .72s cubic-bezier(.22, 1, .36, 1),
-        visibility 0s linear .82s;
+        grid-template-rows .9s cubic-bezier(.22, 1, .36, 1),
+        margin .82s cubic-bezier(.22, 1, .36, 1),
+        opacity .58s ease .1s,
+        visibility 0s linear .9s;
+}
+
+.reveal-detail > .reveal-detail__inner {
+    min-height: 0;
+    overflow: hidden;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(-10px);
+    transform-origin: top center;
+    transition:
+        clip-path .82s cubic-bezier(.22, 1, .36, 1) .06s,
+        transform .82s cubic-bezier(.22, 1, .36, 1) .06s;
 }
 
 .reveal-context:hover > .reveal-detail,
 .reveal-context:focus > .reveal-detail,
 .reveal-context:focus-within > .reveal-detail {
-    max-height: var(--reveal-height, 24rem);
+    grid-template-rows: 1fr;
     margin-top: var(--reveal-space, .55rem) !important;
     margin-bottom: var(--reveal-space-after, 0) !important;
     opacity: 1;
     visibility: visible;
-    clip-path: inset(0 0 0 0);
-    transform: none;
     pointer-events: auto;
     transition-delay: 0s;
+}
+
+.reveal-context:hover > .reveal-detail > .reveal-detail__inner,
+.reveal-context:focus > .reveal-detail > .reveal-detail__inner,
+.reveal-context:focus-within > .reveal-detail > .reveal-detail__inner {
+    clip-path: inset(0 0 0 0);
+    transform: none;
 }
 
 .reveal-context:focus-visible {
@@ -44,7 +55,9 @@
 @media (prefers-reduced-motion: reduce) {
     .reveal-detail {
         transition: none;
-        clip-path: none;
-        transform: none;
+    }
+
+    .reveal-detail > .reveal-detail__inner {
+        transition: none;
     }
 }
