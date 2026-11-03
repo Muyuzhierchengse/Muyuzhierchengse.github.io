@@ -1,0 +1,45 @@
+.reveal-context {
+    outline: none;
+}
+
+.reveal-detail {
+    max-height: 0;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition:
+        max-height .5s cubic-bezier(.25, 1, .5, 1),
+        margin .5s cubic-bezier(.25, 1, .5, 1),
+        opacity .28s ease,
+        transform .4s cubic-bezier(.25, 1, .5, 1),
+        visibility 0s linear .5s;
+}
+
+.reveal-context:hover > .reveal-detail,
+.reveal-context:focus > .reveal-detail,
+.reveal-context:focus-within > .reveal-detail {
+    max-height: var(--reveal-height, 24rem);
+    margin-top: var(--reveal-space, .55rem) !important;
+    margin-bottom: var(--reveal-space-after, 0) !important;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    pointer-events: auto;
+    transition-delay: 0s;
+}
+
+.reveal-context:focus-visible {
+    outline: 1px solid rgba(139, 119, 101, .38);
+    outline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-detail {
+        transition: none;
+        transform: none;
+    }
+}

@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="view-transition" content="same-origin">
-    <title>{{ partial "seo-title.html" . }}</title>
-    {{ partial "seo.html" . }}
+    <title>{{ if .Title }}{{ .Title }} | {{ end }}{{ .Site.Title }}</title>
     <link rel="stylesheet" href="/css/site-nav.css?v=20260910-mobile-fit">
     <link rel="stylesheet" href="/css/hydrangea-watermark.css">
     <link rel="stylesheet" href="/css/profile-identity.css?v=20260904-opportunities">
+    <link rel="stylesheet" href="/css/progressive-reveal.css?v=20261104">
     {{ block "styles" . }}{{ end }}
 </head>
 <body>

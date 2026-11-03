@@ -64,6 +64,8 @@
     }
 
     .research-subtitle {
+        --reveal-height: 8rem;
+        --reveal-space: 10px;
         margin: 0;
         color: #6e6862;
         font-size: 15px;
@@ -119,6 +121,13 @@
         line-height: 1.65;
     }
 
+    .programme-details {
+        --reveal-height: 18rem;
+        --reveal-space: 14px;
+    }
+
+    .programme-details .programme-topics { margin-top: 20px; }
+
     .programme-record { min-width: 0; }
 
     .programme-record__label {
@@ -165,6 +174,8 @@
     }
 
     .research-output__links {
+        --reveal-height: 5rem;
+        --reveal-space: 7px;
         display: flex;
         flex-wrap: wrap;
         gap: 15px;
@@ -252,10 +263,10 @@
     <div class="inner-page-layout">
         {{ partial "profile-identity.html" (dict "mode" "rail") }}
         <div class="research-container inner-page-content">
-            <header class="research-header">
+            <header class="research-header reveal-context" tabindex="0" aria-label="Research overview; hover or focus to read the description">
                 <div class="research-kicker">Questions · Works · Notes</div>
                 <h1 class="research-title">Research</h1>
-                <p class="research-subtitle">Research lines organised by their questions, with selected papers and notes shown in context.</p>
+                <p class="research-subtitle reveal-detail">Research lines organised by their questions, with selected papers and notes shown in context.</p>
                 <div class="research-divider">☙ ❖ ❧</div>
             </header>
 
@@ -264,23 +275,25 @@
                 {{ $selected := where .Params.works "featured" true }}
                 {{ $more := where .Params.works "featured" "!=" true }}
                 <section class="programme-section" id="{{ .File.ContentBaseName }}">
-                    <header class="programme-heading">
+                    <header class="programme-heading reveal-context" tabindex="0" aria-label="{{ .Title }}; hover or focus to read the programme description">
                         <div class="programme-eyebrow">{{ .Params.programme }} · {{ .Params.kicker }}</div>
                         <h2>{{ .Title }}</h2>
-                        <p>{{ .Params.summary }}</p>
-                        {{ with .Params.topics }}<div class="programme-topics">{{ . }}</div>{{ end }}
+                        <div class="programme-details reveal-detail">
+                            <p>{{ .Params.summary }}</p>
+                            {{ with .Params.topics }}<div class="programme-topics">{{ . }}</div>{{ end }}
+                        </div>
                     </header>
 
                     <div class="programme-record">
                         <h3 class="programme-record__label">Selected Work</h3>
                         {{ range $selected }}
-                        <article class="research-output">
+                        <article class="research-output reveal-context" tabindex="0">
                             <div class="research-output__topline">
                                 <span class="research-output__type">{{ .type | default "Paper" }}</span>
                             </div>
                             <h3>{{ .title }}</h3>
                             {{ if or .paper .code .pdf }}
-                            <nav class="research-output__links" aria-label="Links for {{ .title }}">
+                            <nav class="research-output__links reveal-detail" aria-label="Links for {{ .title }}">
                                 {{ with .paper }}<a href="{{ . }}" target="_blank" rel="noopener">Paper</a>{{ end }}
                                 {{ with .pdf }}<a href="{{ . }}" target="_blank" rel="noopener">PDF</a>{{ end }}
                                 {{ with .code }}<a href="{{ . }}" target="_blank" rel="noopener">Code</a>{{ end }}
@@ -294,13 +307,13 @@
                             <summary>View {{ len $more }} more {{ if eq (len $more) 1 }}work{{ else }}works{{ end }}</summary>
                             <div class="more-works__content">
                                 {{ range $more }}
-                                <article class="research-output">
+                                <article class="research-output reveal-context" tabindex="0">
                                     <div class="research-output__topline">
                                         <span class="research-output__type">{{ .type | default "Paper" }}</span>
                                     </div>
                                     <h3>{{ .title }}</h3>
                                     {{ if or .paper .code .pdf }}
-                                    <nav class="research-output__links" aria-label="Links for {{ .title }}">
+                                    <nav class="research-output__links reveal-detail" aria-label="Links for {{ .title }}">
                                         {{ with .paper }}<a href="{{ . }}" target="_blank" rel="noopener">Paper</a>{{ end }}
                                         {{ with .pdf }}<a href="{{ . }}" target="_blank" rel="noopener">PDF</a>{{ end }}
                                         {{ with .code }}<a href="{{ . }}" target="_blank" rel="noopener">Code</a>{{ end }}

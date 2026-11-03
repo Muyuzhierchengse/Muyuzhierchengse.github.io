@@ -45,6 +45,8 @@
     }
 
     .elsewhere-subtitle {
+        --reveal-height: 8rem;
+        --reveal-space: 10px;
         margin: 0;
         color: #6e6862;
         font-size: 15px;
@@ -61,12 +63,17 @@
     }
 
     .elsewhere-intro {
-        max-width: 650px;
-        margin: 0 auto 46px;
-        color: #55504b;
-        font-size: 15px;
-        line-height: 1.85;
+        margin: 14px auto 0;
+        color: #77706a;
+        font-size: 13.5px;
+        line-height: 1.75;
         text-align: center;
+    }
+
+    .elsewhere-header-copy {
+        --reveal-height: 18rem;
+        --reveal-space: 10px;
+        max-width: 650px;
     }
 
     .elsewhere-section {
@@ -110,6 +117,11 @@
         line-height: 1.7;
     }
 
+    .elsewhere-section-copy {
+        --reveal-height: 12rem;
+        --reveal-space: 0;
+    }
+
     .elsewhere-work {
         margin-top: 20px;
         padding: 19px 21px 18px;
@@ -140,6 +152,11 @@
         line-height: 1.7;
     }
 
+    .elsewhere-work-details {
+        --reveal-height: 10rem;
+        --reveal-space: 9px;
+    }
+
     .elsewhere-work-link {
         display: inline-block;
         margin-top: 11px;
@@ -162,7 +179,7 @@
         .elsewhere-header { margin-bottom: 48px; }
         .elsewhere-kicker { letter-spacing: 3px; }
         .elsewhere-title { letter-spacing: 3px; }
-        .elsewhere-intro { font-size: 14.5px; text-align: left; }
+        .elsewhere-intro { font-size: 13px; }
 
         .elsewhere-section {
             display: block;
@@ -186,14 +203,15 @@
     <div class="inner-page-layout">
         {{ partial "profile-identity.html" (dict "mode" "rail") }}
         <div class="elsewhere-container inner-page-content">
-            <header class="elsewhere-header">
+            <header class="elsewhere-header reveal-context" tabindex="0" aria-label="Elsewhere overview; hover or focus to read the description">
                 <div class="elsewhere-kicker">Beyond the Research Programme</div>
                 <h1 class="elsewhere-title">Elsewhere</h1>
-                <p class="elsewhere-subtitle">{{ .Params.subtitle }}</p>
+                <div class="elsewhere-header-copy reveal-detail">
+                    <p class="elsewhere-subtitle">{{ .Params.subtitle }}</p>
+                    <p class="elsewhere-intro">An evolving cabinet of stories, playable systems, and experiments pursued for curiosity—the parts of my work that belong beside, rather than inside, my principal academic programme.</p>
+                </div>
                 <div class="elsewhere-divider">☙ ❖ ❧</div>
             </header>
-
-            <p class="elsewhere-intro">An evolving cabinet of stories, playable systems, and experiments pursued for curiosity—the parts of my work that belong beside, rather than inside, my principal academic programme.</p>
 
             <main aria-label="Creative and exploratory work">
                 <section class="elsewhere-section" aria-labelledby="elsewhere-writing">
@@ -201,9 +219,11 @@
                         <div class="elsewhere-number">I</div>
                         <h2 class="elsewhere-section-title" id="elsewhere-writing">Writing</h2>
                     </header>
-                    <div>
-                        <p class="elsewhere-description">Fiction, long-form narratives, and fragments of imagined worlds.</p>
-                        <p class="elsewhere-state">Selected pieces will be added when they are ready to be read.</p>
+                    <div class="elsewhere-section-copy reveal-context" tabindex="0" aria-label="Writing; hover or focus to read details">
+                        <div class="reveal-detail">
+                            <p class="elsewhere-description">Fiction, long-form narratives, and fragments of imagined worlds.</p>
+                            <p class="elsewhere-state">Selected pieces will be added when they are ready to be read.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -212,9 +232,11 @@
                         <div class="elsewhere-number">II</div>
                         <h2 class="elsewhere-section-title" id="elsewhere-games">Games &amp; Interactive Works</h2>
                     </header>
-                    <div>
-                        <p class="elsewhere-description">Game concepts, systems, prototypes, and experiments in interactive storytelling.</p>
-                        <p class="elsewhere-state">Design notes and playable work will appear here as they take shape.</p>
+                    <div class="elsewhere-section-copy reveal-context" tabindex="0" aria-label="Games and interactive works; hover or focus to read details">
+                        <div class="reveal-detail">
+                            <p class="elsewhere-description">Game concepts, systems, prototypes, and experiments in interactive storytelling.</p>
+                            <p class="elsewhere-state">Design notes and playable work will appear here as they take shape.</p>
+                        </div>
                     </div>
                 </section>
 
@@ -224,13 +246,17 @@
                         <h2 class="elsewhere-section-title" id="elsewhere-experiments">Experiments</h2>
                     </header>
                     <div>
-                        <p class="elsewhere-description">Personal tools and technical ideas explored for play, listening, and making.</p>
-                        <article class="elsewhere-work">
+                        <div class="elsewhere-section-copy reveal-context" tabindex="0" aria-label="Experiments; hover or focus to read details">
+                            <p class="elsewhere-description reveal-detail">Personal tools and technical ideas explored for play, listening, and making.</p>
+                        </div>
+                        <article class="elsewhere-work reveal-context" tabindex="0">
                             <div class="elsewhere-work-header">
                                 <h3 class="elsewhere-work-title">Personalized Speech Synthesis</h3>
                             </div>
-                            <p>A personal exploration of small-sample voice synthesis, developed for listening and musical play.</p>
-                            <a class="elsewhere-work-link" href="/publications/#additional-work-title">Scholarly record</a>
+                            <div class="elsewhere-work-details reveal-detail">
+                                <p>A personal exploration of small-sample voice synthesis, developed for listening and musical play.</p>
+                                <a class="elsewhere-work-link" href="/publications/#additional-work-title">Scholarly record</a>
+                            </div>
                         </article>
                     </div>
                 </section>
