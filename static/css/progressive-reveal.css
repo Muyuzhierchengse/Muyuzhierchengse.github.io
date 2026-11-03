@@ -9,14 +9,17 @@
     overflow: hidden;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-4px);
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(-8px) scaleY(.985);
+    transform-origin: top center;
     pointer-events: none;
     transition:
-        max-height .5s cubic-bezier(.25, 1, .5, 1),
-        margin .5s cubic-bezier(.25, 1, .5, 1),
-        opacity .28s ease,
-        transform .4s cubic-bezier(.25, 1, .5, 1),
-        visibility 0s linear .5s;
+        max-height .82s cubic-bezier(.22, 1, .36, 1),
+        margin .72s cubic-bezier(.22, 1, .36, 1),
+        clip-path .68s cubic-bezier(.22, 1, .36, 1),
+        opacity .42s ease .08s,
+        transform .72s cubic-bezier(.22, 1, .36, 1),
+        visibility 0s linear .82s;
 }
 
 .reveal-context:hover > .reveal-detail,
@@ -27,6 +30,7 @@
     margin-bottom: var(--reveal-space-after, 0) !important;
     opacity: 1;
     visibility: visible;
+    clip-path: inset(0 0 0 0);
     transform: none;
     pointer-events: auto;
     transition-delay: 0s;
@@ -40,6 +44,7 @@
 @media (prefers-reduced-motion: reduce) {
     .reveal-detail {
         transition: none;
+        clip-path: none;
         transform: none;
     }
 }

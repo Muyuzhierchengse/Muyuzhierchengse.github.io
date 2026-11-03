@@ -64,8 +64,6 @@
     }
 
     .research-subtitle {
-        --reveal-height: 8rem;
-        --reveal-space: 10px;
         margin: 0;
         color: #6e6862;
         font-size: 15px;
@@ -174,8 +172,6 @@
     }
 
     .research-output__links {
-        --reveal-height: 5rem;
-        --reveal-space: 7px;
         display: flex;
         flex-wrap: wrap;
         gap: 15px;
@@ -263,10 +259,10 @@
     <div class="inner-page-layout">
         {{ partial "profile-identity.html" (dict "mode" "rail") }}
         <div class="research-container inner-page-content">
-            <header class="research-header reveal-context" tabindex="0" aria-label="Research overview; hover or focus to read the description">
+            <header class="research-header">
                 <div class="research-kicker">Questions · Works · Notes</div>
                 <h1 class="research-title">Research</h1>
-                <p class="research-subtitle reveal-detail">Research lines organised by their questions, with selected papers and notes shown in context.</p>
+                <p class="research-subtitle">Research lines organised by their questions, with selected papers and notes shown in context.</p>
                 <div class="research-divider">☙ ❖ ❧</div>
             </header>
 
@@ -287,13 +283,13 @@
                     <div class="programme-record">
                         <h3 class="programme-record__label">Selected Work</h3>
                         {{ range $selected }}
-                        <article class="research-output reveal-context" tabindex="0">
+                        <article class="research-output">
                             <div class="research-output__topline">
                                 <span class="research-output__type">{{ .type | default "Paper" }}</span>
                             </div>
                             <h3>{{ .title }}</h3>
                             {{ if or .paper .code .pdf }}
-                            <nav class="research-output__links reveal-detail" aria-label="Links for {{ .title }}">
+                            <nav class="research-output__links" aria-label="Links for {{ .title }}">
                                 {{ with .paper }}<a href="{{ . }}" target="_blank" rel="noopener">Paper</a>{{ end }}
                                 {{ with .pdf }}<a href="{{ . }}" target="_blank" rel="noopener">PDF</a>{{ end }}
                                 {{ with .code }}<a href="{{ . }}" target="_blank" rel="noopener">Code</a>{{ end }}
@@ -307,13 +303,13 @@
                             <summary>View {{ len $more }} more {{ if eq (len $more) 1 }}work{{ else }}works{{ end }}</summary>
                             <div class="more-works__content">
                                 {{ range $more }}
-                                <article class="research-output reveal-context" tabindex="0">
+                                <article class="research-output">
                                     <div class="research-output__topline">
                                         <span class="research-output__type">{{ .type | default "Paper" }}</span>
                                     </div>
                                     <h3>{{ .title }}</h3>
                                     {{ if or .paper .code .pdf }}
-                                    <nav class="research-output__links reveal-detail" aria-label="Links for {{ .title }}">
+                                    <nav class="research-output__links" aria-label="Links for {{ .title }}">
                                         {{ with .paper }}<a href="{{ . }}" target="_blank" rel="noopener">Paper</a>{{ end }}
                                         {{ with .pdf }}<a href="{{ . }}" target="_blank" rel="noopener">PDF</a>{{ end }}
                                         {{ with .code }}<a href="{{ . }}" target="_blank" rel="noopener">Code</a>{{ end }}

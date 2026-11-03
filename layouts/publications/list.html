@@ -47,8 +47,6 @@
     }
 
     .publications-subtitle {
-        --reveal-height: 8rem;
-        --reveal-space: 10px;
         margin: 0;
         color: #6e6862;
         font-size: 15px;
@@ -169,8 +167,6 @@
     }
 
     .publication-authors {
-        --reveal-height: 8rem;
-        --reveal-space: 7px;
         margin-bottom: 7px;
         color: #625d58;
         font-size: 13.5px;
@@ -295,10 +291,10 @@
         {{ partial "profile-identity.html" (dict "mode" "rail") }}
         <div class="publications-container inner-page-content">
 
-    <header class="publications-header reveal-context" tabindex="0" aria-label="Publications overview; hover or focus to read the description">
+    <header class="publications-header">
         <div class="publications-kicker">Scholarly Record</div>
         <h1 class="publications-title">Publications</h1>
-        <p class="publications-subtitle reveal-detail">{{ .Params.subtitle }}</p>
+        <p class="publications-subtitle">{{ .Params.subtitle }}</p>
         <div class="divider">☙ ❖ ❧</div>
     </header>
 
@@ -320,7 +316,7 @@
                     {{ range .publications }}
                 {{ $publicationTitle := .title }}
                 {{ $statusKey := .status_key }}
-                <article class="publication-item reveal-context" tabindex="0">
+                <article class="publication-item">
                     <div class="publication-title-line">
                         <h2 class="publication-title">{{ .title }}</h2>
                         {{ with .status }}
@@ -328,7 +324,7 @@
                         {{ end }}
                     </div>
                     {{ with .authors }}
-                    <div class="publication-authors reveal-detail">{{ . | markdownify }}</div>
+                    <div class="publication-authors">{{ . | markdownify }}</div>
                     {{ end }}
                     <div class="publication-meta">
                         {{ with .year }}<span class="publication-year">{{ . }}</span>{{ end }}
@@ -360,7 +356,7 @@
                 {{ range .Params.additional_work }}
                 {{ $publicationTitle := .title }}
                 {{ $statusKey := .status_key }}
-                <article class="publication-item reveal-context" tabindex="0">
+                <article class="publication-item">
                     <div class="publication-title-line">
                         <h2 class="publication-title">{{ .title }}</h2>
                         {{ with .status }}
@@ -368,7 +364,7 @@
                         {{ end }}
                     </div>
                     {{ with .authors }}
-                    <div class="publication-authors reveal-detail">{{ . | markdownify }}</div>
+                    <div class="publication-authors">{{ . | markdownify }}</div>
                     {{ end }}
                     <div class="publication-meta">
                         {{ with .year }}<span class="publication-year">{{ . }}</span>{{ end }}

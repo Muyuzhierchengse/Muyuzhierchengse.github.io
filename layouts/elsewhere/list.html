@@ -45,8 +45,6 @@
     }
 
     .elsewhere-subtitle {
-        --reveal-height: 8rem;
-        --reveal-space: 10px;
         margin: 0;
         color: #6e6862;
         font-size: 15px;
@@ -72,7 +70,7 @@
 
     .elsewhere-header-copy {
         --reveal-height: 18rem;
-        --reveal-space: 10px;
+        --reveal-space: 14px;
         max-width: 650px;
     }
 
@@ -206,8 +204,8 @@
             <header class="elsewhere-header reveal-context" tabindex="0" aria-label="Elsewhere overview; hover or focus to read the description">
                 <div class="elsewhere-kicker">Beyond the Research Programme</div>
                 <h1 class="elsewhere-title">Elsewhere</h1>
+                <p class="elsewhere-subtitle">{{ .Params.subtitle }}</p>
                 <div class="elsewhere-header-copy reveal-detail">
-                    <p class="elsewhere-subtitle">{{ .Params.subtitle }}</p>
                     <p class="elsewhere-intro">An evolving cabinet of stories, playable systems, and experiments pursued for curiosity—the parts of my work that belong beside, rather than inside, my principal academic programme.</p>
                 </div>
                 <div class="elsewhere-divider">☙ ❖ ❧</div>
